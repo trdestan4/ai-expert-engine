@@ -23,6 +23,10 @@ REQUIRED_SECTIONS = [
     "## Output contract",
 ]
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+STOPWORDS = {
+    "a", "an", "and", "by", "for", "from", "it", "of", "or", "the", "to", "when", "with",
+    "does", "not", "work", "engineering",
+}
 
 
 def parse_frontmatter(text: str) -> dict[str, str]:
@@ -42,6 +46,14 @@ def parse_frontmatter(text: str) -> dict[str, str]:
     return result
 
 
+def description_terms(value: str) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[a-z0-9-]+", value.lower())
+        if len(token) > 2 and token not in STOPWORDS
+    }
+
+
 def validate() -> list[str]:
     errors: list[str] = []
     if not REGISTRY.exists():
@@ -53,16 +65,25 @@ def validate() -> list[str]:
         return [f"invalid registry JSON: {exc}"]
 
     seen: set[str] = set()
+    descriptions: dict[str, set[str]] = {}
+
     for item in registry.get("skills", []):
         name = item.get("name", "")
-        path = ROOT / item.get("path", "")
-        rel = path.relative_to(ROOT) if path.is_absolute() and str(path).startswith(str(ROOT)) else path
+        path = (ROOT / item.get("path", "")).resolve()
+
+        try:
+            rel = path.relative_to(ROOT)
+        except ValueError:
+            errors.append(f"skill path escapes repository root: {item.get('path')}")
+            continue
 
         if name in seen:
             errors.append(f"duplicate skill name in registry: {name}")
         seen.add(name)
         if not NAME_RE.fullmatch(name):
             errors.append(f"invalid skill name: {name}")
+        if path.parent.name != name:
+            errors.append(f"{rel}: parent folder must match skill name {name!r}")
         if not path.exists():
             errors.append(f"missing skill file: {item.get('path')}")
             continue
@@ -81,19 +102,34 @@ def validate() -> list[str]:
             errors.append(f"{rel}: description too vague/short")
         if len(description.split()) > 80:
             errors.append(f"{rel}: description exceeds routing budget")
+        descriptions[name] = description_terms(description)
 
         for heading in REQUIRED_SECTIONS:
             if heading not in text:
                 errors.append(f"{rel}: missing required section {heading!r}")
 
         for ref in item.get("references", []):
-            ref_path = path.parent / ref
+            ref_path = (path.parent / ref).resolve()
+            try:
+                ref_path.relative_to(path.parent)
+            except ValueError:
+                errors.append(f"{rel}: registered reference escapes skill root: {ref}")
+                continue
             if not ref_path.exists():
                 errors.append(f"{rel}: missing registered reference {ref}")
 
         word_count = len(text.split())
         if word_count > 2200:
             errors.append(f"{rel}: SKILL.md exceeds core size guard ({word_count} words)")
+
+    names = sorted(descriptions)
+    for index, left in enumerate(names):
+        for right in names[index + 1 :]:
+            a, b = descriptions[left], descriptions[right]
+            union = a | b
+            overlap = len(a & b) / len(union) if union else 0.0
+            if overlap > 0.72:
+                errors.append(f"routing descriptions overlap too strongly: {left} vs {right} ({overlap:.2f})")
 
     expected = {"master-agent", "repository-intelligence", "task-planning", "debugging"}
     missing = expected - seen
