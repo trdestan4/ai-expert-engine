@@ -1,0 +1,33 @@
+{
+  "phase": "00-core",
+  "skills": [
+    {
+      "name": "master-agent",
+      "path": ".codex/skills/master-agent/SKILL.md",
+      "owns": ["orchestration", "routing", "risk-escalation", "execution-order", "verification-strategy"],
+      "excludes": ["domain-implementation", "deep-repository-discovery", "root-cause-diagnosis"],
+      "references": ["references/risk-and-escalation.md"]
+    },
+    {
+      "name": "repository-intelligence",
+      "path": ".codex/skills/repository-intelligence/SKILL.md",
+      "owns": ["repository-facts", "stack-detection", "architecture-discovery", "change-surface", "local-conventions"],
+      "excludes": ["implementation-planning", "root-cause-diagnosis", "domain-implementation"],
+      "references": ["references/repository-profile.md"]
+    },
+    {
+      "name": "task-planning",
+      "path": ".codex/skills/task-planning/SKILL.md",
+      "owns": ["decomposition", "dependency-order", "acceptance-criteria", "tradeoff-decisions", "rollback-planning"],
+      "excludes": ["repository-discovery", "root-cause-diagnosis", "domain-implementation"],
+      "references": ["references/decision-framework.md"]
+    },
+    {
+      "name": "debugging",
+      "path": ".codex/skills/debugging/SKILL.md",
+      "owns": ["failure-diagnosis", "hypothesis-testing", "root-cause-isolation", "regression-strategy"],
+      "excludes": ["routine-feature-implementation", "general-architecture-selection"],
+      "references": ["references/root-cause-method.md", "references/failure-recovery.md"]
+    }
+  ]
+}
