@@ -36,19 +36,27 @@ Do not block on optional preferences when a safe, reversible default exists.
 
 ## Workflow
 
-### 1. Classify the request
+### 1. Classify intent, complexity, and risk separately
 
 Identify primary intent: explain, design, implement, debug, refactor, migrate, review, optimize, secure, deploy, or release.
 
-Classify scope:
+Classify **complexity**:
 
-- **S0** — tiny/local, one clear owner;
-- **S1** — normal single-domain task;
-- **S2** — cross-layer or multi-step feature;
-- **S3** — high-risk change affecting auth, permissions, payments, secrets, persistent data, public contracts, production configuration, or destructive operations;
-- **S4** — major architecture, broad migration, or production release/audit.
+- **C0** — tiny/local deterministic task with one clear owner;
+- **C1** — normal single-domain task;
+- **C2** — multi-file or cross-layer task with meaningful dependencies;
+- **C3** — broad multi-domain change, migration, or substantial refactor;
+- **C4** — system-level architecture, release, or program of coordinated changes.
 
-Scope and risk are independent: a small permission change can be S3.
+Classify **risk independently** using `references/risk-and-escalation.md`:
+
+- **R0** cosmetic/informational;
+- **R1** normal implementation;
+- **R2** contract-sensitive/cross-layer;
+- **R3** high-risk trust/data/production boundary;
+- **R4** critical/release-systemic.
+
+Never infer risk from code size. A C0 permission edit may still be R3; a C3 cosmetic reorganization may have lower security risk.
 
 ### 2. Establish evidence needs
 
@@ -71,7 +79,7 @@ Avoid “just in case” skill loading.
 
 ### 4. Decide whether detailed planning is warranted
 
-Invoke `task-planning` for S2–S4 work, risky edits, migrations, or tasks with dependency/order constraints. Skip formal planning for low-risk deterministic edits.
+Invoke `task-planning` for C2–C4 work, R3–R4 risk, migrations, or tasks with dependency/order constraints. Skip formal planning for low-risk deterministic edits.
 
 ### 5. Build execution order
 
@@ -93,7 +101,7 @@ Keep each specialist inside its contract. If a specialist discovers a decision o
 
 ### 7. Verify
 
-Select evidence proportional to the change:
+Select evidence proportional to the changed boundary and risk:
 
 - syntax/type/lint checks;
 - targeted tests;
@@ -116,10 +124,11 @@ Report the outcome, meaningful checks, unresolved limitations, and any follow-up
 - If a change crosses a trust/data boundary, elevate risk even if code size is small.
 - If specialists disagree, prefer verified repository evidence, explicit requirements, safer/reversible choices, and documented trade-offs in that order.
 - If verification disproves the implementation assumption, return to diagnosis/planning; do not weaken the check.
+- Complexity controls orchestration depth; risk controls mandatory safeguards/review. Never substitute one for the other.
 
 ## Reference routing
 
-Load `references/risk-and-escalation.md` when scope/risk classification is ambiguous or determines mandatory review.
+Load `references/risk-and-escalation.md` when risk classification is ambiguous or determines mandatory review.
 
 Use the shared policies in:
 
@@ -131,6 +140,7 @@ Do not load domain references here; route to the domain owner.
 ## Quality gates
 
 - Primary owner is unambiguous.
+- Complexity and risk are classified independently when material.
 - Every activated skill has a concrete reason.
 - Execution order respects dependencies and irreversible risk.
 - Acceptance criteria are testable.
@@ -146,7 +156,7 @@ If routing is uncertain, gather the smallest missing evidence rather than loadin
 
 Return a compact orchestration result containing:
 
-- classified task/scope when useful;
+- intent and, when useful, independent complexity/risk classification;
 - selected owner(s) and execution order for non-trivial work;
 - material risk gates;
 - verification evidence;
