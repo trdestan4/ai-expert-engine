@@ -1,7 +1,7 @@
 {
-  "phase": "07-production",
-  "skills": [
-    {"name":"devops-deployment","path":".codex/skills/devops-deployment/SKILL.md","references":["references/ci-cd-pipelines.md","references/environments-secrets-config.md","references/deployment-strategies-rollbacks.md","references/docker-serverless-vercel.md","references/supply-chain-artifacts.md"]},
+  "phase":"07-production",
+  "skills":[
+    {"name":"devops-deployment","path":".codex/skills/devops-deployment/SKILL.md","references":["references/ci-cd-pipelines.md","references/environments-secrets-config.md","references/deployment-strategies-rollbacks.md","references/docker-serverless-vercel.md","references/supply-chain-artifacts.md","references/cloud-iac-kubernetes.md"]},
     {"name":"observability-sre","path":".codex/skills/observability-sre/SKILL.md","references":["references/logs-metrics-traces-otel.md","references/sli-slo-alerting.md","references/incident-response-runbooks.md","references/health-capacity-resilience.md"]},
     {"name":"git-delivery","path":".codex/skills/git-delivery/SKILL.md","references":["references/branching-commits-prs.md","references/release-versioning-changelog.md","references/github-governance-actions-security.md"]},
     {"name":"documentation","path":".codex/skills/documentation/SKILL.md","references":["references/readme-onboarding.md","references/architecture-adrs-api.md","references/runbooks-operations-release.md"]}

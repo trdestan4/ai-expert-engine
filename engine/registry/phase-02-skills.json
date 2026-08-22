@@ -1,43 +1,9 @@
 {
-  "phase": "02-web-frontend",
-  "skills": [
-    {
-      "name": "web-platform",
-      "path": ".codex/skills/web-platform/SKILL.md",
-      "references": [
-        "references/http-browser-runtime.md",
-        "references/browser-apis-and-storage.md",
-        "references/rendering-caching-delivery.md"
-      ]
-    },
-    {
-      "name": "frontend-engineering",
-      "path": ".codex/skills/frontend-engineering/SKILL.md",
-      "references": [
-        "references/semantic-css-system.md",
-        "references/state-data-forms.md",
-        "references/responsive-component-engineering.md",
-        "references/frontend-quality-baseline.md"
-      ]
-    },
-    {
-      "name": "react-nextjs",
-      "path": ".codex/skills/react-nextjs/SKILL.md",
-      "references": [
-        "references/react-component-runtime.md",
-        "references/next-app-router.md",
-        "references/next-data-cache-rendering.md",
-        "references/next-runtime-error-performance.md"
-      ]
-    },
-    {
-      "name": "software-architecture",
-      "path": ".codex/skills/software-architecture/SKILL.md",
-      "references": [
-        "references/architecture-decision-system.md",
-        "references/module-boundaries.md",
-        "references/evolutionary-architecture.md"
-      ]
-    }
+  "phase":"02-web-frontend",
+  "skills":[
+    {"name":"web-platform","path":".codex/skills/web-platform/SKILL.md","references":["references/http-browser-runtime.md","references/browser-apis-and-storage.md","references/rendering-caching-delivery.md"]},
+    {"name":"frontend-engineering","path":".codex/skills/frontend-engineering/SKILL.md","references":["references/semantic-css-system.md","references/state-data-forms.md","references/responsive-component-engineering.md","references/frontend-quality-baseline.md","references/i18n-localization-rtl.md","references/framework-adapters.md"]},
+    {"name":"react-nextjs","path":".codex/skills/react-nextjs/SKILL.md","references":["references/react-component-runtime.md","references/next-app-router.md","references/next-data-cache-rendering.md","references/next-runtime-error-performance.md"]},
+    {"name":"software-architecture","path":".codex/skills/software-architecture/SKILL.md","references":["references/architecture-decision-system.md","references/module-boundaries.md","references/evolutionary-architecture.md"]}
   ]
 }

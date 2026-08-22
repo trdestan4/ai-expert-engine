@@ -1,56 +1,10 @@
 {
-  "phase": "04-data-platform",
-  "skills": [
-    {
-      "name": "identity-access",
-      "path": ".codex/skills/identity-access/SKILL.md",
-      "references": [
-        "references/session-authentication.md",
-        "references/oauth-oidc-passkeys.md",
-        "references/authorization-models.md",
-        "references/recovery-and-sensitive-actions.md"
-      ]
-    },
-    {
-      "name": "database-data",
-      "path": ".codex/skills/database-data/SKILL.md",
-      "references": [
-        "references/postgresql-schema-modeling.md",
-        "references/sql-index-query.md",
-        "references/transactions-locking-pooling.md",
-        "references/migrations-backup-recovery.md",
-        "references/supabase-rls.md",
-        "references/redis-vector-data.md"
-      ]
-    },
-    {
-      "name": "realtime-async",
-      "path": ".codex/skills/realtime-async/SKILL.md",
-      "references": [
-        "references/websocket-sse-realtime.md",
-        "references/queues-retries-dlq.md",
-        "references/jobs-cron-idempotency.md",
-        "references/events-consistency-outbox.md"
-      ]
-    },
-    {
-      "name": "integrations",
-      "path": ".codex/skills/integrations/SKILL.md",
-      "references": [
-        "references/webhooks-and-provider-reliability.md",
-        "references/payments-billing.md",
-        "references/email-notifications.md",
-        "references/third-party-api-adapters.md"
-      ]
-    },
-    {
-      "name": "storage-media",
-      "path": ".codex/skills/storage-media/SKILL.md",
-      "references": [
-        "references/uploads-object-storage.md",
-        "references/signed-url-access.md",
-        "references/media-processing.md"
-      ]
-    }
+  "phase":"04-data-platform",
+  "skills":[
+    {"name":"identity-access","path":".codex/skills/identity-access/SKILL.md","references":["references/session-authentication.md","references/oauth-oidc-passkeys.md","references/authorization-models.md","references/recovery-and-sensitive-actions.md"]},
+    {"name":"database-data","path":".codex/skills/database-data/SKILL.md","references":["references/postgresql-schema-modeling.md","references/sql-index-query.md","references/transactions-locking-pooling.md","references/migrations-backup-recovery.md","references/supabase-rls.md","references/redis-vector-data.md","references/multi-database-adapters.md"]},
+    {"name":"realtime-async","path":".codex/skills/realtime-async/SKILL.md","references":["references/websocket-sse-realtime.md","references/queues-retries-dlq.md","references/jobs-cron-idempotency.md","references/events-consistency-outbox.md"]},
+    {"name":"integrations","path":".codex/skills/integrations/SKILL.md","references":["references/webhooks-and-provider-reliability.md","references/payments-billing.md","references/email-notifications.md","references/third-party-api-adapters.md"]},
+    {"name":"storage-media","path":".codex/skills/storage-media/SKILL.md","references":["references/uploads-object-storage.md","references/signed-url-access.md","references/media-processing.md"]}
   ]
 }
