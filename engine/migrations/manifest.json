@@ -1,0 +1,6 @@
+{
+  "version":1,
+  "migrations":[
+    {"from":"1.1.0","to":"1.2.0","module":"v1_1_0_to_v1_2_0.py","description":"Create runtime state/evidence/telemetry layout and normalize legacy review-store location."}
+  ]
+}
