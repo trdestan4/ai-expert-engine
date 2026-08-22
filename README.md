@@ -15,7 +15,8 @@ The engine uses a small number of discoverable domain skills with deep expertise
 - Phase 04 — Data / Platform: complete
 - Phase 05 — Quality Engineering: complete
 - Phase 06 — Business / Growth: complete
-- Next phases: Production, AI/Assets, Final Control
+- Phase 07 — Production Engineering: complete
+- Next phases: AI/Assets, Final Control
 
 ## Phase 00 — Core / AI Brain
 
@@ -62,6 +63,14 @@ Provides search discoverability, conversion messaging, ecommerce domain logic an
 SEO covers crawl/indexation, information architecture, structured data, ecommerce/local/international search, migrations and current AI/generative-search guidance without ranking guarantees. Content/conversion covers evidence-based value propositions, landing pages, UX writing, objections, trust and ethical CRO without dark patterns. Ecommerce covers product/variant/SKU, authoritative pricing, inventory, cart/checkout, order/refund lifecycles, merchandising and analytics. SaaS covers organizations/workspaces, memberships, plans, entitlements, seats, subscription lifecycle, usage metering, quotas, operator controls and tenant-aware metrics.
 
 Business skills coordinate rather than replace engineering owners: payments/webhooks stay with integrations, authentication with identity-access, data isolation with database-data/security, and runtime performance with performance.
+
+## Phase 07 — Production Engineering
+
+Provides CI/CD and deployment engineering, production observability/SRE, source-control delivery governance, and durable engineering/operations documentation.
+
+Deployment decisions cover reproducible builds, environment/config/secrets boundaries, immutable artifact promotion, Docker/serverless/Vercel targets, migration sequencing, progressive rollout and rollback/roll-forward. Observability covers structured logs, metrics, traces, OpenTelemetry conventions, SLIs/SLOs, actionable alerts, health/capacity, incidents and runbooks. Git delivery covers branch/commit/PR discipline, protected refs, CODEOWNERS, release/version/changelog traceability and GitHub Actions governance. Documentation covers README/onboarding, architecture/ADRs/API docs, operator runbooks, release/migration notes and stale-doc prevention.
+
+Production success requires evidence after deployment: artifact identity, critical health/smoke verification, migration/job state and appropriate telemetry. Critical secrets exposure, destructive unverified migrations or missing recovery strategy can block release.
 
 ## Quality automation
 

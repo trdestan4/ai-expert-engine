@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ProductionChange",
+  "type": "object",
+  "required": ["scope", "risk", "owners", "verification"],
+  "properties": {
+    "scope": {"enum":["pipeline","environment","deployment","observability","git-delivery","documentation","mixed"]},
+    "risk": {"enum":["R0","R1","R2","R3","R4"]},
+    "owners": {"type":"array","items":{"enum":["devops-deployment","observability-sre","git-delivery","documentation"]},"minItems":1,"uniqueItems":true},
+    "artifact_identity": {"type":["string","null"]},
+    "rollback_or_rollforward": {"type":["string","null"]},
+    "migration_impact": {"type":"boolean"},
+    "secret_or_credential_impact": {"type":"boolean"},
+    "observability_impact": {"type":"boolean"},
+    "documentation_impact": {"type":"boolean"},
+    "verification": {"type":"array","items":{"type":"string"},"minItems":1}
+  },
+  "additionalProperties": false
+}
