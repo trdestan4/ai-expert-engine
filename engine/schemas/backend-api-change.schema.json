@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/backend-api-change.schema.json",
+  "title": "Backend/API Change Plan",
+  "type": "object",
+  "required": ["owner", "runtime", "boundaries", "verification"],
+  "properties": {
+    "owner": {"enum": ["backend-engineering", "api-engineering", "combined"]},
+    "runtime": {"type": "string", "minLength": 1},
+    "framework": {"type": ["string", "null"]},
+    "apiStyle": {"type": ["string", "null"], "enum": ["REST", "GraphQL", "mixed", "other", null]},
+    "boundaries": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "publicContractChange": {"type": "boolean", "default": false},
+    "sideEffects": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "idempotency": {"type": ["string", "null"]},
+    "failureSemantics": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "compatibilityRisks": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "verification": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}

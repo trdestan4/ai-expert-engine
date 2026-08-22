@@ -1,0 +1,27 @@
+{
+  "phase": "03-backend-api",
+  "skills": [
+    {
+      "name": "backend-engineering",
+      "path": ".codex/skills/backend-engineering/SKILL.md",
+      "references": [
+        "references/node-runtime-service-patterns.md",
+        "references/python-backend-runtime.md",
+        "references/validation-errors-observability.md",
+        "references/concurrency-jobs-cache.md",
+        "references/backend-testing-production.md"
+      ]
+    },
+    {
+      "name": "api-engineering",
+      "path": ".codex/skills/api-engineering/SKILL.md",
+      "references": [
+        "references/rest-contracts-openapi.md",
+        "references/pagination-filtering-versioning.md",
+        "references/idempotency-rate-limits-errors.md",
+        "references/graphql-contracts.md",
+        "references/api-testing-evolution.md"
+      ]
+    }
+  ]
+}
