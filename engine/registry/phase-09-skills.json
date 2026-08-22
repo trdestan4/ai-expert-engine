@@ -1,0 +1,29 @@
+{
+  "phase": "09-final-control",
+  "skills": [
+    {
+      "name": "multi-review",
+      "path": ".codex/skills/multi-review/SKILL.md",
+      "references": [
+        "references/reviewer-selection.md",
+        "references/finding-severity-confidence.md"
+      ]
+    },
+    {
+      "name": "audit-review",
+      "path": ".codex/skills/audit-review/SKILL.md",
+      "references": [
+        "references/audit-method.md",
+        "references/evidence-sampling.md"
+      ]
+    },
+    {
+      "name": "release-readiness",
+      "path": ".codex/skills/release-readiness/SKILL.md",
+      "references": [
+        "references/release-gates.md",
+        "references/risk-acceptance-rollback.md"
+      ]
+    }
+  ]
+}

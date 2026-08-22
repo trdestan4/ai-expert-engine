@@ -1,0 +1,9 @@
+# Default ownership for the engine repository.
+* @trdestan4
+
+# High-impact control surfaces.
+/.github/ @trdestan4
+/AGENTS.md @trdestan4
+/engine/ @trdestan4
+/.codex/skills/ @trdestan4
+/scripts/ @trdestan4

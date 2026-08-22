@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-expert-engine.local/schemas/final-control-result.schema.json",
+  "title": "Final Control Result",
+  "type": "object",
+  "required": ["mode", "scope", "findings", "evidence_gaps"],
+  "properties": {
+    "mode": {"enum": ["multi-review", "audit-review", "release-readiness"]},
+    "scope": {"type": "string", "minLength": 1},
+    "candidate": {"type": ["string", "null"]},
+    "risk": {"enum": ["R0", "R1", "R2", "R3", "R4"]},
+    "reviewers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "severity", "confidence", "evidence", "blocker"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "title": {"type": "string", "minLength": 1},
+          "severity": {"enum": ["critical", "high", "medium", "low", "info"]},
+          "confidence": {"enum": ["verified", "strong", "tentative"]},
+          "evidence": {"type": "string", "minLength": 1},
+          "acceptance_condition": {"type": ["string", "null"]},
+          "owner": {"type": ["string", "null"]},
+          "blocker": {"type": "boolean"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "evidence_gaps": {"type": "array", "items": {"type": "string"}},
+    "accepted_risks": {"type": "array", "items": {"type": "string"}},
+    "release_decision": {"enum": ["GO", "GO WITH CONDITIONS", "HOLD", "NO-GO", null]},
+    "conditions": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
