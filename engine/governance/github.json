@@ -1,0 +1,1 @@
+{"version":1,"branch":"main","required":{"protected":true,"pull_request_reviews":true,"code_owner_reviews":true,"approvals":1,"dismiss_stale_reviews":true,"required_status_checks":["validate"],"strict_status_checks":true,"allow_force_pushes":false,"allow_deletions":false}}

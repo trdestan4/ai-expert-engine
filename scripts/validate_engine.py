@@ -1,185 +1,89 @@
 #!/usr/bin/env python3
-"""Cross-phase structural and governance validation for the complete AI Expert Engine."""
+"""Cross-phase structural, semantic, runtime-hardening and CI governance validation."""
 from __future__ import annotations
-
-import json
-import re
-import sys
+import json,re,sys
 from pathlib import Path
-
-ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "engine/manifest.json"
-SKILL_ROOT = ROOT / ".codex/skills"
-WORKFLOW = ROOT / ".github/workflows/validate-skills.yml"
-README = ROOT / "README.md"
-REQUIRED_HEADINGS = [
-    "# Purpose", "## Use when", "## Do not use when", "## Inputs", "## Workflow",
-    "## Decision rules", "## Reference routing", "## Quality gates", "## Failure handling", "## Output contract"
-]
-REF_RE = re.compile(r"references/[a-z0-9-]+\.md")
-FULL_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-USES_RE = re.compile(r"^\s*-?\s*uses:\s*([^@\s]+)@([^\s#]+)", re.M)
-
-
-def parse_frontmatter(text: str) -> dict[str, str]:
-    if not text.startswith("---\n"):
-        raise ValueError("missing YAML frontmatter")
-    end = text.find("\n---\n", 4)
-    if end < 0:
-        raise ValueError("unterminated YAML frontmatter")
-    data: dict[str, str] = {}
+ROOT=Path(__file__).resolve().parents[1]
+MANIFEST=ROOT/"engine/manifest.json";SKILL_ROOT=ROOT/".codex/skills";README=ROOT/"README.md"
+REQUIRED_HEADINGS=["# Purpose","## Use when","## Do not use when","## Inputs","## Workflow","## Decision rules","## Reference routing","## Quality gates","## Failure handling","## Output contract"]
+REF_RE=re.compile(r"references/[a-z0-9-]+\.md");FULL_SHA_RE=re.compile(r"^[0-9a-f]{40}$");USES_RE=re.compile(r"^\s*-?\s*uses:\s*([^@\s]+)@([^\s#]+)",re.M)
+def parse_frontmatter(text):
+    if not text.startswith("---\n"):raise ValueError("missing YAML frontmatter")
+    end=text.find("\n---\n",4)
+    if end<0:raise ValueError("unterminated YAML frontmatter")
+    out={}
     for raw in text[4:end].splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#"):
-            continue
-        if ":" not in line:
-            raise ValueError(f"invalid frontmatter line: {raw}")
-        key, value = line.split(":", 1)
-        data[key.strip()] = value.strip().strip("\"'")
-    return data
-
-
-def validate() -> list[str]:
-    errors: list[str] = []
-    for path in (MANIFEST, SKILL_ROOT, WORKFLOW, README):
-        if not path.exists():
-            errors.append(f"missing engine artifact: {path.relative_to(ROOT)}")
-    if errors:
-        return errors
-
-    try:
-        manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
-    except Exception as exc:
-        return [f"invalid engine manifest: {exc}"]
-
-    phases = manifest.get("phases", [])
-    expected_ids = [f"{i:02d}" for i in range(10)]
-    ids = [str(p.get("id")) for p in phases]
-    if ids != expected_ids:
-        errors.append(f"manifest phases must be 00..09 in order: {ids}")
-
-    registered: dict[str, Path] = {}
-    total_refs = 0
+        line=raw.strip()
+        if not line or line.startswith("#"):continue
+        if ":" not in line:raise ValueError(f"invalid frontmatter line: {raw}")
+        k,v=line.split(":",1);out[k.strip()]=v.strip().strip("\"'")
+    return out
+def validate():
+    e=[]
+    required=[MANIFEST,SKILL_ROOT,README,ROOT/".github/workflows/validate-skills.yml",ROOT/"evals/master-regression.md",ROOT/"evals/behavioral/cases.jsonl",ROOT/"engine/reviewers/reviewer-contract.md",ROOT/"engine/profiles/profiles.json",ROOT/"docs/INSTALL.md"]
+    for p in required:
+        if not p.exists():e.append(f"missing engine artifact: {p.relative_to(ROOT)}")
+    if e:return e
+    try:m=json.loads(MANIFEST.read_text())
+    except Exception as ex:return [f"invalid engine manifest: {ex}"]
+    if m.get("version")!="1.1.0" or m.get("status")!="hardened":e.append("manifest must declare v1.1.0 hardened")
+    phases=m.get("phases",[]);ids=[str(p.get("id")) for p in phases]
+    if ids!=[f"{i:02d}" for i in range(10)]:e.append(f"manifest phases must be 00..09 in order: {ids}")
+    registered={};total_refs=0
     for phase in phases:
-        raw_registry = phase.get("registry", "")
-        registry_path = ROOT / raw_registry
-        if not registry_path.exists():
-            errors.append(f"missing registry: {raw_registry}")
-            continue
-        try:
-            registry = json.loads(registry_path.read_text(encoding="utf-8"))
-        except Exception as exc:
-            errors.append(f"invalid registry {raw_registry}: {exc}")
-            continue
-        skills = registry.get("skills", [])
-        if not skills:
-            errors.append(f"registry has no skills: {raw_registry}")
-        for item in skills:
-            name = item.get("name", "")
-            path = ROOT / item.get("path", "")
-            if name in registered:
-                errors.append(f"duplicate registered skill: {name}")
-                continue
-            registered[name] = path
-            if not path.exists():
-                errors.append(f"missing registered skill: {path.relative_to(ROOT)}")
-                continue
-            if path.parent.name != name:
-                errors.append(f"skill folder/name mismatch: {path.relative_to(ROOT)}")
-            text = path.read_text(encoding="utf-8")
-            try:
-                meta = parse_frontmatter(text)
-            except ValueError as exc:
-                errors.append(f"{path.relative_to(ROOT)}: {exc}")
-                continue
-            if meta.get("name") != name:
-                errors.append(f"{path.relative_to(ROOT)}: frontmatter name mismatch")
-            if len(meta.get("description", "").split()) < 10:
-                errors.append(f"{path.relative_to(ROOT)}: description too weak")
-            for heading in REQUIRED_HEADINGS:
-                if heading not in text:
-                    errors.append(f"{path.relative_to(ROOT)}: missing {heading}")
-            refs = set(item.get("references", []))
-            called = set(REF_RE.findall(text))
-            if called != refs:
-                errors.append(f"{path.relative_to(ROOT)}: registered/called references differ")
-            total_refs += len(refs)
+        raw=phase.get("registry","");rp=ROOT/raw
+        if not rp.exists():e.append(f"missing registry: {raw}");continue
+        try:r=json.loads(rp.read_text())
+        except Exception as ex:e.append(f"invalid registry {raw}: {ex}");continue
+        if not r.get("skills"):e.append(f"registry has no skills: {raw}")
+        for item in r.get("skills",[]):
+            name=item.get("name","");p=ROOT/item.get("path","")
+            if name in registered:e.append(f"duplicate registered skill: {name}");continue
+            registered[name]=p
+            if not p.exists():e.append(f"missing registered skill: {p.relative_to(ROOT)}");continue
+            if p.parent.name!=name:e.append(f"skill folder/name mismatch: {p.relative_to(ROOT)}")
+            text=p.read_text()
+            try:meta=parse_frontmatter(text)
+            except ValueError as ex:e.append(f"{p.relative_to(ROOT)}: {ex}");continue
+            if meta.get("name")!=name:e.append(f"{p.relative_to(ROOT)}: frontmatter name mismatch")
+            if len(meta.get("description","").split())<10:e.append(f"{p.relative_to(ROOT)}: description too weak")
+            for h in REQUIRED_HEADINGS:
+                if h not in text:e.append(f"{p.relative_to(ROOT)}: missing {h}")
+            refs=set(item.get("references",[]));called=set(REF_RE.findall(text))
+            if called!=refs:e.append(f"{p.relative_to(ROOT)}: registered/called references differ")
+            total_refs+=len(refs)
             for ref in refs:
-                rp = path.parent / ref
-                if not rp.exists():
-                    errors.append(f"{path.relative_to(ROOT)}: missing {ref}")
-
-    physical = {p.name for p in SKILL_ROOT.iterdir() if p.is_dir() and (p / "SKILL.md").exists()}
-    registered_names = set(registered)
-    if physical != registered_names:
-        errors.append(
-            f"skill registry/physical mismatch: unregistered={sorted(physical-registered_names)} missing={sorted(registered_names-physical)}"
-        )
-
-    expected_count = manifest.get("expected_skill_count")
-    if expected_count is not None and len(registered) != expected_count:
-        errors.append(f"skill count mismatch: expected={expected_count} actual={len(registered)}")
-    if not 35 <= len(registered) <= 50:
-        errors.append(f"discoverable skill count outside architecture guardrail: {len(registered)}")
-    if total_refs < 60:
-        errors.append(f"reference depth unexpectedly low: {total_refs}")
-
-    for json_path in list((ROOT / "engine/registry").glob("*.json")) + list((ROOT / "engine/schemas").glob("*.json")) + [MANIFEST]:
-        try:
-            json.loads(json_path.read_text(encoding="utf-8"))
-        except Exception as exc:
-            errors.append(f"invalid JSON {json_path.relative_to(ROOT)}: {exc}")
-
-    readme = README.read_text(encoding="utf-8")
+                if not (p.parent/ref).exists():e.append(f"{p.relative_to(ROOT)}: missing {ref}")
+    physical={p.name for p in SKILL_ROOT.iterdir() if p.is_dir() and (p/"SKILL.md").exists()};names=set(registered)
+    if physical!=names:e.append(f"skill registry/physical mismatch: unregistered={sorted(physical-names)} missing={sorted(names-physical)}")
+    if len(registered)!=m.get("expected_skill_count"):e.append(f"skill count mismatch: expected={m.get('expected_skill_count')} actual={len(registered)}")
+    if not 35<=len(registered)<=50:e.append(f"discoverable skill count outside architecture guardrail: {len(registered)}")
+    if total_refs<60:e.append(f"reference depth unexpectedly low: {total_refs}")
+    for p in list((ROOT/"engine/registry").glob("*.json"))+list((ROOT/"engine/schemas").glob("*.json"))+[MANIFEST,ROOT/"engine/profiles/profiles.json",ROOT/"engine/governance/github.json"]:
+        try:json.loads(p.read_text())
+        except Exception as ex:e.append(f"invalid JSON {p.relative_to(ROOT)}: {ex}")
+    readme=README.read_text()
     for i in range(10):
-        marker = f"Phase {i:02d}"
-        if marker not in readme:
-            errors.append(f"README missing phase marker: {marker}")
-    if "Next phase:" in readme or "Next phases:" in readme:
-        errors.append("README still declares unfinished next phase")
-    if "AI Expert Engine v1.0" not in readme:
-        errors.append("README missing v1.0 completion marker")
-
-    workflow = WORKFLOW.read_text(encoding="utf-8")
-    if "validators=(scripts/validate_*.py)" not in workflow:
-        errors.append("workflow does not execute all validators")
-    uses = USES_RE.findall(workflow)
-    if not uses:
-        errors.append("workflow has no external actions")
-    for action, version in uses:
-        if action.startswith("./"):
-            continue
-        if not FULL_SHA_RE.fullmatch(version):
-            errors.append(f"workflow action is not immutable-SHA pinned: {action}@{version}")
-
-    validators = sorted((ROOT / "scripts").glob("validate_*.py"))
-    names = {p.name for p in validators}
-    required_validators = {"validate_core.py", "validate_engine.py"} | {f"validate_phase{i:02d}.py" for i in range(1, 10)}
-    if names != required_validators:
-        errors.append(f"validator set mismatch: missing={sorted(required_validators-names)} extra={sorted(names-required_validators)}")
-
-    if not (ROOT / "evals/master-regression.md").exists():
-        errors.append("missing master regression suite")
-    if not (ROOT / "engine/reviewers/reviewer-contract.md").exists():
-        errors.append("missing reviewer contract")
-
-    accidental = [p.name for p in ROOT.iterdir() if p.name.lower().startswith(("noop", "dummy", "tmp"))]
-    if accidental:
-        errors.append(f"accidental root artifacts present: {sorted(accidental)}")
-
-    return errors
-
-
-def main() -> int:
-    errors = validate()
-    if errors:
-        print("Engine validation FAILED")
-        for error in errors:
-            print(f"- {error}")
-        return 1
-    print("Engine validation PASSED")
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+        if f"Phase {i:02d}" not in readme:e.append(f"README missing phase marker: Phase {i:02d}")
+    if "Next phase:" in readme or "Next phases:" in readme:e.append("README still declares unfinished next phase")
+    if "AI Expert Engine v1.1" not in readme:e.append("README missing v1.1 hardening marker")
+    expected_validators={"validate_core.py","validate_engine.py","validate_hardening.py","validate_semantics.py"}|{f"validate_phase{i:02d}.py" for i in range(1,10)}
+    namesv={p.name for p in (ROOT/"scripts").glob("validate_*.py")}
+    if namesv!=expected_validators:e.append(f"validator set mismatch: missing={sorted(expected_validators-namesv)} extra={sorted(namesv-expected_validators)}")
+    for wf in sorted((ROOT/".github/workflows").glob("*.yml")):
+        text=wf.read_text();uses=USES_RE.findall(text)
+        for action,version in uses:
+            if not action.startswith("./") and not FULL_SHA_RE.fullmatch(version):e.append(f"{wf.relative_to(ROOT)} action is not immutable-SHA pinned: {action}@{version}")
+    workflow=(ROOT/".github/workflows/validate-skills.yml").read_text()
+    if "validators=(scripts/validate_*.py)" not in workflow:e.append("validation workflow does not execute all validators")
+    agents=ROOT/".cursor/agents";expected_reviewers=set(m.get("reviewers",[]));actual={p.stem for p in agents.glob("*.md")}
+    if actual!=expected_reviewers:e.append(f"isolated reviewer set mismatch: {sorted(actual)}")
+    accidental=[p.name for p in ROOT.iterdir() if p.name.lower().startswith(("noop","dummy","tmp"))]
+    if accidental:e.append(f"accidental root artifacts present: {sorted(accidental)}")
+    return e
+def main():
+    e=validate()
+    if e:
+        print("Engine validation FAILED");[print("-",x) for x in e];return 1
+    print("Engine validation PASSED");return 0
+if __name__=="__main__":sys.exit(main())

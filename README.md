@@ -1,13 +1,26 @@
-# AI Expert Engine v1.0
+# AI Expert Engine v1.1
 
-A token-efficient master-class agent system for production web design, software engineering, AI systems, asset production and release control in Cursor and Codex.
+A token-efficient expert-engine architecture for production web design, software engineering, AI systems, asset production and release control in Cursor and Codex.
+
+**Engine status: v1.1 hardened — 43 discoverable skills + 6 isolated Cursor reviewer subagents. No new skills were added in v1.1.**
+
+## v1.1 runtime hardening
+
+The v1.1 hardening pass closes the main runtime gaps discovered after the v1.0 manual audit:
+- executable behavioral evals run the real Cursor local agent against a machine-readable corpus;
+- six reviewer lenses have project subagent definitions under `.cursor/agents/` so mandatory Cursor reviews use separate context windows;
+- semantic routing validation rejects stale “future skill” language for skills already present;
+- nine stack profiles provide deterministic project signals before model routing;
+- deterministic repository profiling, stack resolution, routing reports and governance checks reduce model-only judgment;
+- `enginectl.py` installs, updates and verifies managed engine copies without silently overwriting an existing project;
+- GitHub desired governance is machine-readable and has check/apply tooling. Live protection must still be verified against GitHub rather than inferred from repository files.
+
+Install/update instructions are in `docs/INSTALL.md`. Governance instructions are in `docs/GOVERNANCE.md`.
 
 ## Architecture principle
-
-The engine uses a bounded set of discoverable domain skills with deep expertise loaded lazily from references, policies, schemas, evals, reviewer profiles and deterministic validators. Normal tasks load only the minimum owners needed; high-risk work escalates independent review and release gates.
+The engine uses a bounded set of discoverable domain skills with deep expertise loaded lazily from references, policies, schemas, evals, stack profiles, isolated reviewer agents and deterministic tools. Normal tasks load only the minimum owners needed; high-risk work escalates independent review and release gates.
 
 ## Build status
-
 - Phase 00 — Core / AI Brain: complete
 - Phase 01 — Creative / Product Intelligence: complete
 - Phase 02 — Web Engineering / Frontend: complete
@@ -19,76 +32,43 @@ The engine uses a bounded set of discoverable domain skills with deep expertise 
 - Phase 08 — AI / Asset Production: complete
 - Phase 09 — Final Control: complete
 
-**Engine status: v1.0 complete — 43 discoverable skills + 6 independent reviewer profiles.**
-
 ## Phase 00 — Core / AI Brain
-
-Provides orchestration, repository intelligence, task planning, debugging, token policy, schemas, routing contracts, evals and structural validation. Complexity (C0–C4) and risk (R0–R4) are classified independently so small trust-boundary edits can still receive high-risk safeguards.
+Orchestration, repository intelligence, task planning, debugging, token policy, schemas, routing contracts, evals and structural validation. Complexity C0–C4 and risk R0–R4 are classified independently.
 
 ## Phase 01 — Creative / Product Intelligence
-
-Provides product strategy, creative direction, brand design, anti-generic design review, color intelligence, typography intelligence, visual art direction, motion direction and UX/UI design.
-
-The design system explicitly rejects shortcut mappings such as `premium = navy + gold`, `luxury = black + gold`, or `AI/tech = purple gradient`. Visual decisions must be justified by product, audience, brand, content, usability, accessibility, performance and category context.
+Product strategy, creative direction, brand design, anti-generic review, color, typography, visual art direction, motion and UX/UI. The system rejects shortcut mappings such as `premium = navy + gold` and requires project-specific rationale.
 
 ## Phase 02 — Web Engineering / Frontend
-
-Provides framework-independent web-platform reasoning, production frontend engineering, React/Next.js runtime expertise and application-level software architecture.
-
-Key rules include semantic/native browser behavior first, explicit state ownership, content-resilient responsive implementation, narrow server/client boundaries, repository-version-aware framework decisions, deliberate cache/freshness behavior and complete async/error/form states.
+Framework-independent web-platform reasoning, production frontend engineering, React/Next.js runtime expertise and application architecture. Installed framework versions outrank remembered behavior.
 
 ## Phase 03 — Backend / API Engineering
-
-Provides production backend service/runtime guidance plus REST/GraphQL contract engineering. Backend decisions cover validation, domain invariants, side effects, errors, observability, configuration, concurrency, retries, cache and testing. API decisions cover REST/GraphQL semantics, OpenAPI, Problem Details, pagination/filtering/versioning, idempotency, rate limits, compatibility, deprecation and contract tests.
-
-Runtime/framework/spec advice is repository-version-aware: the engine never upgrades or applies new behavior merely because a newer standard exists.
+Backend service/runtime design plus REST/GraphQL contracts, OpenAPI, validation, errors, pagination, versioning, idempotency, rate limits and compatibility. Data, identity, async and security work is routed to their active owners rather than absorbed here.
 
 ## Phase 04 — Data / Platform
-
-Provides identity/access architecture, PostgreSQL/Supabase data engineering, realtime and durable async workflows, third-party integrations and secure object/media storage.
-
-Critical boundaries are deny-by-default for cross-tenant access, client-exposed privileged keys, duplicate side effects, unverified webhooks, unsafe live migrations and unauthorized object signing.
+Identity/access, PostgreSQL/Supabase data engineering, realtime/durable async, external integrations and secure object/media storage. Cross-tenant access, privileged keys, duplicate side effects, unverified webhooks and unsafe migrations are high-risk boundaries.
 
 ## Phase 05 — Quality Engineering
-
-Provides security, privacy/compliance engineering, performance, testing/QA, accessibility and senior code-quality gates.
-
-Quality skills are not loaded automatically as a bundle: routing activates only the gates justified by the change's actual risk. Critical security and core-accessibility failures can block release.
+Security, privacy/compliance, performance, testing/QA, accessibility and code-quality gates. Quality skills are activated by actual risk rather than as a permanent bundle.
 
 ## Phase 06 — Business / Growth
-
-Provides search discoverability, conversion messaging, ecommerce domain logic and SaaS platform/business-model architecture.
-
-SEO covers crawl/indexation, information architecture, structured data, ecommerce/local/international search and current AI/generative-search guidance without ranking guarantees. Content/conversion uses evidence-based messaging and rejects dark patterns. Ecommerce separates product/variant/SKU, authoritative pricing, inventory, checkout, order/payment/fulfillment/refund states. SaaS separates identity, tenant membership, entitlements and billing state.
+SEO/search discoverability, conversion messaging, ecommerce state and SaaS tenancy/entitlement/business logic. Dark patterns and client-authoritative pricing/entitlements are rejected.
 
 ## Phase 07 — Production Engineering
-
-Provides CI/CD and deployment engineering, production observability/SRE, source-control delivery governance and durable engineering/operations documentation.
-
-Production success requires evidence after deployment: artifact identity, critical health/smoke verification, migration/job state and appropriate telemetry. Critical secret exposure, destructive unverified migrations or missing recovery strategy can block release.
+CI/CD, deployment, observability/SRE, Git delivery and durable documentation. Green CI is evidence, not proof of production readiness.
 
 ## Phase 08 — AI / Asset Production
-
-Provides production AI-system engineering plus disciplined visual-asset production.
-
-AI engineering covers current-version-aware model/provider selection, structured outputs, tool calling, bounded agents, MCP, RAG/embeddings/reranking, streaming, evaluation, prompt-injection defense, observability, latency and cost. Privileged actions remain independently authorized and validated; retrieved content never gains policy authority.
-
-Asset production turns approved creative/art direction into coherent images, edits, SVG/icons, illustration, 3D/video/motion and responsive delivery variants while preserving source locks, accessibility, performance, provenance and licensing state.
+Production AI engineering plus disciplined visual-asset production. AI outputs cannot authorize privileged actions; retrieved content remains untrusted data; asset generation follows approved creative direction and provenance rules.
 
 ## Phase 09 — Final Control
+`multi-review` coordinates independent reviewer contexts, `audit-review` performs systemic risk audits, and `release-readiness` is the final production decision owner returning GO, GO WITH CONDITIONS, HOLD or NO-GO.
 
-Provides independent multi-review, systemic audit and final release-readiness control.
+## Runtime validation
+Structural CI runs every `scripts/validate_*.py` validator. `scripts/validate_engine.py` checks cross-phase integrity; `scripts/validate_semantics.py` checks stale/unknown routing references; `scripts/validate_hardening.py` checks reviewer/profile/eval/tool invariants.
 
-`multi-review` selects only justified reviewer lenses and reconciles evidence-backed findings without majority voting. `audit-review` uses risk-weighted sampling and critical-journey tracing to separate local defects from systemic risk. `release-readiness` is the sole final production gate and returns only **GO**, **GO WITH CONDITIONS**, **HOLD**, or **NO-GO**.
+Behavioral correctness is evaluated separately with `scripts/run_behavioral_evals.py`. These live evals require a Cursor API key and are not represented as passed unless they actually run.
 
-Six reviewer profiles provide independent code, design, security, performance, QA and release lenses. Severity and confidence are separate; missing mandatory evidence produces HOLD rather than an assumed pass; accepted risk never rewrites the underlying severity.
+## Distribution
+Use `python scripts/enginectl.py install <project>` to install a managed copy and `python scripts/enginectl.py update <project>` to update it. `doctor` detects missing or modified managed files. Existing unmanaged engine paths require an explicit `--force` backup before replacement.
 
-## Engine integrity
-
-`engine/manifest.json` defines the complete 10-phase system and expected discoverable skill count. `scripts/validate_engine.py` cross-checks every phase registry against physical skill folders, frontmatter, local references, schemas, validators, reviewer infrastructure, README completion and CI governance.
-
-`evals/master-regression.md` contains cross-phase scenarios covering routing, design anti-patterns, frontend/backend/API/data/auth, ecommerce/SaaS, security/accessibility/performance, production, AI/RAG/MCP/assets and final release control.
-
-## Quality automation
-
-Every `scripts/validate_*.py` validator is executed automatically by GitHub Actions on pushes and pull requests. Third-party validation workflow actions are immutable-SHA pinned and checkout does not persist credentials.
+## Governance
+`engine/governance/github.json` defines required `main` protection. `scripts/check_github_governance.py` checks live GitHub state and `scripts/apply_github_governance.py` applies it with an Administration-write token. Repository files alone never prove that branch protection is active.
