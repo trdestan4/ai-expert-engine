@@ -11,7 +11,8 @@ The engine uses a small number of discoverable domain skills with deep expertise
 - Phase 00 — Core / AI Brain: complete
 - Phase 01 — Creative / Product Intelligence: complete
 - Phase 02 — Web Engineering / Frontend: complete
-- Next phases: Backend/API, Data/Platform, Quality, Business, Production, AI/Assets, Final Control
+- Phase 03 — Backend / API Engineering: complete
+- Next phases: Data/Platform, Quality, Business, Production, AI/Assets, Final Control
 
 ## Phase 00 — Core / AI Brain
 
@@ -28,6 +29,12 @@ The design system explicitly rejects shortcut mappings such as `premium = navy +
 Provides framework-independent web-platform reasoning, production frontend engineering, React/Next.js runtime expertise, and application-level software architecture.
 
 Key rules include semantic/native browser behavior first, explicit state ownership, content-resilient responsive implementation, narrow server/client boundaries, repository-version-aware Next.js decisions, deliberate cache/freshness behavior, complete async/error/form states, and architecture proportional to real product/operational drivers.
+
+## Phase 03 — Backend / API Engineering
+
+Provides production backend service/runtime guidance plus REST/GraphQL contract engineering. Backend decisions cover runtime-aware service boundaries, validation, domain invariants, side effects, errors, observability, configuration, concurrency, retries, cache, and testing. API decisions cover REST/GraphQL semantics, OpenAPI, Problem Details, pagination/filtering/versioning, idempotency, rate limits, compatibility, deprecation, and contract tests.
+
+Runtime/framework/spec advice is repository-version-aware: the engine never upgrades or applies new behavior merely because a newer standard exists.
 
 ## Quality automation
 
