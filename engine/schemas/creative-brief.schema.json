@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Creative Brief",
+  "type":"object",
+  "required":["productOutcome","audience","creativeThesis","experiencePrinciples"],
+  "properties":{
+    "productOutcome":{"type":"string"},
+    "audience":{"type":"string"},
+    "primaryJob":{"type":"string"},
+    "brandContext":{"type":"string"},
+    "creativeThesis":{"type":"string"},
+    "categoryCodes":{"type":"object","properties":{"preserve":{"type":"array","items":{"type":"string"}},"avoid":{"type":"array","items":{"type":"string"}},"opportunities":{"type":"array","items":{"type":"string"}}}},
+    "experiencePrinciples":{"type":"array","minItems":2,"items":{"type":"string"}},
+    "visualGrammar":{"type":"object"},
+    "signatureMoments":{"type":"array","items":{"type":"string"}},
+    "constraints":{"type":"array","items":{"type":"string"}},
+    "assumptions":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":true
+}

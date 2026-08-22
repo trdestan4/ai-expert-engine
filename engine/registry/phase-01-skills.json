@@ -1,0 +1,14 @@
+{
+  "phase": "01-creative-product",
+  "skills": [
+    {"name":"product-strategy","path":".codex/skills/product-strategy/SKILL.md","references":["references/product-brief.md","references/product-decisions.md"]},
+    {"name":"creative-director","path":".codex/skills/creative-director/SKILL.md","references":["references/creative-direction-framework.md","references/originality-evidence.md"]},
+    {"name":"brand-design","path":".codex/skills/brand-design/SKILL.md","references":["references/brand-system.md"]},
+    {"name":"anti-generic-design","path":".codex/skills/anti-generic-design/SKILL.md","references":["references/ai-design-cliches.md","references/originality-check.md"]},
+    {"name":"color-intelligence","path":".codex/skills/color-intelligence/SKILL.md","references":["references/color-decision-system.md"]},
+    {"name":"typography-intelligence","path":".codex/skills/typography-intelligence/SKILL.md","references":["references/type-decision-system.md"]},
+    {"name":"visual-art-direction","path":".codex/skills/visual-art-direction/SKILL.md","references":["references/art-direction-system.md"]},
+    {"name":"motion-direction","path":".codex/skills/motion-direction/SKILL.md","references":["references/motion-system.md"]},
+    {"name":"ux-ui-design","path":".codex/skills/ux-ui-design/SKILL.md","references":["references/ux-ui-system.md","references/interaction-patterns.md"]}
+  ]
+}
