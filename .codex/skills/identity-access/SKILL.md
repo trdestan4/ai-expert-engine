@@ -17,7 +17,7 @@ Design identity and access flows that are secure, recoverable, least-privilege, 
 ## Do not use when
 
 - RLS/schema/indexing are the main problem (`database-data`);
-- general exploit/threat review is primary (future `security`);
+- general exploit/threat review is primary (`security`);
 - API resource/response contract is primary (`api-engineering`);
 - browser cookie mechanics are the root issue (`web-platform` may lead, then identity-access).
 
@@ -97,7 +97,7 @@ Load `references/authorization-models.md` for RBAC, ABAC, permissions, tenant/re
 
 Load `references/recovery-and-sensitive-actions.md` for verification, password reset, account recovery, re-authentication, email change, and offboarding.
 
-Use `database-data` when authorization moves into RLS/policies. Use future `security` for threat modeling, secret exposure, abuse, and broad exploit review.
+Use `database-data` when authorization moves into RLS/policies. Use `security` for threat modeling, secret exposure, abuse, and broad exploit review.
 
 ## Quality gates
 

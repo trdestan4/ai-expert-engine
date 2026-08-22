@@ -19,9 +19,9 @@ Design APIs that are predictable for consumers, explicit about contracts and fai
 
 - server-side business logic and framework internals are the main concern (`backend-engineering`);
 - cookie/CORS/cache semantics are the root platform issue (`web-platform`);
-- authentication/authorization policy is the main decision (future `identity-access` / `security`);
-- database modeling/migrations/RLS are the primary concern (future `database-data`);
-- distributed messaging/realtime topology is the primary concern (future `realtime-async`).
+- authentication/authorization policy is the main decision (`identity-access` / `security`);
+- database modeling/migrations/RLS are the primary concern (`database-data`);
+- distributed messaging/realtime topology is the primary concern (`realtime-async`).
 
 ## Inputs
 
@@ -111,7 +111,7 @@ Load only the relevant deep module:
 - `references/graphql-contracts.md` for GraphQL schema/execution contract concerns;
 - `references/api-testing-evolution.md` for contract tests, compatibility, deprecation, and release discipline.
 
-Use `backend-engineering` for service implementation beneath the contract and `web-platform` for lower-level HTTP/browser semantics.
+Use `backend-engineering` for service implementation beneath the contract and `web-platform` for lower-level HTTP/browser semantics. Route identity policy to `identity-access`, broad threat review to `security`, persistence guarantees to `database-data`, and distributed realtime/async topology to `realtime-async`.
 
 ## Quality gates
 

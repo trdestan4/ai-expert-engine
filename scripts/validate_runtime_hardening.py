@@ -6,7 +6,8 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def run(*args,cwd=ROOT):return subprocess.run([sys.executable,*map(str,args)],cwd=cwd,text=True,capture_output=True)
 def finding(fid,candidate,status='open',expiry=None):
-    return {'id':fid,'reviewer':'security-reviewer','candidate':candidate,'title':'Cross-tenant bypass','severity':'high','confidence':'verified','affected_surface':'policy','evidence':'negative test fails','impact':'tenant data exposure','acceptance_condition':'negative test denies access','owner':'identity-access','blocker':True,'status':status,'created_at':datetime.now(timezone.utc).isoformat(),'resolved_at':None,'resolution':None,'risk_expiry':expiry}
+    resolution='temporarily accepted with explicit expiry' if status=='accepted' else None
+    return {'id':fid,'reviewer':'security-reviewer','candidate':candidate,'title':'Cross-tenant bypass','severity':'high','confidence':'verified','affected_surface':'policy','evidence':'negative test fails','impact':'tenant data exposure','acceptance_condition':'negative test denies access','owner':'identity-access','blocker':True,'status':status,'created_at':datetime.now(timezone.utc).isoformat(),'resolved_at':None,'resolution':resolution,'risk_expiry':expiry}
 def main():
     e=[]
     with tempfile.TemporaryDirectory() as td:
