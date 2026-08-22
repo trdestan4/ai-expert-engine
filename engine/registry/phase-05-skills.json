@@ -1,0 +1,11 @@
+{
+  "phase": "05-quality",
+  "skills": [
+    {"name":"security","path":".codex/skills/security/SKILL.md","references":["references/threat-modeling-asvs.md","references/web-api-security.md","references/secrets-supply-chain.md","references/abuse-release-security.md"]},
+    {"name":"privacy-compliance","path":".codex/skills/privacy-compliance/SKILL.md","references":["references/privacy-data-map.md","references/consent-rights-retention.md","references/jurisdiction-verification.md"]},
+    {"name":"performance","path":".codex/skills/performance/SKILL.md","references":["references/web-vitals-rendering.md","references/bundles-assets-network.md","references/backend-data-load.md"]},
+    {"name":"testing-qa","path":".codex/skills/testing-qa/SKILL.md","references":["references/test-strategy-boundaries.md","references/contract-e2e-visual.md","references/reliability-security-performance-tests.md"]},
+    {"name":"accessibility","path":".codex/skills/accessibility/SKILL.md","references":["references/wcag22-semantics-focus.md","references/forms-auth-motion-media.md","references/accessibility-testing.md"]},
+    {"name":"code-quality","path":".codex/skills/code-quality/SKILL.md","references":["references/maintainability-refactoring.md","references/types-errors-dependencies.md","references/review-debt.md"]}
+  ]
+}
