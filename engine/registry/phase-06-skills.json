@@ -1,0 +1,9 @@
+{
+  "phase": "06-business-growth",
+  "skills": [
+    {"name":"seo","path":".codex/skills/seo/SKILL.md","references":["references/technical-crawl-index.md","references/structured-data-entities.md","references/ecommerce-local-international.md","references/content-search-ai.md"]},
+    {"name":"content-conversion","path":".codex/skills/content-conversion/SKILL.md","references":["references/value-proposition-messaging.md","references/landing-cro.md","references/ux-writing-microcopy.md"]},
+    {"name":"ecommerce","path":".codex/skills/ecommerce/SKILL.md","references":["references/catalog-pricing-inventory.md","references/cart-checkout-orders.md","references/discovery-merchandising-analytics.md","references/ecommerce-operations-seo.md"]},
+    {"name":"saas-platform","path":".codex/skills/saas-platform/SKILL.md","references":["references/tenancy-membership-permissions.md","references/plans-entitlements-billing.md","references/usage-quotas-metering.md","references/onboarding-admin-analytics.md"]}
+  ]
+}
