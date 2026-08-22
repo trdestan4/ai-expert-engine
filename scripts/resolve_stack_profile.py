@@ -4,7 +4,10 @@ import argparse,fnmatch,json,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/'scripts'))
 from profile_repository import collect
-def fm(files,pat):return any(fnmatch.fnmatch(f,pat) for f in files)
+def fm(files,pat):
+    pats=[pat]
+    if pat.startswith('**/'):pats.append(pat[3:])
+    return any(fnmatch.fnmatch(f,p) for f in files for p in pats)
 def score(p,f):
     m=p.get('match',{});deps=set(f['dependencies']);files=f['files'];txt=f.get('text_signals','').lower();s=int(p.get('priority',0));why=[]
     a=m.get('dependencies_all',[])
