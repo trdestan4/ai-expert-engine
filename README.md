@@ -12,7 +12,8 @@ The engine uses a small number of discoverable domain skills with deep expertise
 - Phase 01 — Creative / Product Intelligence: complete
 - Phase 02 — Web Engineering / Frontend: complete
 - Phase 03 — Backend / API Engineering: complete
-- Next phases: Data/Platform, Quality, Business, Production, AI/Assets, Final Control
+- Phase 04 — Data / Platform: complete
+- Next phases: Quality, Business, Production, AI/Assets, Final Control
 
 ## Phase 00 — Core / AI Brain
 
@@ -35,6 +36,14 @@ Key rules include semantic/native browser behavior first, explicit state ownersh
 Provides production backend service/runtime guidance plus REST/GraphQL contract engineering. Backend decisions cover runtime-aware service boundaries, validation, domain invariants, side effects, errors, observability, configuration, concurrency, retries, cache, and testing. API decisions cover REST/GraphQL semantics, OpenAPI, Problem Details, pagination/filtering/versioning, idempotency, rate limits, compatibility, deprecation, and contract tests.
 
 Runtime/framework/spec advice is repository-version-aware: the engine never upgrades or applies new behavior merely because a newer standard exists.
+
+## Phase 04 — Data / Platform
+
+Provides identity/access architecture, PostgreSQL/Supabase data engineering, realtime and durable async workflows, third-party integrations, and secure object/media storage.
+
+Identity decisions cover sessions, OAuth/OIDC, passkeys/MFA, recovery, RBAC/ABAC and tenant/resource permissions. Data decisions cover constraints, SQL/indexes/query plans, transactions/locking/pooling, production migrations, backups/recovery, Supabase RLS, Redis and vector lifecycle. Async decisions cover WebSockets/SSE, queues/workers, retries/DLQ, cron, idempotency, outbox and eventual consistency. Integration decisions cover webhooks, payments/billing, notifications, provider rate limits/timeouts and reconciliation. Storage decisions cover signed URLs, direct/multipart uploads, content validation, quarantine, media processing, CDN/versioning and object lifecycle.
+
+Critical boundaries are deny-by-default for cross-tenant access, client-exposed privileged keys, duplicate side effects, unverified webhooks, unsafe live migrations and unauthorized object signing.
 
 ## Quality automation
 
