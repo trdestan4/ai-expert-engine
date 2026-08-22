@@ -1,0 +1,20 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Enforceable Release Decision",
+  "type":"object",
+  "required":["candidate","environment","risk","decision","evidence_paths","evidence_hash","open_blockers","conditions","generated_at"],
+  "properties":{
+    "candidate":{"type":"string","minLength":7},
+    "environment":{"type":"string","minLength":1},
+    "risk":{"enum":["R0","R1","R2","R3","R4"]},
+    "decision":{"enum":["GO","GO WITH CONDITIONS","HOLD","NO-GO"]},
+    "evidence_paths":{"type":"array","items":{"type":"string","minLength":1},"minItems":1,"uniqueItems":true},
+    "evidence_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "review_store":{"type":["string","null"]},
+    "open_blockers":{"type":"integer","minimum":0},
+    "conditions":{"type":"array","items":{"type":"string"}},
+    "generated_at":{"type":"string","minLength":1},
+    "expires_at":{"type":["string","null"]}
+  },
+  "additionalProperties":false
+}

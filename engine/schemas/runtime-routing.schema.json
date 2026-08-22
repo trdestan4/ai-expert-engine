@@ -1,0 +1,19 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Runtime Routing Envelope",
+  "type":"object",
+  "required":["task_id","intent","complexity","risk","primary_skill","supporting_skills","reviewers","reason"],
+  "properties":{
+    "task_id":{"type":"string","minLength":1},
+    "intent":{"type":"string","minLength":1},
+    "complexity":{"enum":["C0","C1","C2","C3","C4"]},
+    "risk":{"enum":["R0","R1","R2","R3","R4"]},
+    "primary_skill":{"type":"string","minLength":1},
+    "supporting_skills":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "reviewers":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "loaded_references":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "reason":{"type":"string","minLength":1},
+    "release_required":{"type":"boolean"}
+  },
+  "additionalProperties":false
+}

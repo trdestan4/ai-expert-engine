@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Long Session Checkpoint",
+  "type":"object",
+  "required":["version","task_id","goal","complexity","risk","primary_skill","supporting_skills","acceptance_criteria","constraints","decisions","unresolved","phase","updated_at"],
+  "properties":{
+    "version":{"type":"integer","enum":[1]},
+    "task_id":{"type":"string","minLength":1},
+    "goal":{"type":"string","minLength":1},
+    "complexity":{"enum":["C0","C1","C2","C3","C4"]},
+    "risk":{"enum":["R0","R1","R2","R3","R4"]},
+    "primary_skill":{"type":"string","minLength":1},
+    "supporting_skills":{"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "acceptance_criteria":{"type":"array","items":{"type":"string"},"minItems":1},
+    "constraints":{"type":"array","items":{"type":"string"}},
+    "decisions":{"type":"array","items":{"type":"string"}},
+    "unresolved":{"type":"array","items":{"type":"string"}},
+    "phase":{"type":"string","minLength":1},
+    "updated_at":{"type":"string","minLength":1}
+  },
+  "additionalProperties":false
+}

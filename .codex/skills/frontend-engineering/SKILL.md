@@ -1,204 +1,92 @@
 ---
 name: frontend-engineering
-description: Owns framework-neutral production frontend implementation across semantic HTML, CSS architecture, TypeScript, component boundaries, state/data/forms, responsive behavior, error handling, accessibility baseline, performance discipline, security hygiene, and testability; React/Next-specific runtime decisions route to `react-nextjs`.
+description: Owns framework-neutral production frontend implementation across semantic HTML, CSS architecture, TypeScript, components, state/data/forms, responsive behavior, localization, accessibility baseline, performance discipline, security hygiene, and testability; framework-specific behavior routes to verified adapters or `react-nextjs`.
 ---
 
 # Purpose
-
-Turn approved UX/UI and product requirements into maintainable, resilient, responsive frontend code with clear state ownership, predictable data flow, complete UI states, and production-quality browser behavior.
+Build maintainable, resilient frontend code from approved product/UX requirements while keeping semantics, state ownership, responsive behavior, localization and failure states explicit.
 
 ## Use when
-
-- implementing or reviewing frontend architecture independent of a specific framework feature;
-- semantic HTML, CSS, TypeScript, components, forms, state ownership, data flow, responsive implementation, or browser-side error handling needs design;
-- a design system must become reusable code/tokens/components;
-- a page or feature needs production frontend quality gates;
-- framework-specific code still benefits from general frontend structure and quality rules.
+- implementing frontend structure, semantic HTML/CSS/TypeScript, forms, state/data flow or responsive behavior;
+- translating a design system into reusable components/tokens;
+- internationalization, locale behavior, RTL or localization resilience affects implementation;
+- Vue/Nuxt, Svelte/SvelteKit, Astro, Remix/React Router or Vite-based code needs framework-aware frontend guidance;
+- a feature needs production frontend quality gates independent of one framework runtime.
 
 ## Do not use when
-
-- the main decision is React hooks/RSC/App Router/Server Actions/Next caching (`react-nextjs` owns it);
-- the task is visual/UX design rather than implementation (`ux-ui-design` and creative specialists);
-- the primary problem is HTTP/browser-platform semantics (`web-platform`);
-- the primary task is backend/API/database/security/performance audit owned by later phases.
+- React/Next.js runtime, RSC, App Router, Server Actions or Next caching is primary (`react-nextjs`);
+- visual/UX design rather than implementation is primary (`ux-ui-design` and creative skills);
+- HTTP/browser-platform semantics are primary (`web-platform`);
+- formal security/performance/accessibility review is primary.
 
 ## Inputs
-
-Use:
-
-- approved user flow/layout/component behavior;
-- actual content ranges and interaction states;
-- repository stack/conventions;
-- browser/device constraints;
-- API/data contracts when available;
-- accessibility/performance/security requirements;
-- existing design tokens/components if present.
+Use approved flows/layouts, actual content ranges, repository/framework versions, locale requirements, browser/device constraints, API/data contracts, accessibility/performance/security requirements, and existing tokens/components. Repository evidence outranks remembered framework defaults.
 
 ## Workflow
+### 1. Establish boundaries
+Identify route/page shell, feature modules, reusable primitives, domain components, data adapters, form/URL/client/server state, validation/error boundaries, styling/tokens and tests.
 
-### 1. Establish frontend boundaries
-
-Identify:
-
-- page/route shell;
-- feature modules;
-- reusable UI primitives;
-- domain-aware components;
-- client state versus server state versus URL/form state;
-- network/data adapters;
-- validation/error boundaries;
-- styling/tokens;
-- tests.
-
-Avoid one giant “components” layer with no ownership model.
-
-### 2. Start from semantic structure
-
-Use native HTML elements and browser behavior before custom abstractions. Establish heading/order landmarks, forms, buttons/links, lists, tables, dialogs, media, and labels based on meaning.
-
-Do not use clickable generic containers when a native control expresses the action.
+### 2. Start semantic
+Use native elements and browser behavior before custom abstractions. Buttons act; links navigate. Preserve landmarks, headings, labels, tables, dialogs and media semantics.
 
 ### 3. Implement styling as a system
+Translate design into semantic tokens, layout/container rules, responsive behavior and state variants. Prefer logical CSS properties where direction can change; avoid positional hacks and English-only width assumptions.
 
-Translate design decisions into:
+### 4. Make TypeScript express valid states
+Use narrow props, discriminated unions, explicit nullability and schema-derived contracts where trustworthy. Runtime trust boundaries still require validation.
 
-- semantic design tokens;
-- layout/container rules;
-- spacing/type/color/surface roles;
-- responsive rules;
-- state variants;
-- component contracts.
+### 5. Assign state correctly
+Local interaction → local state; shareable navigation → URL; remote authority → server-state/data layer; form draft/errors → form state; durable cross-feature client state → shared store only when justified. Derive values instead of effect-syncing copies.
 
-Prefer composable layout primitives and local component styles over page-specific positional hacks. Avoid arbitrary values unless they represent a deliberate one-off art-direction decision.
+### 6. Design data and async behavior
+Define loading, empty, stale/refetch, pending, success, failure, cancellation/races and optimistic recovery. Avoid duplicate truth across cache, component, URL and form state.
 
-### 4. Design TypeScript boundaries
+### 7. Treat forms as workflows
+Provide field semantics, usable client feedback, authoritative server validation, pending/error/success recovery, autofill and input preservation. Client validation is not a trust boundary.
 
-Use types to express valid states and public contracts, not to suppress compiler warnings. Prefer:
+### 8. Recompose responsively
+Decide what wraps, reorders, collapses, scrolls or changes control type. Test narrow widths, touch, dense/empty states, 200% text and long/localized content.
 
-- narrow component props;
-- discriminated unions for mutually exclusive UI states;
-- schema-derived/request types where reliable;
-- explicit nullable/optional semantics;
-- exhaustive handling for finite states.
+### 9. Make locale behavior explicit when applicable
+Define locale authority/routing/fallback, message formatting, date/number/currency/timezone presentation, pseudo-localization and RTL behavior. Coordinate localized metadata/URLs with `seo` and formal accessibility concerns with `accessibility`.
 
-Do not use `any` as a routine escape hatch or mirror server objects blindly into UI props.
+### 10. Apply the verified framework adapter
+Use the installed framework version/router/build mode. Do not transfer React/Next assumptions into Nuxt, SvelteKit, Astro or Remix. Keep server/client/private-public boundaries native to the selected framework.
 
-### 5. Assign state to the smallest correct owner
-
-Classify state before choosing a library:
-
-- ephemeral interaction state → local component;
-- shareable/reload-stable navigation state → URL;
-- remote authoritative data → server-state/data layer;
-- form draft/validation → form state;
-- cross-feature durable client state → shared store only when justified.
-
-Do not promote state globally because two components currently need it.
-
-### 6. Design data flow
-
-Keep fetching/mutation concerns separate from presentation where it improves testability. Define:
-
-- loading strategy;
-- empty state;
-- stale/refetch behavior;
-- optimistic behavior only when recovery is clear;
-- mutation pending/success/error states;
-- cancellation/race behavior when relevant.
-
-Avoid duplicate sources of truth between cache, component state, URL, and form state.
-
-### 7. Build forms as workflows
-
-Define field semantics, client validation for usability, authoritative server validation, pending/submission behavior, field/form errors, success/recovery, keyboard flow, autofill, and preservation of user input after recoverable failure.
-
-Never rely on placeholder-only labels or client-side validation as a trust boundary.
-
-### 8. Implement responsive behavior intentionally
-
-Translate design breakpoints into behavioral changes rather than device labels. Decide what reflows, wraps, reorders, collapses, becomes scrollable, changes control type, or moves behind progressive disclosure.
-
-Test narrow widths, long text, localization expansion, large text, empty/dense data, and touch input—not only one desktop and one phone viewport.
-
-### 9. Complete states and failure paths
-
-Every meaningful async/interactive surface should account for applicable:
-
-- initial;
-- loading/pending;
-- success;
-- empty;
-- partial;
-- validation error;
-- network/server error;
-- permission/unauthorized;
-- destructive confirmation/recovery.
-
-Do not render blank regions for unhandled states.
-
-### 10. Apply baseline quality
-
-Before handoff, verify:
-
-- semantic/accessibility baseline;
-- type/lint/build correctness;
-- keyboard/focus behavior;
-- responsive integrity;
-- no obvious secret/token exposure;
-- no avoidable render/fetch waterfalls introduced by structure;
-- test coverage at the changed boundary.
-
-Deeper security/performance/accessibility audits belong to later specialist phases.
+### 11. Complete quality states
+Verify semantic/accessibility baseline, type/lint/build correctness, keyboard/focus, responsive and locale integrity, no client secret exposure, no obvious fetch/render waterfalls, and tests at the changed boundary.
 
 ## Decision rules
-
-- Use native semantics first; custom behavior must justify replacing them.
-- Component boundaries should follow behavior/ownership, not arbitrary file-size rules.
-- Prefer composition over configuration-heavy “god components.”
-- Keep presentation components ignorant of transport details when practical.
-- URL is state when users reasonably expect sharing, reload persistence, or back/forward behavior.
-- Derived values should usually be derived, not synchronized through effects/state.
-- A design token should encode role/decision, not merely rename a hex or pixel value.
-- Mobile behavior must be explicitly designed; `display:none` is not a responsive strategy for essential content.
-- Client validation improves feedback; server validation establishes trust.
-- Optimize measured bottlenecks, but avoid structural anti-patterns that obviously create waterfalls or huge bundles.
+- Native semantics first.
+- Component boundaries follow behavior/ownership, not arbitrary size.
+- Composition beats configuration-heavy god components.
+- URL is state when sharing/reload/history should preserve it.
+- Mobile is behavior, not `display:none` for essential content.
+- Locale, timezone and currency are separate concepts.
+- Do not concatenate translated sentence fragments or assume left-to-right physical layout.
+- Framework/version-specific claims require repository evidence.
+- Optimize measured bottlenecks without introducing obvious structural waste.
 
 ## Reference routing
-
-Load `references/semantic-css-system.md` for semantic HTML, CSS architecture, layout, tokens, and design-system implementation.
-
-Load `references/state-data-forms.md` for state ownership, server/client data, forms, validation, mutations, and error state design.
-
-Load `references/responsive-component-engineering.md` for component boundaries, responsive behavior, content resilience, and reusable APIs.
-
-Load `references/frontend-quality-baseline.md` before substantial frontend completion/review.
-
-Use `react-nextjs` for framework/runtime-specific implementation. Use Phase 01 creative skills only when implementation reveals an unresolved design decision rather than silently redesigning it.
+Load `references/semantic-css-system.md` for semantic HTML, CSS architecture, layout, tokens and design-system implementation.
+Load `references/state-data-forms.md` for state ownership, data, forms, validation, mutations and error states.
+Load `references/responsive-component-engineering.md` for component boundaries, responsive behavior and content resilience.
+Load `references/frontend-quality-baseline.md` before substantial completion/review.
+Load `references/i18n-localization-rtl.md` when locale routing, translations, RTL, date/currency/timezone or multilingual resilience is material.
+Load `references/framework-adapters.md` for verified Vue/Nuxt, Svelte/SvelteKit, Astro, Remix/React Router or Vite framework behavior.
+Use `react-nextjs` for React/Next runtime-specific implementation; use Phase 01 skills when implementation exposes an unresolved design decision.
 
 ## Quality gates
-
 - Semantics match interaction meaning.
-- Component/module ownership is clear.
-- State has one authoritative owner.
-- Async and form states are complete.
-- Type boundaries represent valid UI states.
+- State has one authoritative owner and async/form states are complete.
 - Responsive behavior survives content/input variation.
-- Tokens/components preserve the approved design system without brittle duplication.
-- Accessibility, security, performance, and testing baselines are addressed at the implementation boundary.
-- Framework-specific decisions are routed rather than generalized incorrectly.
+- Locale/RTL behavior is deliberate when multilingual scope exists.
+- Tokens/components preserve the approved design without brittle duplication.
+- Accessibility, security, performance and testing baselines are addressed.
+- Framework-specific behavior is verified and routed correctly.
 
 ## Failure handling
-
-If approved design cannot be implemented accessibly/responsively, preserve the product/creative intent and return the specific constraint to `ux-ui-design` instead of shipping a brittle approximation. If state/data requirements are ambiguous, identify the authoritative source before adding a store/cache. If framework behavior causes the conflict, hand the proven issue to `react-nextjs` or `web-platform`.
+If design cannot be implemented accessibly/responsively/localizably, preserve intent and return the constraint to `ux-ui-design` instead of shipping a brittle approximation. If state/data authority is ambiguous, resolve it before adding stores/caches. If framework behavior is uncertain, inspect installed versions/docs rather than generalizing from another framework.
 
 ## Output contract
-
-Return:
-
-- frontend/module/component structure;
-- semantic and styling approach;
-- state/data/form ownership;
-- responsive and interaction behavior;
-- important edge/failure states;
-- implementation constraints and decisions;
-- verification performed and unresolved specialist reviews.
+Return frontend/module structure, semantics/styling, state/data/form ownership, responsive/localization behavior, relevant framework decisions, failure states, verification performed and unresolved specialist reviews.

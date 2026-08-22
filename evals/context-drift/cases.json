@@ -1,0 +1,8 @@
+{
+  "version":1,
+  "cases":[
+    {"id":"auth-small-high-risk","goal":"Change one RLS membership policy without weakening tenant isolation.","complexity":"C0","risk":"R3","primary":"identity-access","constraint":"Never downgrade mandatory security review because the diff is small.","distractors":["Discuss a button spacing tweak.","Classify a README typo.","Explain a harmless CSS refactor.","Think about a marketing headline.","Discuss a non-production icon rename.","Consider a local test cleanup."]},
+    {"id":"payment-idempotency","goal":"Fix duplicate payment creation after provider timeout.","complexity":"C2","risk":"R3","primary":"integrations","constraint":"Reconcile the known provider operation before creating another payment.","distractors":["Discuss an image optimization.","Classify a dashboard color change.","Explain a pagination label.","Review a docs heading.","Think about an analytics card.","Discuss an empty state."]},
+    {"id":"destructive-migration","goal":"Cut over a production schema migration that can destroy incompatible data.","complexity":"C3","risk":"R4","primary":"database-data","constraint":"Application rollback must never be represented as data recovery.","distractors":["Discuss a component rename.","Think about a local lint warning.","Review a footer link.","Classify a unit-test naming cleanup.","Discuss a preview environment banner.","Explain a harmless type alias."]}
+  ]
+}

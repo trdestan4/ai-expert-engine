@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeShellExecution": [
+      {"command": "python .cursor/hooks/ai-expert-release-guard.py"}
+    ]
+  }
+}
