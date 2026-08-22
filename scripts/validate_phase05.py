@@ -17,6 +17,7 @@ EXPECTED = {"security","privacy-compliance","performance","testing-qa","accessib
 REQUIRED = ["# Purpose","## Use when","## Do not use when","## Inputs","## Workflow","## Decision rules","## Reference routing","## Quality gates","## Failure handling","## Output contract"]
 NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 WORD_RE = re.compile(r"[a-z][a-z0-9-]{3,}", re.I)
+LOCAL_REF_RE = re.compile(r"`(references/[a-z0-9._/-]+\.md)`", re.I)
 
 
 def frontmatter(text: str) -> dict[str, str]:
@@ -80,7 +81,9 @@ def validate() -> list[str]:
         for heading in REQUIRED:
             if heading not in text: errors.append(f"{raw}: missing {heading}")
         if len(text.split()) > 2200: errors.append(f"{raw}: SKILL.md too large")
+
         refs = item.get("references", [])
+        registered = set(refs)
         if not refs: errors.append(f"{raw}: no lazy references")
         for ref in refs:
             rp = path.parent / ref
@@ -90,6 +93,15 @@ def validate() -> list[str]:
             words = len(rp.read_text(encoding="utf-8").split())
             if words < 80: errors.append(f"{rp.relative_to(ROOT)}: reference too thin ({words})")
             if words > 1800: errors.append(f"{rp.relative_to(ROOT)}: reference too large ({words})")
+
+        called = set(LOCAL_REF_RE.findall(text))
+        for ref in sorted(called):
+            if not (path.parent / ref).exists():
+                errors.append(f"{raw}: SKILL calls missing local reference {ref}")
+            if ref not in registered:
+                errors.append(f"{raw}: SKILL calls unregistered local reference {ref}")
+        for ref in sorted(registered - called):
+            errors.append(f"{raw}: registered reference is never routed from SKILL.md: {ref}")
 
     if seen != EXPECTED:
         errors.append(f"registry mismatch: missing={sorted(EXPECTED-seen)} extra={sorted(seen-EXPECTED)}")
