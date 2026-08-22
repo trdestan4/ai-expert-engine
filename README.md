@@ -16,7 +16,8 @@ The engine uses a small number of discoverable domain skills with deep expertise
 - Phase 05 — Quality Engineering: complete
 - Phase 06 — Business / Growth: complete
 - Phase 07 — Production Engineering: complete
-- Next phases: AI/Assets, Final Control
+- Phase 08 — AI / Asset Production: complete
+- Next phase: Final Control
 
 ## Phase 00 — Core / AI Brain
 
@@ -71,6 +72,16 @@ Provides CI/CD and deployment engineering, production observability/SRE, source-
 Deployment decisions cover reproducible builds, environment/config/secrets boundaries, immutable artifact promotion, Docker/serverless/Vercel targets, migration sequencing, progressive rollout and rollback/roll-forward. Observability covers structured logs, metrics, traces, OpenTelemetry conventions, SLIs/SLOs, actionable alerts, health/capacity, incidents and runbooks. Git delivery covers branch/commit/PR discipline, protected refs, CODEOWNERS, release/version/changelog traceability and GitHub Actions governance. Documentation covers README/onboarding, architecture/ADRs/API docs, operator runbooks, release/migration notes and stale-doc prevention.
 
 Production success requires evidence after deployment: artifact identity, critical health/smoke verification, migration/job state and appropriate telemetry. Critical secrets exposure, destructive unverified migrations or missing recovery strategy can block release.
+
+## Phase 08 — AI / Asset Production
+
+Provides production AI-system engineering plus disciplined visual-asset production.
+
+AI engineering covers current-version-aware model/provider selection, structured outputs, tool calling, bounded agents, MCP, RAG/embeddings/reranking, streaming, evaluation, prompt-injection defense, observability, latency and cost. Model/tool behavior is never trusted as an authorization layer: privileged actions remain independently validated, authorized and risk-gated. RAG treats retrieved documents as untrusted data and preserves permission, provenance, freshness and no-answer behavior. MCP behavior follows the project-supported protocol/SDK revision instead of remembered transport semantics.
+
+Asset production turns approved creative/art direction into coherent images, edits, SVG/icons, illustrations, 3D/video/motion assets and responsive delivery variants. It preserves explicit source locks, sanitizes untrusted SVG, avoids baking essential UI copy into raster output, tracks masters/provenance/licensing, and verifies crop, quality, accessibility and performance at the actual product surface.
+
+Both skills remain lazy and specialist-scoped: ordinary backend work does not load AI engineering, and ordinary UI layout does not load asset production unless the task truly needs those capabilities.
 
 ## Quality automation
 

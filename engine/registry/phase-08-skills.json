@@ -1,0 +1,30 @@
+{
+  "phase": "08-ai-assets",
+  "skills": [
+    {
+      "name": "ai-engineering",
+      "path": ".codex/skills/ai-engineering/SKILL.md",
+      "references": [
+        "references/model-selection-provider-routing.md",
+        "references/structured-output-tool-calling.md",
+        "references/agents-tool-governance.md",
+        "references/rag-embeddings-retrieval.md",
+        "references/mcp-integration.md",
+        "references/evals-guardrails-redteam.md",
+        "references/streaming-cost-observability.md"
+      ]
+    },
+    {
+      "name": "asset-production",
+      "path": ".codex/skills/asset-production/SKILL.md",
+      "references": [
+        "references/image-generation-editing.md",
+        "references/svg-icons-illustration.md",
+        "references/three-d-video-motion-assets.md",
+        "references/responsive-formats-delivery.md",
+        "references/asset-consistency-provenance.md",
+        "references/web-asset-quality-performance.md"
+      ]
+    }
+  ]
+}
