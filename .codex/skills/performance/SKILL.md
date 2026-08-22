@@ -19,7 +19,7 @@ Deliver fast, stable experiences under realistic devices, networks, data sizes a
 - behavior is incorrect rather than slow (`debugging` first);
 - query/index design is the primary task (`database-data`, then performance review);
 - visual/accessibility quality is primary (`ux-ui-design` / `accessibility`);
-- infrastructure availability/reliability is primary (future `observability-sre`).
+- infrastructure availability/reliability is primary (`observability-sre`).
 
 ## Inputs
 
@@ -85,7 +85,7 @@ Load `references/web-vitals-rendering.md` for LCP/INP/CLS, rendering and field m
 Load `references/bundles-assets-network.md` for JS/CSS/images/fonts/third parties/cache/CDN.
 Load `references/backend-data-load.md` for API/database/jobs/concurrency/load profiling.
 
-Use `react-nextjs`, `frontend-engineering`, `backend-engineering`, `database-data` and future `observability-sre` for implementation-specific ownership.
+Use `react-nextjs`, `frontend-engineering`, `backend-engineering`, `database-data` and `observability-sre` for implementation-specific ownership.
 
 ## Quality gates
 
