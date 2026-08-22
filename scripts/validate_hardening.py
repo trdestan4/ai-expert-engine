@@ -2,7 +2,7 @@
 from __future__ import annotations
 import ast,json,subprocess,sys,tempfile
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[1];REV={'code-reviewer','design-reviewer','security-reviewer','performance-reviewer','qa-reviewer','release-reviewer'};REQ={'run_behavioral_evals.py','run_context_drift_evals.py','run_reviewer_calibration.py','runtime_contract.py','engine_telemetry.py','review_store.py','release_gate.py','build_release_decision.py','session_checkpoint.py','check_knowledge_freshness.py','run_repository_benchmarks.py','resolve_stack_profile.py','profile_repository.py','enginectl.py','check_release_enforcement.py','validate_semantics.py','check_github_governance.py','apply_github_governance.py','routing_report.py'}
+ROOT=Path(__file__).resolve().parents[1];REV={'code-reviewer','design-reviewer','security-reviewer','performance-reviewer','qa-reviewer','release-reviewer'};REQ={'run_behavioral_evals.py','run_context_drift_evals.py','run_reviewer_calibration.py','runtime_contract.py','engine_telemetry.py','review_store.py','release_gate.py','build_release_decision.py','session_checkpoint.py','check_knowledge_freshness.py','run_repository_benchmarks.py','resolve_stack_profile.py','profile_repository.py','enginectl.py','check_release_enforcement.py','validate_semantics.py','validate_master_depth.py','design_quality_checks.py','check_github_governance.py','apply_github_governance.py','routing_report.py'}
 def skills():
     s=set()
     for p in (ROOT/'engine/registry').glob('*.json'):s.update(i['name'] for i in json.loads(p.read_text()).get('skills',[]))
@@ -18,11 +18,13 @@ def main():
         for x in p['owners']+p['conditional']:
             if x not in s:e.append(f"profile {p['id']} unknown {x}")
     ids=[json.loads(x)['id'] for x in (ROOT/'evals/behavioral/cases.jsonl').read_text().splitlines() if x.strip()]
-    if len(ids)<24 or len(ids)!=len(set(ids)):e.append('behavioral corpus invalid')
+    if len(ids)<30 or len(ids)!=len(set(ids)):e.append('behavioral corpus invalid')
     drift=json.loads((ROOT/'evals/context-drift/cases.json').read_text()).get('cases',[])
     if len(drift)<3:e.append('context drift corpus invalid')
     cal=[json.loads(x) for x in (ROOT/'evals/reviewer-calibration/cases.jsonl').read_text().splitlines() if x.strip()]
     if len(cal)<24 or {x['reviewer'] for x in cal}!=REV:e.append('reviewer calibration corpus invalid')
+    bench=json.loads((ROOT/'benchmarks/corpus.json').read_text()).get('external',[])
+    if len(bench)<10 or any(len(x.get('commit',''))!=40 for x in bench):e.append('repository benchmark corpus invalid')
     for x in REQ:
         if not (ROOT/'scripts'/x).exists():e.append('missing '+x)
     for p in (ROOT/'scripts').glob('*.py'):
@@ -52,8 +54,8 @@ def main():
         if run(ROOT/'scripts/enginectl.py','update',t,'--force').returncode:e.append('forced update failed')
         if run(ROOT/'scripts/enginectl.py','doctor',t).returncode:e.append('doctor after forced update failed')
         if 'Keep this line.' not in (t/'AGENTS.md').read_text():e.append('installer did not preserve project AGENTS content')
-        for rel in ('scripts/release_gate.py','scripts/runtime_contract.py','.github/workflows/ai-expert-release-gate.yml'):
-            if not (t/rel).exists():e.append('installer missing runtime file '+rel)
+        for rel in ('scripts/release_gate.py','scripts/runtime_contract.py','scripts/design_quality_checks.py','scripts/routing_report.py','.github/workflows/ai-expert-release-gate.yml'):
+            if not (t/rel).exists():e.append('installer missing runtime/tool file '+rel)
     if e:print('hardening validation failed:');[print(' -',x) for x in e];return 1
-    print(f'hardening validation passed: 43 skills, 6 reviewers, {len(ids)} behavioral, {len(drift)} drift, {len(cal)} calibration, {len(ps)} profiles');return 0
+    print(f'hardening validation passed: 43 skills, 6 reviewers, {len(ids)} behavioral, {len(drift)} drift, {len(cal)} calibration, {len(bench)} repo benchmarks, {len(ps)} profiles');return 0
 if __name__=='__main__':raise SystemExit(main())

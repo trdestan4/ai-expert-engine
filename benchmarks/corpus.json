@@ -1,11 +1,17 @@
 {
-  "version":1,
-  "external":[
-    {"id":"next-postgres-auth","repo":"vercel/nextjs-postgres-auth-starter","commit":"fde8ecf1da9337223081f70cf88b420060039d6e","expected_any_profile":["next-postgres"],"focus":["nextjs","postgres","auth"]},
-    {"id":"fastapi-full-stack","repo":"fastapi/full-stack-fastapi-template","commit":"68adb40d37425f6f8668ec7e5a054500d045e43e","expected_any_profile":["react-fastapi"],"focus":["react","fastapi","api"]},
-    {"id":"vercel-commerce","repo":"vercel/commerce","commit":"3761e52e60df9c6a316e067dbfd7032e494d3634","expected_any_profile":["ecommerce-next"],"focus":["nextjs","ecommerce"]},
-    {"id":"owasp-nodegoat","repo":"OWASP/NodeGoat","commit":"c5cb68a7084e4ae7dcc60e6a98768720a81841e8","expected_any_profile":["node-api"],"focus":["security","legacy-node","intentionally-vulnerable"]}
+  "version": 2,
+  "external": [
+    {"id":"next-postgres-auth","repo":"vercel/nextjs-postgres-auth-starter","commit":"fde8ecf1da9337223081f70cf88b420060039d6e","expected_profiles":["next-postgres"],"focus":["nextjs","postgres","auth"]},
+    {"id":"fastapi-full-stack","repo":"fastapi/full-stack-fastapi-template","commit":"68adb40d37425f6f8668ec7e5a054500d045e43e","expected_profiles":["react-fastapi"],"focus":["react","fastapi","api"]},
+    {"id":"vercel-commerce","repo":"vercel/commerce","commit":"3761e52e60df9c6a316e067dbfd7032e494d3634","expected_profiles":["ecommerce-next"],"focus":["nextjs","ecommerce"]},
+    {"id":"owasp-nodegoat","repo":"OWASP/NodeGoat","commit":"c5cb68a7084e4ae7dcc60e6a98768720a81841e8","expected_profiles":["node-api"],"focus":["security","legacy-node","intentionally-vulnerable"]},
+    {"id":"nuxt-starter","repo":"nuxt/starter","commit":"943f6e427a9baba46c28f16551f69e9c9cfd9c57","expected_profiles":["nuxt"],"focus":["nuxt","vue"]},
+    {"id":"spring-petclinic","repo":"spring-projects/spring-petclinic","commit":"88e37c15cf6fc8490b01bc3e8e2c800cec1ac272","expected_profiles":["spring-api"],"focus":["spring","jvm","database"]},
+    {"id":"go-chi","repo":"go-chi/chi","commit":"735ae2b87f8c733d616e809ae86e0985c1bc3350","expected_profiles":["go-api"],"focus":["go","http","api"]},
+    {"id":"lobsters-rails","repo":"lobsters/lobsters","commit":"2f385d149e67f5ff78643dcf6d3cab0b24c0117c","expected_profiles":["rails"],"focus":["rails","ruby","web-app"]},
+    {"id":"eshoponweb-dotnet","repo":"dotnet-architecture/eShopOnWeb","commit":"4da8212117e87d808d4bbc7da6286fd2147ce606","expected_profiles":["dotnet-api"],"focus":["dotnet","aspnet","ecommerce"]},
+    {"id":"terraform-aws-vpc","repo":"terraform-aws-modules/terraform-aws-vpc","commit":"6b147b1ef0e83c74402b984a5c8e55f95c88cf36","expected_profiles":["aws-terraform"],"focus":["terraform","aws","infrastructure"]}
   ],
-  "fixture_classes":["saas-next-supabase","migration-heavy","broken-ci","legacy-react","large-monorepo"],
-  "rules":{"pin_commit":true,"never_execute_untrusted_repo_code":true,"profile_only_by_default":true}
+  "fixture_classes": ["saas-next-supabase","migration-heavy","broken-ci","legacy-react","large-monorepo","kubernetes","mysql","mongodb","sveltekit","astro"],
+  "rules": {"pin_commit":true,"never_execute_untrusted_repo_code":true,"profile_only_by_default":true,"validate_composed_profiles":true}
 }

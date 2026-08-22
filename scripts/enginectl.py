@@ -4,7 +4,7 @@ import argparse,hashlib,importlib.util,json,shutil,time
 from pathlib import Path
 SOURCE=Path(__file__).resolve().parents[1];MANIFEST='.ai-expert-engine-install.json';START='<!-- AI-EXPERT-ENGINE:START -->';END='<!-- AI-EXPERT-ENGINE:END -->';HOOK_CMD='python .cursor/hooks/ai-expert-release-guard.py'
 DIRS=('.codex/skills','.cursor/agents','engine')
-FILES=('scripts/enginectl.py','scripts/runtime_contract.py','scripts/engine_telemetry.py','scripts/review_store.py','scripts/release_gate.py','scripts/build_release_decision.py','scripts/session_checkpoint.py','scripts/check_release_enforcement.py','scripts/profile_repository.py','scripts/resolve_stack_profile.py','scripts/check_knowledge_freshness.py','.github/workflows/ai-expert-release-gate.yml','.cursor/hooks/ai-expert-release-guard.py')
+FILES=('scripts/enginectl.py','scripts/runtime_contract.py','scripts/engine_telemetry.py','scripts/review_store.py','scripts/release_gate.py','scripts/build_release_decision.py','scripts/session_checkpoint.py','scripts/check_release_enforcement.py','scripts/profile_repository.py','scripts/resolve_stack_profile.py','scripts/check_knowledge_freshness.py','scripts/design_quality_checks.py','scripts/routing_report.py','.github/workflows/ai-expert-release-gate.yml','.cursor/hooks/ai-expert-release-guard.py')
 def version():return json.loads((SOURCE/'engine/manifest.json').read_text())['version']
 def digest(data):return hashlib.sha256(data).hexdigest()
 def sha(p):

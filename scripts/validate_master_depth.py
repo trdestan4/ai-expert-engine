@@ -38,10 +38,12 @@ def main():
         if f'.codex/skills/{domain}/SKILL.md' not in t:e.append(f'{rev} does not load owning expert skill {domain}')
     beh=[x for x in (ROOT/'evals/behavioral/cases.jsonl').read_text().splitlines() if x.strip()]
     cal=[x for x in (ROOT/'evals/reviewer-calibration/cases.jsonl').read_text().splitlines() if x.strip()]
-    if len(beh)<24:e.append(f'behavioral corpus too small: {len(beh)}')
+    if len(beh)<30:e.append(f'behavioral corpus too small: {len(beh)}')
     if len(cal)<24:e.append(f'reviewer calibration corpus too small: {len(cal)}')
     src=json.loads((ROOT/'engine/knowledge/sources.json').read_text()).get('sources',[])
     if len(src)<25:e.append(f'knowledge sources too small: {len(src)}')
+    bench=json.loads((ROOT/'benchmarks/corpus.json').read_text()).get('external',[])
+    if len(bench)<10:e.append(f'repository benchmark corpus too small: {len(bench)}')
     ps=json.loads((ROOT/'engine/profiles/profiles.json').read_text()).get('profiles',[]);dims={x.get('dimension') for x in ps}
     if not {'solution','application','data','infrastructure','experience'}<=dims:e.append('stack profiles are not composable across all dimensions')
     release=(ROOT/'scripts/release_gate.py').read_text();builder=(ROOT/'scripts/build_release_decision.py').read_text();prof=(ROOT/'scripts/profile_repository.py').read_text();runtime=(ROOT/'scripts/runtime_contract.py').read_text()
@@ -50,7 +52,11 @@ def main():
     if 'truncated' not in prof:e.append('repository profiler lacks truncation evidence')
     for marker in ("'$ref'","'oneOf'","'if'"):
         if marker not in runtime:e.append('runtime schema composition marker missing '+marker)
-    if not (ROOT/'scripts/design_quality_checks.py').exists():e.append('deterministic design quality tool missing')
+    for tool in ('design_quality_checks.py','routing_report.py'):
+        if not (ROOT/'scripts'/tool).exists():e.append('deterministic tool missing '+tool)
+    installer=(ROOT/'scripts/enginectl.py').read_text()
+    for managed in ('scripts/design_quality_checks.py','scripts/routing_report.py'):
+        if managed not in installer:e.append('installer does not manage '+managed)
     if e:print('master depth validation FAILED');[print(' -',x) for x in e];return 1
-    print(f'master depth validation PASSED: {len(MIN)} deep references, {len(beh)} behavioral, {len(cal)} reviewer cases, {len(src)} freshness sources');return 0
+    print(f'master depth validation PASSED: {len(MIN)} deep references, {len(beh)} behavioral, {len(cal)} reviewer, {len(bench)} repo benchmarks, {len(src)} freshness sources');return 0
 if __name__=='__main__':sys.exit(main())
