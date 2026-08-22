@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "frontend-implementation-plan.schema.json",
+  "title": "Frontend Implementation Plan",
+  "type": "object",
+  "required": ["owner", "scope", "boundaries", "states", "responsive", "verification"],
+  "properties": {
+    "owner": {
+      "type": "string",
+      "enum": ["web-platform", "frontend-engineering", "react-nextjs", "software-architecture"]
+    },
+    "scope": {"type": "string", "minLength": 1},
+    "frameworkContext": {
+      "type": "object",
+      "properties": {
+        "framework": {"type": ["string", "null"]},
+        "version": {"type": ["string", "null"]},
+        "routerMode": {"type": ["string", "null"]},
+        "evidence": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "boundaries": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "stateOwnership": {"type": "array", "items": {"type": "string"}},
+    "states": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "responsive": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "qualityRisks": {"type": "array", "items": {"type": "string"}},
+    "specialistReviews": {"type": "array", "items": {"type": "string"}},
+    "verification": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
