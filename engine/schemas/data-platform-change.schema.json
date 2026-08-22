@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Data Platform Change Plan",
+  "type": "object",
+  "required": ["domains", "sourceOfTruth", "invariants", "accessBoundary", "failureModel", "verification"],
+  "properties": {
+    "domains": {
+      "type": "array",
+      "items": {"enum": ["identity-access", "database-data", "realtime-async", "integrations", "storage-media"]},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "sourceOfTruth": {"type": "string", "minLength": 1},
+    "invariants": {"type": "array", "items": {"type": "string"}},
+    "accessBoundary": {"type": "string", "minLength": 1},
+    "failureModel": {"type": "array", "items": {"type": "string"}},
+    "idempotency": {"type": ["string", "null"]},
+    "migrationOrLifecycle": {"type": ["string", "null"]},
+    "recovery": {"type": ["string", "null"]},
+    "observability": {"type": "array", "items": {"type": "string"}},
+    "verification": {"type": "array", "items": {"type": "string"}, "minItems": 1}
+  },
+  "additionalProperties": false
+}
