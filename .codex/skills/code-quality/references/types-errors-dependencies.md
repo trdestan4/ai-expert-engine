@@ -1,11 +1,25 @@
-# Types, Errors and Dependency Hygiene
+# Types, Errors, Static Analysis and Dependencies
 
-Use the type system to encode meaningful domain states and prevent invalid combinations where practical. Avoid broad `any`, unchecked casts and generic string flags when a narrower union/schema can preserve intent. Static types do not validate untrusted runtime data.
+## Types and runtime trust
 
-Error handling should preserve useful internal context while exposing stable safe public errors. Avoid catch-and-ignore patterns, ambiguous `null/false` sentinels and logging the same failure at many layers. Decide which layer owns retry, fallback, translation and user messaging.
+Use types to make invalid internal states harder to represent, but remember external input, JSON, environment variables, database/provider payloads and persisted legacy data require runtime validation. Avoid broad `any`, unchecked casts or non-null assertions used only to silence tooling.
 
-Prefer explicit return types/contracts at public module boundaries when they improve stability and reviewability. Keep side effects visible rather than hidden inside innocently named helpers.
+Model discriminated states for async/workflows rather than independent booleans that allow impossible combinations. Keep domain identifiers distinct when accidental mixing is costly.
 
-Dependencies carry maintenance, security, bundle/runtime and upgrade cost. Before adding one, check whether the platform/framework/repository already provides the needed capability. Pin/lock according to repository policy and remove duplicate/abandoned libraries intentionally.
+## Error discipline
 
-A type assertion, suppression or dependency exception should explain why the invariant is safe and what evidence/owner protects it.
+Preserve cause/context and classify errors at boundaries: invalid input, unauthorized/forbidden, conflict/invariant, not found, transient dependency, internal bug. Do not blanket catch-and-return-null. Translate errors once at the right boundary and avoid leaking stack traces/secrets to users.
+
+Retries require an error class/operation safe to retry; “catch all and retry” can duplicate payments/mutations.
+
+## Static analysis
+
+Enable language/compiler strictness appropriate to the repo and fix root causes rather than suppression. Lint rules should target defects/consistency with low false-positive cost. Security/static tools need triage ownership; disabling a noisy rule globally may hide real findings.
+
+## Dependency hygiene
+
+Add dependencies only when value exceeds maintenance/security/bundle/runtime complexity. Prefer existing repository capability when adequate. Review version compatibility, transitive graph, license/policy, install scripts and ecosystem health. Pin/lock according to repo conventions and remove unused dependencies.
+
+## Generated code
+
+Separate generated from hand-edited code, define source generator/version and regenerate deterministically. Do not hand-patch generated output unless the workflow explicitly supports it.

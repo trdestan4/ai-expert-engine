@@ -1,7 +1,29 @@
-# Cart / Checkout / Orders
+# Cart, Checkout and Orders
 
-A cart is provisional state: items can become unavailable, prices can change and promotions can expire. Revalidate before order/payment commitment and explain recoverable changes to the user. Define anonymous cart identity, authenticated merge behavior and expiration.
+## Cart
 
-Checkout should have a clear server-side state machine for address/shipping/tax/payment/order creation. Duplicate submissions, browser reloads and provider retries must not create duplicate charges/orders. Use idempotency and verified provider events through the integrations layer.
+Define guest/auth merge semantics, item identity (SKU/options), quantity bounds, price revalidation and expiration. Cart is intent, not authoritative order/payment state. Reprice/revalidate inventory/promotions at checkout according to business policy and show material changes clearly.
 
-Orders need explicit payment, fulfillment, cancellation, return and refund states, including partial quantities/amounts. Preserve immutable historical commercial facts where needed instead of rereading today's product price/name. Failed provider callbacks require reconciliation.
+## Checkout orchestration
+
+A robust sequence establishes authoritative cart → customer/contact/address → shipping/tax/promotions → payment intent/authorization → durable order/payment state. Exact order depends on provider/business, but browser redirects and client success flags never prove payment success.
+
+Use idempotency keys for retried create/payment/order operations and reconcile provider state after ambiguous timeout. Prevent duplicate order side effects from webhook/redelivery/retry.
+
+## Order state machine
+
+Model states such as pending payment, paid/authorized, processing, partially fulfilled, fulfilled, cancelled, partially/fully refunded, disputed/chargeback as business requires. Avoid a single `paid` boolean.
+
+Record state transitions/audit evidence and define allowed transitions. Fulfillment/shipping can be partial and independent from financial state.
+
+## Returns/RMA/refunds
+
+Model return eligibility/window, item quantities/condition/reason, shipping/restocking policy, refund method, partial refunds, store credit/gift card and tax/shipping adjustments. Provider refund success and internal state need reconciliation.
+
+## Failure recovery
+
+Handle payment succeeds but order write fails, order succeeds but email fails, webhook arrives before redirect, webhook duplicate/out-of-order, inventory changes mid-checkout and provider outage. Durable reconciliation jobs should repair ambiguous states.
+
+## Security/fraud
+
+Do not store sensitive card data unless intentionally within compliance scope; use provider tokenization/hosted elements when practical. Protect coupon/gift-card/store-credit balances and admin refund actions with authorization, audit and velocity controls.

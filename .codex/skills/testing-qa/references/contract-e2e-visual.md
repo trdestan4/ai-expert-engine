@@ -1,11 +1,27 @@
-# Contract, E2E and Visual Testing
+# Contract, E2E, Browser and Visual Testing
 
-Contract tests verify request/response/schema/event assumptions between consumers and providers without requiring every system to run together. Include compatibility rules for optional/required fields, enum evolution, error shapes and versioning.
+## Contract testing
 
-E2E tests should focus on critical user journeys such as sign-in, checkout/payment, account recovery, admin-sensitive actions and primary product workflows. Keep them few, observable and deterministic. Seed data explicitly and avoid dependence on shared production-like accounts.
+Protect public/internal APIs, events and provider adapters against accidental breaking changes. Validate schema plus semantics that matter: required/optional behavior, error model, pagination/order, idempotency, version/coexistence and backward-compatible additions. Consumer-driven contracts are useful when independently deployed consumers evolve at different speeds.
 
-For web UI, combine browser automation with assertions on meaningful behavior, not brittle DOM implementation details. Cover supported browsers/devices where platform differences matter.
+## E2E strategy
 
-Visual regression is useful for design-system components, high-value landing pages and complex responsive layouts. Stabilize fonts/data/animations/time before snapshot comparison and use review thresholds that avoid constant noise.
+Keep E2E focused on high-value journeys and risky integration points: auth/recovery, checkout/payment, critical creation/edit flow, tenant boundaries, destructive actions, migration/coexistence. E2E should run against a production-like build/runtime when framework behavior differs from dev.
 
-Do not treat screenshot equality as accessibility or UX correctness; pair it with semantic/interaction assertions.
+Avoid E2E suites that duplicate every unit edge case. Prefer stable test IDs/accessible roles over brittle DOM/CSS selectors.
+
+## Browser/device matrix
+
+Choose from actual user/support requirements: engine families, mobile/desktop, touch/keyboard, viewport/zoom, reduced motion, locale/RTL and lower-end performance. Do not test every browser version mechanically; cover materially different behavior and supported policy.
+
+## Visual regression
+
+Use visual snapshots for layout/component/state regressions that DOM assertions miss. Include deterministic fonts/data/animations and meaningful viewports. Review diffs rather than auto-updating baselines. Visual snapshots cannot prove usability, semantics or accessibility.
+
+## Accessibility in tests
+
+Automated axe-like checks catch a subset. Add keyboard/focus tests for interactive components and targeted screen-reader/manual verification for complex widgets/critical flows. Use semantic roles/names as test selectors when it improves both accessibility and resilience.
+
+## Test environment
+
+Control provider sandbox modes, feature flags, seeds, time and callbacks. Clean up or isolate tenant/data state. A test that passes because it hits a different environment/provider mode than production is false confidence.

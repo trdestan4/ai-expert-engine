@@ -1,9 +1,30 @@
-# Jurisdiction and Compliance Verification
+# Jurisdiction Verification and Privacy Control Mapping
 
-Privacy engineering can implement minimization, access controls, consent/preference state, retention, deletion/export workflows and audit evidence, but legal obligations depend on jurisdiction, role, data category, processing purpose and current law/regulator guidance.
+This skill must not present legal advice. Privacy laws, regulator guidance and territorial scope change; verify current authoritative sources for the specific organization, users, data and processing.
 
-For KVKK, GDPR or another named regime, verify current authoritative legislation/regulator sources before stating statutory deadlines, lawful bases, transfer mechanisms, notice requirements, age thresholds, breach obligations or exemptions. Record source date/version when the rule materially affects implementation.
+## Separate law from engineering
 
-Distinguish controller/processor responsibilities and technical evidence from legal conclusions. Where interpretation is contested or business risk is high, involve qualified counsel rather than presenting model output as legal certification.
+Label statements as:
+- **verified legal/product requirement** — supplied by counsel/policy or checked against current authoritative source;
+- **engineering control** — minimizes risk or enables compliance regardless of jurisdiction;
+- **assumption/unknown** — requires legal/product decision.
 
-The system may say that engineering controls support compliance readiness; it must not claim that a product is legally compliant solely from code/configuration review.
+Do not convert GDPR/CCPA-like concepts into one universal rule. Consent, legitimate/contractual bases, children's data, sensitive categories, retention, cross-border transfer, sale/share/targeted advertising and rights deadlines differ.
+
+## Verification questions
+
+Identify organization/controller/processor role, user/data-subject locations, processing locations, sensitive/child data, business thresholds/exemptions if relevant, processors/subprocessors, transfer/residency constraints and contractual/customer obligations.
+
+For enterprise products, customer DPAs/security/privacy commitments can be stricter than baseline law and become product requirements.
+
+## Processor and transfer controls
+
+Maintain processor inventory with purpose, data categories, regions, subprocessors, security/privacy terms and deletion/export capabilities. Engineering should make provider region/config explicit and avoid hidden fallback regions when residency commitments exist.
+
+## Evidence/control mapping
+
+Map each verified requirement to implementation/config/process/test evidence and accountable owner. Examples: consent state → tag gating test; delete right → lifecycle job + reconciliation; residency → provider region config + deployment evidence.
+
+## Change management
+
+Store source URL/version/date and review window for material legal/provider claims. When law/provider docs change, trigger targeted review of affected controls rather than blindly rewriting all privacy text.

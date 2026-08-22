@@ -1,11 +1,39 @@
-# Senior Review and Technical Debt
+# Code Review, Quality Gates and Technical Debt
 
-Review findings should distinguish correctness/security/reliability blockers from maintainability concerns and personal style. Severity should reflect likely user/business impact, change difficulty and probability of failure—not reviewer preference.
+## Review order
 
-Look for unclear ownership, duplicated domain rules, tight coupling, hidden side effects, weak error semantics, unsafe types, dead code, dependency sprawl and code that is difficult to test or observe. Prefer actionable findings with file/behavior context and a bounded fix.
+1. requested behavior/invariants;
+2. security/privacy/data integrity;
+3. compatibility/migration/concurrency/failure handling;
+4. tests/evidence;
+5. maintainability/dependencies;
+6. style/readability.
 
-Technical debt is useful only when tied to consequence. Record the current constraint, why it matters, what trigger makes remediation necessary, likely scope and an owner or review point. Avoid vague TODOs such as “refactor later.”
+Do not bury a correctness blocker under twenty naming comments.
 
-Do not demand architectural rewrites for small local problems. Conversely, repeated local workarounds around the same boundary are evidence that architecture may need review.
+## Finding quality
 
-A quality review is complete when blockers are resolved or explicitly accepted, important debt is visible, tests protect risky behavior and the changed code remains understandable to another senior engineer.
+A useful finding names the affected surface, evidence/counterexample, impact and acceptance condition. Separate severity from confidence. “Could be cleaner” is not a blocker.
+
+## Technical debt classification
+
+Record debt by consequence and trigger:
+- known correctness/security risk;
+- maintainability/change friction;
+- operational burden;
+- performance/cost constraint;
+- obsolete compatibility/dependency.
+
+Include owner, evidence, reason for deferral and condition/date to revisit. Avoid a giant undifferentiated debt backlog.
+
+## Quality gates
+
+Automate deterministic checks: format, type, lint, tests, schema validation, dependency/security scans where useful. Human/model review owns context/judgment. A green gate is evidence only for what it actually checks.
+
+## Debt vs premature cleanup
+
+Do not refactor unrelated code during a focused bug fix unless it materially blocks safe implementation. Conversely, do not preserve a dangerous boundary because “out of scope”; escalate and minimally contain it.
+
+## Exceptions
+
+Suppressions/waivers require narrow scope and reason. High-impact accepted risk should have accountable owner and expiry/follow-up. Remove obsolete suppressions as part of maintenance.

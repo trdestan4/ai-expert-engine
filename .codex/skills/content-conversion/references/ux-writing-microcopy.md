@@ -1,7 +1,29 @@
-# UX Writing / Microcopy
+# UX Writing and Microcopy
 
-Microcopy should answer what happened, what is required, what happens next and how to recover. Labels beat placeholders for persistent form meaning. Error messages should identify the affected field/action and provide a useful correction without exposing sensitive internals.
+UX copy reduces ambiguity, supports action and preserves trust under real states.
 
-Buttons should describe the action where ambiguity exists. Destructive actions need proportionate confirmation and consequences. Empty states should explain why the state exists and offer a relevant next step, not filler marketing. Onboarding should progressively reveal information rather than forcing a tutorial before value.
+## Principles
 
-Transactional copy for payment, account, consent or irreversible actions must be explicit about commitments and status. Do not use playful brand voice when it increases uncertainty during errors, security events or financial actions.
+Use the user's language and name the action/result. Buttons describe the immediate action (`Save changes`, `Send invite`) rather than generic `Submit`. Headings should help scanning and orientation, not merely sound branded.
+
+Explain consequences before destructive, paid or irreversible actions. Distinguish pending from completed: “Payment submitted” is not “Payment complete” if provider confirmation is asynchronous.
+
+## Forms
+
+Labels identify the data, helper text explains format/why only when needed, errors say what is wrong and how to fix it. Avoid blame and vague `Invalid input`. Preserve privacy: do not reveal account existence or sensitive details when enumeration risk matters.
+
+## Empty/loading/error states
+
+Differentiate first-use empty, filtered no-results, permission empty and failed load. Loading copy should not promise duration it cannot know. Errors should preserve user work and provide recovery path when possible.
+
+## Permissions and plans
+
+Be explicit whether something is unavailable due to role, plan, geography or temporary state. Do not intentionally blur authorization with upsell. Entitlement copy must match server-authoritative policy.
+
+## Localization
+
+Avoid concatenated grammar, idioms and space-dependent layouts. Support plural/date/number/currency formatting and longer translations. Visible control labels should match accessible names for speech input.
+
+## Voice
+
+Brand voice can shape word choice and rhythm but must not reduce comprehension during errors, consent, payment, security or legal-sensitive steps. Crisis/error language should become clearer, not more playful.

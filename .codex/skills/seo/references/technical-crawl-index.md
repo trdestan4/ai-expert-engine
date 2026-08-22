@@ -1,7 +1,33 @@
-# Technical Crawl / Indexation
+# Technical SEO: Crawl, Render and Index Control
 
-Treat crawlability, indexability and canonicalization as separate questions. Verify final HTTP status, redirect chains, robots.txt accessibility, page-level robots directives, canonical targets, sitemap URLs and rendered content. Important navigation should expose normal crawlable links. Avoid accidental noindex on production, canonicalizing distinct pages to irrelevant parents, redirect loops, soft-404 behavior and parameter explosions.
+Use current official search-engine guidance for version-sensitive behavior. SEO recommendations must be testable and should not override product/accessibility/security correctness.
 
-For migrations, inventory old-to-new URLs, prefer direct one-hop permanent redirects, update internal links/canonicals/sitemaps, preserve valuable content and monitor coverage/search traffic after launch. JavaScript frameworks are acceptable, but essential search content and links must survive rendering failures and should not depend on user interaction to exist.
+## Crawlability
 
-Use log/Search Console evidence when available. Do not infer ranking problems from crawl metrics alone.
+Verify important URLs are discoverable through internal links/sitemaps where appropriate, return intended HTTP status, are not blocked unintentionally by robots directives and render meaningful content without requiring unsupported client interactions.
+
+Robots.txt controls crawling, not guaranteed de-indexing or access control. Sensitive/private content requires authorization and appropriate noindex/removal strategy, never robots alone.
+
+## Canonicalization
+
+Choose one canonical URL for duplicate/variant content and align internal links, redirects, sitemap and canonical tags. Canonical is a hint, not a permission to produce infinite duplicates. Avoid canonicalizing materially different locale/product/filter pages to unrelated parents just to reduce index count.
+
+## Status/redirects
+
+Use 2xx for real content, 3xx for durable moves, 404/410 for gone content as policy dictates. Avoid soft 404s, redirect chains/loops and SPA catch-all returning 200 for nonexistent routes.
+
+## JavaScript/rendering
+
+Ensure critical content/meta/links are available in the chosen rendering model and verify with search tooling/render tests when material. Client-side rendering can work but increases dependency on execution and can delay discovery; choose architecture from product/performance constraints, not SEO folklore.
+
+## Sitemaps
+
+Include canonical indexable URLs, correct lastmod only when meaningful and split/manage large sitemaps. Sitemaps do not replace internal linking or fix low-quality duplicate pages.
+
+## Large-site/log analysis
+
+For large catalogs/content sites, crawl samples and server/CDN logs can reveal wasted crawl on parameters/facets, orphan URLs, redirect loops and bot error patterns. Prioritize index-worthy content rather than maximizing crawl count.
+
+## Migrations
+
+Before URL/domain/framework migration inventory high-value URLs, map redirects, preserve metadata/structured data/internal links, verify analytics/search-console access and monitor post-launch indexing/404/traffic by cohorts. Keep redirects long enough for users/search depending on business policy.

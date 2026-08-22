@@ -2,25 +2,10 @@
   "$schema":"https://json-schema.org/draft/2020-12/schema",
   "title":"Persistent Reviewer Finding",
   "type":"object",
-  "required":["id","reviewer","candidate","title","severity","confidence","affected_surface","evidence","impact","acceptance_condition","owner","blocker","status","created_at"],
+  "required":["id","reviewer","candidate","title","severity","confidence","affected_surface","evidence","impact","acceptance_condition","owner","blocker","status","created_at","resolved_at","resolution","risk_expiry"],
   "properties":{
-    "id":{"type":"string","minLength":1},
-    "reviewer":{"enum":["code-reviewer","design-reviewer","security-reviewer","performance-reviewer","qa-reviewer","release-reviewer"]},
-    "candidate":{"type":"string","minLength":1},
-    "title":{"type":"string","minLength":1},
-    "severity":{"enum":["critical","high","medium","low","info"]},
-    "confidence":{"enum":["verified","strong","tentative"]},
-    "affected_surface":{"type":"string","minLength":1},
-    "evidence":{"type":"string","minLength":1},
-    "impact":{"type":"string","minLength":1},
-    "acceptance_condition":{"type":"string","minLength":1},
-    "owner":{"type":"string","minLength":1},
-    "blocker":{"type":"boolean"},
-    "status":{"enum":["open","resolved","accepted"]},
-    "created_at":{"type":"string","minLength":1},
-    "resolved_at":{"type":["string","null"]},
-    "resolution":{"type":["string","null"]},
-    "risk_expiry":{"type":["string","null"]}
+    "id":{"type":"string","minLength":1},"reviewer":{"enum":["code-reviewer","design-reviewer","security-reviewer","performance-reviewer","qa-reviewer","release-reviewer"]},"candidate":{"type":"string","minLength":1},"title":{"type":"string","minLength":1},"severity":{"enum":["critical","high","medium","low","info"]},"confidence":{"enum":["verified","strong","tentative"]},"affected_surface":{"type":"string","minLength":1},"evidence":{"type":"string","minLength":1},"impact":{"type":"string","minLength":1},"acceptance_condition":{"type":"string","minLength":1},"owner":{"type":"string","minLength":1},"blocker":{"type":"boolean"},"status":{"enum":["open","resolved","accepted"]},"created_at":{"type":"string","format":"date-time"},"resolved_at":{"type":["string","null"]},"resolution":{"type":["string","null"]},"risk_expiry":{"type":["string","null"]}
   },
+  "allOf":[{"if":{"properties":{"status":{"const":"accepted"}}},"then":{"properties":{"risk_expiry":{"type":"string","format":"date-time"},"resolution":{"type":"string","minLength":1}}}}],
   "additionalProperties":false
 }

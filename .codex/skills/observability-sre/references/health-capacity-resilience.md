@@ -1,3 +1,25 @@
 # Health, Capacity and Resilience
 
-Separate liveness from readiness where the platform supports it. Liveness answers whether the process should be restarted; readiness answers whether it should receive traffic. Avoid health checks that perform expensive dependency work or amplify outages. Monitor saturation and capacity signals appropriate to the runtime: concurrency, CPU/memory, database connections, queue lag, worker backlog, provider quotas and rate limits. Define timeouts, bounded retries with backoff/jitter, circuit/open-state behavior and graceful degradation for unreliable dependencies. Test behavior when dependencies are slow, not only unavailable. Capacity planning should use measured demand, headroom and known scaling constraints rather than arbitrary utilization targets. Critical paths need overload behavior: reject/defer nonessential work before the entire service fails.
+## Health checks
+
+Liveness asks whether process is irrecoverably stuck; readiness asks whether it should receive traffic. Do not make liveness depend on every downstream service and cause restart storms. Startup probes/initial delays may protect slow initialization.
+
+## Capacity
+
+Track traffic, latency, errors and saturation plus workload-specific limits: CPU/memory, DB connections/locks, queue depth/age, thread/event-loop lag, provider quotas, storage and cache. Forecast growth/seasonality where lead time for capacity is material.
+
+## Resilience
+
+Use timeouts, bounded retries/backoff/jitter, circuit/admission controls, bulkheads/concurrency limits and graceful degradation based on failure mode. Every retry consumes budget/capacity; avoid synchronized retry storms.
+
+## Dependency failure
+
+Define what can degrade safely vs must fail closed. Auth/payment/data integrity often require fail-closed; recommendations/analytics may degrade. Cache fallback must respect freshness/security.
+
+## Disaster recovery
+
+Backups are assumptions until restore tested. Define RPO/RTO and recovery ownership for critical data/services. Multi-region/replication does not replace backup and can replicate corruption.
+
+## Game days
+
+For high-impact systems, controlled failover/restore/chaos exercises can validate assumptions. Define steady state, blast radius and abort criteria before the exercise.

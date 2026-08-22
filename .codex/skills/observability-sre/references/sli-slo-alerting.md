@@ -1,3 +1,25 @@
-# SLIs, SLOs and Alerting
+# SLI, SLO, Error Budgets and Alerting
 
-Define SLIs from customer-visible outcomes such as successful checkout, API availability, job freshness or latency within a threshold. SLOs should set an objective over a meaningful window and have an explicit data source/query. Use error budgets to guide reliability-versus-change tradeoffs rather than treating 100% as an automatic target. Alerts should focus on actionable symptoms: sustained error ratio, latency degradation, saturation, queue backlog, dependency failure or fast SLO burn. Route severity and ownership explicitly. Avoid paging on every exception, single host event or metric threshold without customer impact. Multi-window burn-rate alerts can detect both fast and slow SLO consumption. Every page should link to context: dashboard, recent deployments, runbook and likely first diagnostic actions.
+## SLIs
+
+Measure user-visible service outcomes: availability/success, latency, freshness, durability or correctness proxy. Define numerator/denominator precisely and exclude requests only with documented rationale. Infrastructure CPU alone is not a user SLI.
+
+## SLOs
+
+Set targets from product/customer/reliability needs and achievable architecture. Use rolling windows appropriate to operations. Distinguish contractual SLA from internal SLO.
+
+## Error budgets
+
+Error budget turns SLO into release/operational policy. Track consumption and use it to prioritize reliability vs change when agreed by product/engineering. Do not treat one transient breach as automatic feature freeze without policy.
+
+## Burn-rate alerts
+
+Prefer multi-window/multi-burn alerts that detect both fast catastrophic and slower sustained consumption while reducing noise. Exact thresholds/windows should reflect SLO/on-call response and can follow established SRE patterns; verify tooling/math.
+
+## Alert quality
+
+Alert only when action is needed. Include symptom, impact, environment/service, key dashboard/runbook and ownership. Page on user-impact/budget burn, not every component metric. Ticket lower-urgency capacity/drift issues.
+
+## Release correlation
+
+Dashboards/alerts should expose candidate/version/rollout cohort where possible so post-deploy regressions are quickly attributable. Define abort thresholds before progressive rollout.
