@@ -1,93 +1,77 @@
 ---
 name: release-readiness
-description: Makes the final evidence-based go/hold/no-go decision for production releases by checking mandatory quality gates, unresolved blockers, migration/recovery safety, observability, approvals and accepted risk; it does not implement fixes or substitute for domain review.
+description: Makes the final evidence-based production GO, GO WITH CONDITIONS, HOLD or NO-GO decision by checking candidate identity, persistent findings, quality gates, migration/recovery, observability and accepted risk; automation is enforceable only when the release gate is wired.
 ---
 
 # Purpose
-
-Decide whether a specific release is safe enough to proceed, hold for evidence/remediation, or stop, using explicit release evidence rather than optimism, schedule pressure or a green build alone.
+Decide whether a specific production candidate may proceed using current candidate-bound evidence rather than optimism, schedule pressure or green CI alone.
 
 ## Use when
-
 - production release, launch, migration cutover or high-impact rollout is imminent;
-- R3/R4 changes require a final gate;
-- multiple reviewer findings must be reconciled into a release decision;
-- the caller asks whether a change is ready for production.
+- R3/R4 work requires a final gate;
+- reviewer findings must be reconciled into a release decision.
 
 ## Do not use when
-
-- implementation or diagnosis is still the primary task;
-- a broad repository health audit is requested (`audit-review`);
-- independent specialist review has not occurred where risk requires it (`multi-review`);
-- the task is only CI/CD mechanics (`devops-deployment`).
+- implementation/diagnosis remains primary;
+- systemic repository audit is requested (`audit-review`);
+- mandatory independent review has not occurred (`multi-review`);
+- only CI/CD mechanics are requested (`devops-deployment`).
 
 ## Inputs
-
-Require the release/change identity, intended environment, risk classification, changed surfaces, test/build evidence, reviewer findings, security/privacy/accessibility/performance evidence where applicable, deployment artifact identity, migration/worker/job dependencies, configuration/secrets status, observability/alerting, rollback or safe roll-forward plan, known incidents/limitations and explicit risk acceptances.
+Require candidate commit/artifact/version, environment, risk/change surfaces, current test/build evidence, persisted reviewer findings where available, security/privacy/accessibility/performance evidence when relevant, migration/jobs/config/secrets state, observability, rollback/roll-forward/data recovery and explicit accepted risks.
 
 ## Workflow
+### 1. Identify candidate
+Name exact commit/artifact/environment/traffic scope/flags/migrations/jobs/dependencies. Vague “latest main” is insufficient for high risk.
 
-### 1. Identify release boundary
-Name commit/artifact/version, environment, traffic scope, feature flags, migrations, jobs and external dependencies. A vague “latest main” is insufficient for high-risk release approval.
-
-### 2. Determine mandatory gates
-Use `references/release-gates.md`. Gates depend on actual changed boundaries and risk; do not run every possible review for every release.
+### 2. Determine gates
+Use `references/release-gates.md` based on actual boundaries/risk.
 
 ### 3. Verify evidence freshness
-Confirm tests/reviews/artifacts correspond to the candidate being released. Evidence from an older commit/build cannot approve a different artifact without justification.
+Evidence must correspond to this candidate. Older tests/reviews cannot approve a changed artifact without justification.
 
-### 4. Reconcile blockers and accepted risk
-Use `references/risk-acceptance-rollback.md`. Critical/high unresolved issues default to HOLD/NO-GO unless a documented authority accepts a risk that is genuinely accept-able and recovery is credible.
+### 4. Reconcile persistent blockers and accepted risk
+Use `references/risk-acceptance-rollback.md`. Open critical/high blockers default to HOLD/NO-GO. Accepted risk does not rewrite severity and must retain accountable disposition/expiry.
 
-### 5. Validate deployment and data safety
-Check environment/secrets, migration compatibility, background workers, callbacks, cache/schema ordering, external-provider modes and whether old/new versions can coexist during rollout.
+### 5. Validate deployment and data recovery
+Check environment/secrets, migrations, workers, callbacks, cache/schema ordering, provider modes, coexistence and exact rollback/roll-forward/data recovery. Application rollback does not restore destroyed data.
 
-### 6. Validate recovery
-Know the exact rollback, feature-disable, traffic-revert, data-recovery or roll-forward path. Destructive data changes without proven recovery can block release even when application rollback exists.
+### 6. Validate observation and abort
+Ensure critical journeys, logs/metrics/traces/alerts, watcher ownership and abort/rollback triggers exist for material rollout.
 
-### 7. Validate observation window
-Ensure critical journeys, health signals, logs/metrics/traces and actionable alerts can detect material failure during rollout. Define who watches and what triggers abort/rollback.
+### 7. Build candidate-bound decision artifact
+When local runtime tools are available, use `scripts/build_release_decision.py` with the actual evidence paths. The output records evidence paths plus their deterministic hash and must validate against the release-decision schema.
 
-### 8. Issue decision
-Return one of:
-- **GO** — mandatory gates satisfied; residual risk explicit;
-- **GO WITH CONDITIONS** — non-blocking conditions/monitoring/limited exposure are explicit and owned;
-- **HOLD** — missing evidence or remediable blocker prevents approval;
-- **NO-GO** — known unacceptable risk makes release unsafe.
+### 8. Issue and classify enforcement
+Decision is exactly GO, GO WITH CONDITIONS, HOLD or NO-GO. If production workflow invokes `scripts/release_gate.py` or the reusable AI Expert Release Gate, report **enforced**; otherwise explicitly report **advisory**. A HOLD/NO-GO can never be translated into deploy permission by automation.
 
 ## Decision rules
-
-- Green CI is necessary evidence, not sufficient release evidence.
-- The released artifact must be traceable to the reviewed/tested source.
-- R3/R4 trust/data/payment/production boundaries require independent relevant review.
-- Critical security, cross-tenant, payment-duplication, destructive-data or unrecoverable migration defects block release by default.
-- Missing required evidence produces HOLD, not an assumed pass.
-- Accepted risk must identify owner/authority, rationale, exposure, mitigation and follow-up/expiry where relevant.
-- Rollback plans must match the actual failure mode; application rollback does not restore destroyed data.
-- Progressive rollout reduces blast radius only when observability and stop controls are real.
-- Schedule pressure never changes technical severity.
+- Green CI is necessary evidence, never sufficient release evidence.
+- Released artifact must trace to reviewed/tested source.
+- R3/R4 requires relevant independent review.
+- Critical security, cross-tenant, payment duplication, destructive data or unrecoverable migration defects block by default.
+- Missing required evidence produces HOLD.
+- Accepted risk identifies owner/authority, rationale, exposure, mitigation and expiry/follow-up.
+- Data recovery and application rollback are different.
+- Progressive rollout helps only with real observability and stop controls.
+- Schedule pressure never changes severity.
+- A copied/stale release artifact whose candidate/evidence hash no longer matches must fail technical enforcement.
 
 ## Reference routing
-
-Load `references/release-gates.md` for gate selection and evidence matrix.
-Load `references/risk-acceptance-rollback.md` for blocker handling, risk acceptance, rollback/roll-forward and abort criteria.
-Use selected reviewer profiles through `multi-review` when required evidence is missing.
+Load `references/release-gates.md` for evidence/gate selection. Load `references/risk-acceptance-rollback.md` for blocker handling, accepted risk, rollback/roll-forward and abort criteria. Use `multi-review` for missing mandatory reviewer evidence.
 
 ## Quality gates
-
 - Candidate commit/artifact/environment are explicit.
-- Mandatory gates are derived from risk/change surface.
-- Evidence is current for the release candidate.
-- All blockers have disposition; none are silently omitted.
-- Migration/data recovery and deployment recovery are distinguished.
-- Production observation/abort criteria exist for material releases.
-- Risk acceptance is explicit and attributable when used.
-- Decision is exactly GO, GO WITH CONDITIONS, HOLD or NO-GO with reasons.
+- Mandatory gates derive from risk/surface.
+- Evidence freshness and candidate binding are verified.
+- Persistent blockers have explicit disposition.
+- Migration/data recovery and application recovery are distinguished.
+- Observation/abort criteria exist for material release.
+- Decision is exactly one allowed state.
+- Enforcement status is reported honestly as enforced or advisory.
 
 ## Failure handling
-
-If artifact identity or required evidence is missing, issue HOLD and name the evidence needed. If a blocker cannot be safely mitigated or accepted, issue NO-GO. If the release candidate changes after review, invalidate affected evidence and re-run only the gates touched by the change.
+If artifact identity/evidence is missing, issue HOLD. If a blocker cannot be safely remediated/accepted, issue NO-GO. Candidate changes invalidate affected evidence. If release-gate integration is absent, do not claim technical prevention: report the decision as advisory until deployment workflow is wired.
 
 ## Output contract
-
-Return release identity, risk/change surface, mandatory gates and evidence status, unresolved findings, accepted risks, deployment/migration/recovery plan, observability/abort criteria, final GO/GO WITH CONDITIONS/HOLD/NO-GO decision and exact conditions for changing that decision.
+Return candidate/environment, risk/surface, mandatory gates/evidence status, unresolved/persisted findings, accepted risks, deployment/migration/recovery, observability/abort criteria, final GO/GO WITH CONDITIONS/HOLD/NO-GO and enforcement status.
