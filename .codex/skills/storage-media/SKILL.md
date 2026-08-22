@@ -17,9 +17,9 @@ Store and deliver user/product files safely and efficiently while preventing una
 ## Do not use when
 
 - database schema is the primary concern (`database-data`);
-- visual image-generation/art-direction is primary (`asset-production` later);
+- visual image-generation/art-direction is primary (`asset-production`);
 - generic background-job mechanics are primary (`realtime-async`);
-- general security audit is primary (future `security`).
+- general security audit is primary (`security`).
 
 ## Inputs
 
@@ -97,7 +97,7 @@ Load `references/signed-url-access.md` for private/public storage, signed upload
 
 Load `references/media-processing.md` for image/video/document validation, metadata, derivatives, processing safety and async pipelines.
 
-Use `realtime-async` for worker/queue reliability, `database-data` for metadata/ownership schema, and future `security` for malware/content abuse threat review.
+Use `realtime-async` for worker/queue reliability, `database-data` for metadata/ownership schema, and `security` for malware/content abuse threat review.
 
 ## Quality gates
 

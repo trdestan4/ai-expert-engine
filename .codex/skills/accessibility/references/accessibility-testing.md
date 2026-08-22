@@ -1,11 +1,27 @@
-# Accessibility Testing and Regression
+# Accessibility Testing and Assistive Technology
 
-Automated tools are useful for detectable issues such as missing names, some ARIA misuse and contrast, but they cannot prove WCAG conformance or task usability. Combine automation with manual keyboard, focus, zoom/reflow and assistive-technology testing.
+Automation cannot prove accessibility. Use layered evidence.
 
-For critical journeys, test keyboard-only navigation and operation, visible/unobscured focus, screen-reader names/roles/states, form instructions/errors, dynamic status announcements and modal/menu focus behavior. Include 200%+ zoom/reflow and reduced-motion where relevant.
+## Automated checks
 
-Use browser accessibility trees/devtools to debug semantic mismatches. Test at least representative screen readers/browser combinations for high-value experiences when possible; behavior can differ across stacks.
+Run semantic/contrast/name/ARIA-rule tools in CI or component tests where useful. Treat violations as defects but review false positives/context. Automated tools miss focus order, meaningful names, cognitive clarity, screen-reader interaction, voice control and many custom-widget failures.
 
-Add automated component/page checks in CI for regressions that tools can reliably detect. Keep manual acceptance cases for interactions automation cannot judge. Treat inaccessible authentication, navigation or core form submission as release blockers proportional to product requirements and severity.
+## Keyboard pass
 
-A passing accessibility scanner score is evidence only; document remaining manual coverage and known limitations.
+Test every critical flow with keyboard only: entry, skip/navigation, controls, dialogs/menus, validation/errors, dynamic content, destructive confirmation and exit. Verify visible focus, logical order, no traps and restoration.
+
+## Screen reader
+
+Use targeted combinations appropriate to support policy—commonly VoiceOver/Safari on Apple platforms and NVDA/Firefox or Chrome on Windows. Test headings/landmarks, form names/descriptions/errors, tables, dialogs, menus/comboboxes and dynamic status. Do not expect identical speech across AT/browser pairs; verify task success and correct semantics.
+
+## Other modalities
+
+For products/audiences that warrant it, test Windows forced-colors, magnification/zoom, speech input/voice control, switch/keyboard-only navigation and mobile screen readers. Cognitive accessibility review should inspect language, consistency, error prevention, time limits and memory burden.
+
+## Test matrix
+
+Select critical flows × interaction modalities × representative viewport/locale/state. Include long text, 200% zoom/reflow, reduced motion and error/empty/loading states. Do not mechanically test every page if shared components and representative flows give stronger evidence.
+
+## Regression
+
+Add automated regression for specific bugs when possible (accessible name, focus return, keyboard handling, error association). Complex AT behavior may require documented manual verification in release evidence. A green automated accessibility scan never means “WCAG complete.”

@@ -6,6 +6,10 @@ on:
         required: false
         type: string
         default: .ai-expert-engine/evidence/release-decision.json
+      environment:
+        required: false
+        type: string
+        default: production
       acknowledge_conditions:
         required: false
         type: boolean
@@ -26,4 +30,4 @@ jobs:
       - name: Enforce release decision
         env:
           AI_EXPERT_RELEASE_CONDITIONS_ACK: ${{ inputs.acknowledge_conditions }}
-        run: python scripts/release_gate.py --decision "${{ inputs.decision_path }}" --candidate "${{ github.sha }}"
+        run: python scripts/release_gate.py --decision "${{ inputs.decision_path }}" --candidate "${{ github.sha }}" --environment "${{ inputs.environment }}"

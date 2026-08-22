@@ -4,21 +4,33 @@ import argparse,json,os
 from collections import defaultdict
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1];CASES=ROOT/'evals/reviewer-calibration/cases.jsonl';OUT=ROOT/'.artifacts/reviewer-calibration.json'
+DOMAIN={'code-reviewer':'code-quality','design-reviewer':'ux-ui-design','security-reviewer':'security','performance-reviewer':'performance','qa-reviewer':'testing-qa','release-reviewer':'release-readiness'}
 def load():return [json.loads(x) for x in CASES.read_text().splitlines() if x.strip()]
 def extract(t):
     t=str(t);a=t.find('{');b=t.rfind('}')
     if a>=0 and b>a:return json.loads(t[a:b+1])
     raise ValueError('no JSON')
+def registry_item(name):
+    for p in (ROOT/'engine/registry').glob('*.json'):
+        for x in json.loads(p.read_text()).get('skills',[]):
+            if x.get('name')==name:return x
+    raise KeyError(name)
+def skill_context(name):
+    item=registry_item(name);skill=ROOT/item['path'];parts=[skill.read_text()]
+    for rel in item.get('references',[]):parts.append((skill.parent/rel).read_text())
+    return '\n\n'.join(parts)
 def main():
     ap=argparse.ArgumentParser();ap.add_argument('--validate-corpus',action='store_true');ap.add_argument('--model',default=os.environ.get('CURSOR_EVAL_MODEL','auto'));ap.add_argument('--output',type=Path,default=OUT);n=ap.parse_args();cases=load();reviewers={x['reviewer'] for x in cases}
-    if len(cases)<12 or len(reviewers)!=6:raise SystemExit('reviewer calibration corpus invalid')
-    if n.validate_corpus:print(f'reviewer calibration corpus valid: {len(cases)} cases / {len(reviewers)} reviewers');return 0
+    if len(cases)<24 or len(reviewers)!=6:raise SystemExit('reviewer calibration corpus invalid')
+    if n.validate_corpus:
+        for c in cases:
+            if c['reviewer'] not in DOMAIN:raise SystemExit('unknown reviewer '+c['reviewer'])
+        print(f'reviewer calibration corpus valid: {len(cases)} cases / {len(reviewers)} reviewers');return 0
     if not os.environ.get('CURSOR_API_KEY'):raise SystemExit('CURSOR_API_KEY is required for live reviewer calibration')
     from cursor_sdk import Agent,AgentOptions,LocalAgentOptions
-    rows=[];stats=defaultdict(lambda:{'tp':0,'fp':0,'tn':0,'fn':0,'blocker_correct':0,'n':0,'tokens':0})
-    contract=(ROOT/'engine/reviewers/reviewer-contract.md').read_text()
+    rows=[];stats=defaultdict(lambda:{'tp':0,'fp':0,'tn':0,'fn':0,'blocker_correct':0,'n':0,'tokens':0});contract=(ROOT/'engine/reviewers/reviewer-contract.md').read_text();contexts={r:skill_context(DOMAIN[r]) for r in reviewers}
     for c in cases:
-        profile=(ROOT/'.cursor/agents'/f"{c['reviewer']}.md").read_text();prompt=f"READ ONLY CALIBRATION. Apply this reviewer contract/profile to the supplied artifact only. Return exactly JSON {{\"finding\":boolean,\"blocker\":boolean,\"severity\":\"critical|high|medium|low|info\",\"reason\":string}}. Do not invent missing evidence.\nCONTRACT:\n{contract}\nPROFILE:\n{profile}\nARTIFACT:\n{c['artifact']}"
+        profile=(ROOT/'.cursor/agents'/f"{c['reviewer']}.md").read_text();prompt=f"READ ONLY CALIBRATION. Apply this isolated reviewer contract/profile AND EXPERT DOMAIN CONTEXT to the supplied artifact only. Return exactly JSON {{\"finding\":boolean,\"blocker\":boolean,\"severity\":\"critical|high|medium|low|info\",\"reason\":string}}. Do not invent missing evidence. Distinguish a real defect from an intentional/tradeoff-safe pattern.\nCONTRACT:\n{contract}\nPROFILE:\n{profile}\nEXPERT DOMAIN CONTEXT:\n{contexts[c['reviewer']]}\nARTIFACT:\n{c['artifact']}"
         r=Agent.prompt(prompt,AgentOptions(model=n.model,tools=[],local=LocalAgentOptions(cwd=str(ROOT))));u=getattr(r,'usage',None)
         try:x=extract(r.result);finding=bool(x.get('finding'));blocker=bool(x.get('blocker'));sev=str(x.get('severity','')).lower();ok=finding==c['expect_finding'] and (not finding or sev in c['severity_any']) and blocker==c['expect_blocker']
         except Exception as ex:x={'error':repr(ex),'raw':str(getattr(r,'result',r))};finding=False;blocker=False;ok=False

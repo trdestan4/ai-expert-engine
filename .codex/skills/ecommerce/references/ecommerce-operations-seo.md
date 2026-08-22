@@ -1,7 +1,25 @@
-# Ecommerce Operations / SEO Coordination
+# Ecommerce Operations, Feeds, Marketplace and SEO
 
-Operational needs shape the storefront: catalog import/export, bulk edits, inventory updates, order search, fulfillment handoff, cancellations, refunds, returns, customer support and audit history need deliberate permission and workflow design.
+## Operations
 
-Coordinate product/category URLs, canonicalization, filter/facet crawl behavior, discontinued/out-of-stock states, product/offer structured data, breadcrumbs and internal links with the `seo` skill. Google currently provides ecommerce-specific guidance for product data, site structure, URLs, pagination/incremental loading and structured data; verify current documentation when behavior matters.
+Commerce crosses catalog, support, finance, fulfillment and marketing. Define ownership for order exceptions, failed payments, stuck fulfillment, refunds/disputes, inventory drift, feed failures and provider reconciliation. Admin tools need least privilege and audit for money/inventory actions.
 
-Do not let SEO templates leak inaccurate price/availability. Storefront and structured data should derive from the same authoritative commerce facts where practical.
+## Marketplace / multi-vendor
+
+If sellers/vendors exist, model merchant identity, catalog ownership, commissions/fees, payout state, refunds/disputes, seller permissions, moderation and tax/compliance handoff. Marketplace money movement is materially different from single-merchant checkout; use provider marketplace primitives when available rather than inventing ledger/payout flows casually.
+
+## Gift cards/store credit
+
+Treat balances as money-like value with exact units, authorization, idempotent ledger/transactions, expiration/legal policy verification and refund behavior. Do not model only as mutable balance without audit trail for high-value systems.
+
+## Feeds/integrations
+
+Product feeds to Google/Meta/marketplaces need stable IDs, availability/price consistency, currency, shipping/tax fields and monitoring. Provider catalog drift requires reconciliation and alerting.
+
+## SEO
+
+Product/category URLs need canonical strategy, structured data matching visible/authoritative product state, pagination/faceted crawl controls and lifecycle for discontinued/out-of-stock items. Do not mark misleading availability/price in structured data.
+
+## International
+
+Coordinate locale/domain/subdirectory/hreflang strategy, translated catalog, currency/price book, tax/shipping availability and legal copy. Currency switching is not localization by itself.

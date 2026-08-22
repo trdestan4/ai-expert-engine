@@ -19,9 +19,9 @@ Provide reliable browser/network/runtime reasoning beneath every web framework s
 
 - the task is ordinary React/Next.js implementation (`react-nextjs` owns framework-specific behavior);
 - the task is general component/state/CSS/TypeScript engineering (`frontend-engineering`);
-- the task is defining security policy or performing a vulnerability review (future `security` owns that, though this skill can explain browser mechanisms);
-- CDN, DNS, TLS termination, reverse proxies, or production hosting are the primary operational task (future production/DevOps skills own them);
-- API resource/business contract design is the primary task (future `api-engineering`).
+- the task is defining security policy or performing a vulnerability review (`security` owns that, though this skill can explain browser mechanisms);
+- CDN, DNS, TLS termination, reverse proxies, or production hosting are the primary operational task (`devops-deployment` owns production deployment/infrastructure concerns);
+- API resource/business contract design is the primary task (`api-engineering`).
 
 ## Inputs
 

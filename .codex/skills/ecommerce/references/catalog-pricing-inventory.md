@@ -1,7 +1,31 @@
-# Catalog / Pricing / Inventory
+# Catalog, Pricing and Inventory
 
-Separate marketing product data from sellable variants and stock-keeping units. Model options consistently, reject impossible combinations and preserve stable identifiers across copy/name changes. Bundles need explicit component/availability behavior.
+## Product model
 
-Pricing needs an authoritative calculation path covering base price, sale windows, customer/market rules, coupons, taxes, shipping and rounding. Never trust a submitted browser total. Promotions require eligibility, stacking and expiry semantics.
+Separate product, variant/SKU, option, media, category/collection, attribute, price and inventory concepts according to real merchandising/fulfillment needs. Avoid forcing every catalog into one flat `products` table or over-modeling simple stores.
 
-Inventory needs a source of truth, reservation/decrement point, release/expiry behavior and oversell policy. Concurrent checkouts can race; use atomic/transactional guarantees or provider-supported reservations. For multi-location inventory, distinguish available-to-sell from physical on-hand and define reconciliation.
+Variant identity must remain stable across cart/order history even if display copy/media changes. Snapshot order-critical product/price/tax data at purchase where accounting/customer history requires it.
+
+## Pricing
+
+Server-side authoritative pricing. Model currency in exact decimal/minor units; do not trust browser-submitted amount/discount/tax/shipping. Distinguish list/base price, sale/promotion, customer/tier price, coupon, bundle, tax and shipping adjustments so reconciliation is explainable.
+
+For multi-currency, decide price books vs FX conversion, rounding, display/charge currency and refund behavior. Never silently re-convert historical orders using today's FX.
+
+## Promotions
+
+Define eligibility, stacking/priority, usage limits, start/end timezone, minimum spend, customer/product scope and refunds. Make promotion evaluation deterministic and test overlapping rules. “Apply biggest discount” may not match business policy.
+
+## Inventory
+
+Choose source of truth and reservation semantics. Stock displayed to users may differ from physical/on-hand, available-to-promise and reserved. Concurrency must prevent oversell where required using atomic updates/transactions/reservations.
+
+Preorder/backorder require explicit promise/fulfillment behavior, not negative stock hacks. Multi-location inventory needs allocation/reconciliation and failure handling.
+
+## Search/filters
+
+Attributes intended for filtering/sorting should be structured and normalized enough to support consistent values. Avoid unbounded arbitrary metadata as a substitute for a catalog model.
+
+## Data lifecycle
+
+Product deletion/unpublish must preserve historical orders and URLs/SEO strategy. Media/object cleanup, feeds/search indexes and cache invalidation follow catalog lifecycle deliberately.

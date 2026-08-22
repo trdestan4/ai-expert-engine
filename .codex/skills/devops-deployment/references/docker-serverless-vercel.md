@@ -1,3 +1,19 @@
-# Docker, Serverless and Vercel
+# Docker, Serverless and Vercel-style Deployment
 
-Container images should use intentional base versions, minimal runtime contents, non-root execution when feasible, deterministic dependency installation and multi-stage builds when build tooling is not needed at runtime. Serverless deployments require awareness of cold starts, execution duration, concurrency, connection pooling, ephemeral filesystem and region/runtime limits. On Vercel, distinguish preview and production environments, verify repository/framework versions, and prefer preview validation plus promotion when the same built deployment should become production. `vercel promote` changes production routing without rebuilding; rollback can repoint to an earlier deployment. Environment variables and deployment tokens must remain scoped and secret. Do not assume Vercel-specific commands or semantics apply to another host; inspect the actual deployment target first.
+## Containers
+
+Use minimal trusted base images, deterministic dependency install, non-root user where practical, explicit workdir/entrypoint and `.dockerignore`. Multi-stage builds reduce toolchain/runtime surface. Pin image versions/digests according to update policy; scan/provenance evidence may be required.
+
+Do not bake secrets into image layers/build args. Configure health/readiness externally and handle SIGTERM/graceful shutdown. Container filesystem is usually ephemeral; persistent state belongs in designed storage.
+
+## Serverless/functions
+
+Design for stateless/reentrant execution, concurrency and cold starts appropriate to platform. Reuse clients carefully at module scope but never request/user state. Bound execution time/memory and external calls; background work after response may be terminated unless platform supports it.
+
+Database pools need serverless-aware limits/proxies. Retries can duplicate effects; idempotency is application responsibility.
+
+## Vercel/edge runtimes
+
+Verify framework/runtime compatibility, region, Node vs edge API differences, environment variables, build output, preview/production domains and cache behavior. Edge is not automatically faster for data-bound work and may limit libraries/runtime APIs.
+
+Production deployment command must pass AI Expert release gate with production environment; preview/staging GO cannot unlock prod.

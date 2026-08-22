@@ -1,25 +1,45 @@
 # Interaction Patterns
 
+Patterns are starting points. Choose by task, risk, frequency, data density and platform behavior; do not reproduce a design-system component because it exists.
+
 ## Forms
 
-Use persistent labels, appropriate input types, useful defaults, inline validation near the field, clear errors, completion feedback, and minimal repeated entry. Do not use placeholders as the only labels.
+Use persistent labels, appropriate input types/autocomplete, useful defaults, clear required/optional rules, inline validation near the field and summary/focus behavior for complex errors. Preserve valid input after failure. Multi-step flows need progress only when it helps orientation and should allow safe back navigation.
+
+For sensitive/destructive actions, use proportional confirmation: typed confirmation or reauthentication only when risk warrants it; avoid confirmation fatigue.
 
 ## Navigation
 
-Prioritize recognition over clever naming. Keep primary location/state clear. On mobile, preserve access to high-value actions without crowding the viewport.
+Prioritize recognition and stable orientation. Separate primary navigation from contextual tabs/subnavigation. Preserve high-value actions on mobile without crowding. Deep-linkable state belongs in URL when users need share/reload/back-forward semantics.
 
-## Search/filter
+## Search, filter and sort
 
-Make filter state visible and reversible. Preserve user context across results. Use faceting only where meaningful. Avoid hidden filter complexity for simple catalogs.
+Make active filter state visible/reversible, reflect important state in URL, preserve context across results and define zero-result recovery. Faceting requires meaningful dimensions/count semantics. Avoid hidden complex filters for small catalogs and client-side filtering over incomplete datasets.
 
-## Tables/data
+## Tables and data
 
-Optimize scanning: alignment, meaningful density, sticky context where useful, responsive alternatives for narrow screens, explicit sorting/filtering, and clear empty/loading/error states.
+Align by value type, keep units/context visible, support meaningful sorting/filtering, distinguish clickable row vs selectable row, provide bulk-action feedback and protect destructive operations. On narrow screens choose priority columns, horizontal scroll with context, detail views or alternate layout based on task—not automatic cards.
 
-## Overlays
+## Dialogs, drawers and popovers
 
-Use modal/dialog only for focused interruptive decisions. Do not hide routine navigation/content in modal stacks.
+Use modal/dialog for focused interruptive decisions, not routine navigation. Manage focus, background inertness, escape/close semantics and restoration. Avoid modal stacks. Drawers can preserve context for secondary detail but should not become a hidden full application.
 
-## Feedback
+## Menus/comboboxes
 
-Every user action should have appropriate immediate feedback; destructive actions need proportional confirmation/recovery.
+Prefer native controls when adequate. Custom combobox/menu/listbox must implement keyboard, focus, active-descendant/selection and screen-reader semantics correctly; coordinate with accessibility guidance.
+
+## Optimistic UI
+
+Use only when failure is uncommon and reversal/reconciliation is clear. Never show irreversible money/security success before authoritative confirmation. Distinguish pending from completed when provider/async state can lag.
+
+## Feedback and status
+
+Every action needs proportional feedback. Use local inline feedback for local changes; toasts for transient non-critical confirmation; persistent banners for ongoing/system status. Avoid toast-only errors that disappear before recovery.
+
+## Empty/loading/error
+
+Empty states should distinguish first use, no results, no permission and failed load. Loading indicators should not cause layout jumps or imply progress they cannot measure. Errors explain what happened at user level, preserve work and offer a next action when possible.
+
+## Keyboard/touch/motion
+
+All core functions need keyboard access, visible focus and adequate touch target. Drag/reorder needs alternatives when required. Motion should reinforce spatial/state changes and provide reduced-motion equivalents.

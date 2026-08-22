@@ -1,11 +1,31 @@
 # WCAG 2.2, Semantics, Keyboard and Focus
 
-WCAG 2.2 is the current W3C Recommendation and preferred baseline for new work unless a product/jurisdiction specifies otherwise. Aim for AA for normal production web experiences where feasible, while treating actual user task accessibility as the goal rather than checklist theater.
+WCAG 2.2 is the current W3C Recommendation baseline in this reference. Aim for appropriate conformance (commonly AA for production web) where required, but treat successful user tasks as the goal rather than checklist theater. Verify current standard/jurisdiction when a claim is compliance-critical.
 
-Use semantic HTML headings, landmarks, lists, buttons, links, tables and form controls before ARIA. Custom widgets must implement expected roles/states/keyboard behavior and should be avoided when a native control fits.
+## Semantics
 
-All interactive functions must work from keyboard. Keep DOM/focus order logical and avoid positive tabindex. Provide visible focus and ensure sticky headers/overlays do not obscure focused elements; WCAG 2.2 adds explicit focus-not-obscured criteria.
+Use native HTML headings, landmarks, lists, links, buttons, tables, labels and form controls before ARIA. Custom widgets inherit keyboard/name/role/state obligations; use them only when native controls cannot meet the interaction.
 
-Support reflow/zoom without losing content/function. Ensure pointer targets meet applicable minimum-size/spacing expectations or provide equivalent alternatives. Drag-only actions need an alternative input method.
+“No ARIA” is better than incorrect ARIA. ARIA changes accessibility-tree semantics, not behavior. A `div role=button` still needs keyboard activation/focus and usually should just be `<button>`.
 
-Use meaningful page titles, heading hierarchy, skip/landmark navigation and predictable focus restoration for dialogs and major context changes.
+## Accessible names
+
+Names must communicate the visible purpose and remain stable enough for speech input. Avoid hidden labels that contradict visible text. Icon-only controls need meaningful names; decorative icons should not create duplicate announcements.
+
+## Keyboard and focus
+
+All core functions must be keyboard-operable without traps. Keep DOM/focus order logical; avoid positive tabindex. Focus must be visible and not obscured by sticky headers/overlays. Dialogs/menus/popovers need deliberate initial focus, containment only when the pattern requires it, escape/close and restoration.
+
+Do not move focus for routine dynamic updates unless it helps orientation. Route/page transitions may need heading/title/focus strategy depending on app model.
+
+## Reflow and zoom
+
+Support zoom/text resize/reflow without clipped controls, hidden content or forced two-dimensional scrolling except where genuinely necessary (e.g. complex data tables). Test 200% text/zoom and narrow equivalent viewport. Responsive breakpoints alone do not prove reflow.
+
+## Pointer and drag
+
+Meet applicable target-size/spacing requirements and provide alternative input for drag-only actions where needed. Hover-only information must also be available to keyboard/touch.
+
+## Forced colors/high contrast
+
+Test Windows forced-colors/high-contrast for custom controls, focus, icons and status. Do not rely on background images/box shadows as the only boundary/selection indicator.
