@@ -23,6 +23,15 @@ Use the smallest owning skill set.
 
 **Cookie/CORS/browser issue:** `web-platform`, not backend/API by default.
 
+## Future specialist boundaries
+
+- Schema, SQL, migrations, transactions, indexing, RLS, persistence guarantees → `database-data`
+- Authentication, sessions, roles, permissions, OAuth/OIDC, MFA → `identity-access`
+- Queues, workers, pub/sub, WebSockets, SSE, retries/DLQ/eventual consistency → `realtime-async`
+- Threat modeling, injection/abuse controls, secrets, security review → `security`
+
+These names remain explicit even before those phases are implemented so routing does not collapse their responsibilities into backend/API.
+
 ## Overlap prevention
 
 `api-engineering` defines what consumers can rely on. `backend-engineering` defines how server-side application behavior fulfills that contract. Do not duplicate database schema, identity policy, distributed messaging, or security architecture inside either skill.
