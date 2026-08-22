@@ -2,9 +2,9 @@
 from __future__ import annotations
 import argparse,hashlib,importlib.util,json,shutil,time
 from pathlib import Path
-SOURCE=Path(__file__).resolve().parents[1];MANIFEST='.ai-expert-engine-install.json';START='<!-- AI-EXPERT-ENGINE:START -->';END='<!-- AI-EXPERT-ENGINE:END -->'
+SOURCE=Path(__file__).resolve().parents[1];MANIFEST='.ai-expert-engine-install.json';START='<!-- AI-EXPERT-ENGINE:START -->';END='<!-- AI-EXPERT-ENGINE:END -->';HOOK_CMD='python .cursor/hooks/ai-expert-release-guard.py'
 DIRS=('.codex/skills','.cursor/agents','engine')
-FILES=('scripts/enginectl.py','scripts/runtime_contract.py','scripts/engine_telemetry.py','scripts/review_store.py','scripts/release_gate.py','scripts/build_release_decision.py','scripts/session_checkpoint.py','scripts/check_release_enforcement.py','scripts/profile_repository.py','scripts/resolve_stack_profile.py','scripts/check_knowledge_freshness.py','.github/workflows/ai-expert-release-gate.yml')
+FILES=('scripts/enginectl.py','scripts/runtime_contract.py','scripts/engine_telemetry.py','scripts/review_store.py','scripts/release_gate.py','scripts/build_release_decision.py','scripts/session_checkpoint.py','scripts/check_release_enforcement.py','scripts/profile_repository.py','scripts/resolve_stack_profile.py','scripts/check_knowledge_freshness.py','.github/workflows/ai-expert-release-gate.yml','.cursor/hooks/ai-expert-release-guard.py')
 def version():return json.loads((SOURCE/'engine/manifest.json').read_text())['version']
 def digest(data):return hashlib.sha256(data).hexdigest()
 def sha(p):
@@ -19,6 +19,21 @@ def current_block(t):
     text=p.read_text()
     if START not in text or END not in text:return None
     return START+text.split(START,1)[1].split(END,1)[0]+END
+def hook_ok(t):
+    p=t/'.cursor/hooks.json'
+    if not p.exists():return False
+    try:d=json.loads(p.read_text())
+    except Exception:return False
+    return any(isinstance(x,dict) and x.get('command')==HOOK_CMD for x in d.get('hooks',{}).get('beforeShellExecution',[]))
+def write_hooks(t):
+    p=t/'.cursor/hooks.json';p.parent.mkdir(parents=True,exist_ok=True)
+    if p.exists():
+        try:d=json.loads(p.read_text())
+        except Exception:raise SystemExit('existing .cursor/hooks.json is invalid JSON; cannot merge safely')
+    else:d={'version':1,'hooks':{}}
+    d.setdefault('version',1);hooks=d.setdefault('hooks',{});arr=hooks.setdefault('beforeShellExecution',[])
+    if not any(isinstance(x,dict) and x.get('command')==HOOK_CMD for x in arr):arr.append({'command':HOOK_CMD})
+    p.write_text(json.dumps(d,indent=2)+'\n')
 def managed_paths(t,old=None):
     rel=list(DIRS)+list(FILES)
     if old:rel+=old.get('managed_dirs',[])+old.get('managed_files',[])
@@ -42,8 +57,9 @@ def drift(t,d):
         elif sha(p)!=h:f.append('modified '+r)
     expected=d.get('agents_block_sha256');block=current_block(t)
     if expected and (block is None or digest(block.encode())!=expected):f.append('modified AGENTS managed block')
+    if d.get('cursor_release_hook') and not hook_ok(t):f.append('missing AI Expert Cursor release hook')
     return f
-def backup(t,paths,include_agents=False,include_state=False):
+def backup(t,paths,include_agents=False,include_state=False,include_hooks=False):
     b=t/'.ai-expert-engine-backup'/(time.strftime('%Y%m%d-%H%M%S')+f'-{time.time_ns()%1000000:06d}')
     for p in paths:
         if not p.exists():continue
@@ -51,6 +67,7 @@ def backup(t,paths,include_agents=False,include_state=False):
         if p.is_dir():shutil.copytree(p,d,dirs_exist_ok=True)
         else:shutil.copy2(p,d)
     if include_agents and (t/'AGENTS.md').exists():b.mkdir(parents=True,exist_ok=True);shutil.copy2(t/'AGENTS.md',b/'AGENTS.md')
+    if include_hooks and (t/'.cursor/hooks.json').exists():(b/'.cursor').mkdir(parents=True,exist_ok=True);shutil.copy2(t/'.cursor/hooks.json',b/'.cursor/hooks.json')
     if include_state and (t/'.ai-expert-engine').exists():shutil.copytree(t/'.ai-expert-engine',b/'.ai-expert-engine-state',dirs_exist_ok=True)
     return b
 def write_agents(t):
@@ -89,17 +106,17 @@ def apply(t,force,update):
         if not mp.exists():raise SystemExit('not an engine-managed install')
         old=json.loads(mp.read_text());changes=drift(t,old)
         if changes and not force:raise SystemExit('managed install has local drift; run doctor or use --force to back up:\n - '+'\n - '.join(changes))
-        if changes and force:backup(t,managed_paths(t,old),include_agents=True,include_state=True)
+        if changes and force:backup(t,managed_paths(t,old),include_agents=True,include_state=True,include_hooks=True)
         if old.get('version')!=version():
-            if not changes:backup(t,[],include_state=True)
+            if not changes:backup(t,[],include_state=True,include_hooks=True)
             history=run_migrations(t,old.get('version','0.0.0'),version())
     elif not mp.exists():
         conflicts=[p for p in managed_paths(t) if p.exists()]
         if conflicts and not force:raise SystemExit('managed engine paths already exist; use --force to back up')
-        if conflicts and force:backup(t,conflicts,include_agents=True)
+        if conflicts and force:backup(t,conflicts,include_agents=True,include_hooks=True)
     else:raise SystemExit('engine is already installed; use update')
-    clean_copy(t,old);write_agents(t);block=current_block(t) or ''
-    previous=(old or{}).get('migration_history',[]);mp.write_text(json.dumps({'name':'ai-expert-engine','version':version(),'managed_dirs':list(DIRS),'managed_files':list(FILES),'files':snapshot(t),'agents_block_sha256':digest(block.encode()),'migration_history':previous+history},indent=2)+'\n');print(f"engine {version()} {'updated' if update else 'installed'}")
+    clean_copy(t,old);write_agents(t);write_hooks(t);block=current_block(t) or ''
+    previous=(old or{}).get('migration_history',[]);mp.write_text(json.dumps({'name':'ai-expert-engine','version':version(),'managed_dirs':list(DIRS),'managed_files':list(FILES),'files':snapshot(t),'agents_block_sha256':digest(block.encode()),'cursor_release_hook':HOOK_CMD,'migration_history':previous+history},indent=2)+'\n');print(f"engine {version()} {'updated' if update else 'installed'}")
 def doctor(t):
     t=t.resolve();p=t/MANIFEST
     if not p.exists():print('missing install manifest');return 1

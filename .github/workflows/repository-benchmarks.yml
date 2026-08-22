@@ -1,6 +1,14 @@
 name: Repository Benchmarks
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'benchmarks/corpus.json'
+      - 'engine/profiles/**'
+      - 'scripts/profile_repository.py'
+      - 'scripts/resolve_stack_profile.py'
+      - 'scripts/run_repository_benchmarks.py'
+      - '.github/workflows/repository-benchmarks.yml'
 permissions:
   contents: read
 jobs:
