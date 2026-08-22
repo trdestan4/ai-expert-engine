@@ -1,0 +1,37 @@
+name: Validate Skills
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run skill validators
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          validators=(scripts/validate_*.py)
+          if (( ${#validators[@]} == 0 )); then
+            echo "No validators found"
+            exit 1
+          fi
+          for validator in "${validators[@]}"; do
+            echo "::group::$validator"
+            python "$validator"
+            echo "::endgroup::"
+          done
