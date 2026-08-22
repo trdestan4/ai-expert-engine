@@ -2,6 +2,19 @@
 
 Select reviewers by changed boundary and risk, not by habit.
 
+## Runtime rule
+On Cursor, canonical independent reviewer executors are project subagents under `.cursor/agents/`:
+- `code-reviewer`
+- `design-reviewer`
+- `security-reviewer`
+- `performance-reviewer`
+- `qa-reviewer`
+- `release-reviewer`
+
+Each selected reviewer must run in its own subagent context for the pass to count as independent. `engine/reviewers/*.md` defines the review contract and lens; it is not itself an isolated execution mechanism.
+
+If a runtime lacks isolated subagents, record `review_mode: non-independent` and do not use that pass to satisfy mandatory R3/R4 independent-review evidence.
+
 ## Default lenses
 - code-reviewer: non-trivial implementation/refactor, type/error/dependency correctness.
 - design-reviewer: user-facing visual/UX/product-surface changes.
@@ -18,4 +31,4 @@ Select reviewers by changed boundary and risk, not by habit.
 - broad multi-domain release: choose only relevant lenses, but release-reviewer is mandatory.
 
 ## Exclusions
-Do not activate reviewers with no changed boundary to inspect. A reviewer may request a domain specialist when the evidence needed exceeds its lens.
+Do not activate reviewers with no changed boundary to inspect. A reviewer may request a domain specialist when evidence needed exceeds its lens.

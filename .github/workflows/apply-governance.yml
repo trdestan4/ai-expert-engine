@@ -1,0 +1,27 @@
+name: Apply Governance
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_ADMIN_TOKEN: ${{ secrets.ENGINE_ADMIN_TOKEN }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - shell: bash
+        run: |
+          if [ -z "$GITHUB_ADMIN_TOKEN" ]; then
+            echo "ENGINE_ADMIN_TOKEN secret with Administration:write is required"
+            exit 1
+          fi
+      - run: python scripts/apply_github_governance.py --repo "${{ github.repository }}"
+      - env:
+          GITHUB_TOKEN: ${{ secrets.ENGINE_ADMIN_TOKEN }}
+        run: python scripts/check_github_governance.py --repo "${{ github.repository }}"
