@@ -46,8 +46,10 @@ def main():
     if len(profiles)<20 or len({x.get('dimension') for x in profiles})<5:e.append('stack profile breadth/composition too small')
     if run(ROOT/'scripts/check_knowledge_freshness.py').returncode:e.append('offline knowledge freshness check failed')
     if run(ROOT/'scripts/check_release_enforcement.py','--root',ROOT).returncode:e.append('repository production workflow release enforcement check failed')
-    if run(ROOT/'scripts/validate_semantics.py').returncode:e.append('semantic validation failed')
-    if run(ROOT/'scripts/validate_master_depth.py').returncode:e.append('master depth validation failed')
+    sem=run(ROOT/'scripts/validate_semantics.py')
+    if sem.returncode:e.append('semantic validation failed: '+((sem.stdout or '')+(sem.stderr or '')).strip().replace('\n',' | '))
+    md=run(ROOT/'scripts/validate_master_depth.py')
+    if md.returncode:e.append('master depth validation failed: '+((md.stdout or '')+(md.stderr or '')).strip().replace('\n',' | '))
     if e:print('runtime hardening validation FAILED');[print(' -',x) for x in e];return 1
     print('runtime hardening validation PASSED');return 0
 if __name__=='__main__':raise SystemExit(main())
