@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Business Growth Change",
+  "type": "object",
+  "required": ["surface", "goal", "primary_skill", "risks", "verification"],
+  "properties": {
+    "surface": {"type":"string"},
+    "goal": {"type":"string"},
+    "primary_skill": {"enum":["seo","content-conversion","ecommerce","saas-platform"]},
+    "risks": {"type":"array","items":{"type":"string"}},
+    "commercial_state_changes": {"type":"array","items":{"type":"string"}},
+    "search_indexation_changes": {"type":"array","items":{"type":"string"}},
+    "tenant_entitlement_changes": {"type":"array","items":{"type":"string"}},
+    "verification": {"type":"array","minItems":1,"items":{"type":"string"}}
+  },
+  "additionalProperties": true
+}

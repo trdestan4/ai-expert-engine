@@ -14,7 +14,8 @@ The engine uses a small number of discoverable domain skills with deep expertise
 - Phase 03 — Backend / API Engineering: complete
 - Phase 04 — Data / Platform: complete
 - Phase 05 — Quality Engineering: complete
-- Next phases: Business, Production, AI/Assets, Final Control
+- Phase 06 — Business / Growth: complete
+- Next phases: Production, AI/Assets, Final Control
 
 ## Phase 00 — Core / AI Brain
 
@@ -53,6 +54,14 @@ Provides security, privacy/compliance engineering, performance, testing/QA, acce
 Security uses threat modeling and OWASP ASVS-aligned verification, secure coding, abuse controls, secrets/supply-chain review and release-blocking severity. Privacy maps personal-data lifecycle, minimization, consent/rights/retention and requires current authoritative verification for jurisdiction-specific legal claims. Performance uses measured evidence, current Core Web Vitals and client/server/load budgets. Testing selects unit/integration/contract/E2E/visual/security/load coverage by risk. Accessibility uses WCAG 2.2, semantic/native UI, keyboard/focus, accessible authentication and automated plus manual verification. Code quality governs maintainability, type/error/dependency hygiene, safe refactoring and technical debt.
 
 Quality skills are not loaded automatically as a bundle: routing activates only the gates justified by the change's actual risk. Critical security and core-accessibility failures can block release.
+
+## Phase 06 — Business / Growth
+
+Provides search discoverability, conversion messaging, ecommerce domain logic and SaaS platform/business-model architecture.
+
+SEO covers crawl/indexation, information architecture, structured data, ecommerce/local/international search, migrations and current AI/generative-search guidance without ranking guarantees. Content/conversion covers evidence-based value propositions, landing pages, UX writing, objections, trust and ethical CRO without dark patterns. Ecommerce covers product/variant/SKU, authoritative pricing, inventory, cart/checkout, order/refund lifecycles, merchandising and analytics. SaaS covers organizations/workspaces, memberships, plans, entitlements, seats, subscription lifecycle, usage metering, quotas, operator controls and tenant-aware metrics.
+
+Business skills coordinate rather than replace engineering owners: payments/webhooks stay with integrations, authentication with identity-access, data isolation with database-data/security, and runtime performance with performance.
 
 ## Quality automation
 
