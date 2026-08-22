@@ -1,0 +1,16 @@
+{
+  "version":1,
+  "policy":{"verified_on":"2026-08-22","critical_overdue_multiplier":2},
+  "sources":[
+    {"id":"cursor-skills","url":"https://prod.cursor.com/docs/skills","owners":["master-agent","multi-review"],"last_verified":"2026-08-22","max_age_days":30,"critical":true,"expected_marker":"Agent Skills"},
+    {"id":"cursor-python-sdk","url":"https://prod.cursor.com/docs/sdk/python","owners":["ai-engineering","multi-review"],"last_verified":"2026-08-22","max_age_days":30,"critical":true,"expected_marker":"Subagents"},
+    {"id":"next-docs","url":"https://nextjs.org/docs","owners":["react-nextjs"],"last_verified":"2026-08-22","max_age_days":30,"critical":true,"expected_marker":"App Router"},
+    {"id":"supabase-rls","url":"https://supabase.com/docs/guides/database/postgres/row-level-security","owners":["database-data","identity-access","security"],"last_verified":"2026-08-22","max_age_days":45,"critical":true,"expected_marker":"Row Level Security"},
+    {"id":"owasp-asvs","url":"https://owasp.org/www-project-application-security-verification-standard/","owners":["security"],"last_verified":"2026-08-22","max_age_days":90,"critical":true,"version":"5.0.0","expected_marker":"5.0.0"},
+    {"id":"wcag22","url":"https://www.w3.org/TR/WCAG22/","owners":["accessibility"],"last_verified":"2026-08-22","max_age_days":180,"critical":true,"version":"2.2","expected_marker":"WCAG 2.2"},
+    {"id":"mcp-spec","url":"https://blog.modelcontextprotocol.io/posts/2026-07-28/","owners":["ai-engineering"],"last_verified":"2026-08-22","max_age_days":30,"critical":true,"version":"2026-07-28","expected_marker":"2026-07-28"},
+    {"id":"otel-semconv","url":"https://opentelemetry.io/docs/specs/semconv/","owners":["observability-sre"],"last_verified":"2026-08-22","max_age_days":60,"critical":false,"version":"1.44.0","expected_marker":"1.44.0"},
+    {"id":"openapi","url":"https://spec.openapis.org/oas/latest.html","owners":["api-engineering"],"last_verified":"2026-08-21","max_age_days":90,"critical":false},
+    {"id":"postgresql","url":"https://www.postgresql.org/docs/current/","owners":["database-data"],"last_verified":"2026-08-21","max_age_days":90,"critical":false}
+  ]
+}

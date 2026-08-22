@@ -1,0 +1,10 @@
+{
+  "version":1,
+  "contracts":{
+    "routing":"engine/schemas/runtime-routing.schema.json",
+    "reviewer-finding":"engine/schemas/reviewer-finding.schema.json",
+    "release-decision":"engine/schemas/release-decision.schema.json",
+    "runtime-telemetry":"engine/schemas/runtime-telemetry.schema.json",
+    "final-control":"engine/schemas/final-control-result.schema.json"
+  }
+}
