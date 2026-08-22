@@ -13,7 +13,8 @@ The engine uses a small number of discoverable domain skills with deep expertise
 - Phase 02 — Web Engineering / Frontend: complete
 - Phase 03 — Backend / API Engineering: complete
 - Phase 04 — Data / Platform: complete
-- Next phases: Quality, Business, Production, AI/Assets, Final Control
+- Phase 05 — Quality Engineering: complete
+- Next phases: Business, Production, AI/Assets, Final Control
 
 ## Phase 00 — Core / AI Brain
 
@@ -44,6 +45,14 @@ Provides identity/access architecture, PostgreSQL/Supabase data engineering, rea
 Identity decisions cover sessions, OAuth/OIDC, passkeys/MFA, recovery, RBAC/ABAC and tenant/resource permissions. Data decisions cover constraints, SQL/indexes/query plans, transactions/locking/pooling, production migrations, backups/recovery, Supabase RLS, Redis and vector lifecycle. Async decisions cover WebSockets/SSE, queues/workers, retries/DLQ, cron, idempotency, outbox and eventual consistency. Integration decisions cover webhooks, payments/billing, notifications, provider rate limits/timeouts and reconciliation. Storage decisions cover signed URLs, direct/multipart uploads, content validation, quarantine, media processing, CDN/versioning and object lifecycle.
 
 Critical boundaries are deny-by-default for cross-tenant access, client-exposed privileged keys, duplicate side effects, unverified webhooks, unsafe live migrations and unauthorized object signing.
+
+## Phase 05 — Quality Engineering
+
+Provides security, privacy/compliance engineering, performance, testing/QA, accessibility and senior code-quality gates.
+
+Security uses threat modeling and OWASP ASVS-aligned verification, secure coding, abuse controls, secrets/supply-chain review and release-blocking severity. Privacy maps personal-data lifecycle, minimization, consent/rights/retention and requires current authoritative verification for jurisdiction-specific legal claims. Performance uses measured evidence, current Core Web Vitals and client/server/load budgets. Testing selects unit/integration/contract/E2E/visual/security/load coverage by risk. Accessibility uses WCAG 2.2, semantic/native UI, keyboard/focus, accessible authentication and automated plus manual verification. Code quality governs maintainability, type/error/dependency hygiene, safe refactoring and technical debt.
+
+Quality skills are not loaded automatically as a bundle: routing activates only the gates justified by the change's actual risk. Critical security and core-accessibility failures can block release.
 
 ## Quality automation
 

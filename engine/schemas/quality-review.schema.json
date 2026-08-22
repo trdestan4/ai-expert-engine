@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Quality Review Plan",
+  "type": "object",
+  "required": ["riskLevel", "activeGates", "evidence", "releaseDecision"],
+  "properties": {
+    "riskLevel": {"type":"string","enum":["R0","R1","R2","R3","R4"]},
+    "activeGates": {"type":"array","items":{"type":"string","enum":["security","privacy-compliance","performance","testing-qa","accessibility","code-quality"]},"uniqueItems":true},
+    "evidence": {"type":"array","items":{"type":"object","required":["gate","result"],"properties":{"gate":{"type":"string"},"result":{"type":"string","enum":["pass","fail","not-applicable","risk-accepted"]},"notes":{"type":"string"}}}},
+    "releaseDecision": {"type":"string","enum":["ready","blocked","ready-with-explicit-risk"]},
+    "residualRisks": {"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties": false
+}
