@@ -1,10 +1,10 @@
 {
   "version":1,
   "external":[
-    {"id":"next-postgres-auth","repo":"vercel/nextjs-postgres-auth-starter","commit":"fde8ecf1da9337223081f70cf88b420060039d6e","expected_any_profile":["next-postgres","marketing-site"],"focus":["nextjs","postgres","auth"]},
-    {"id":"fastapi-full-stack","repo":"fastapi/full-stack-fastapi-template","commit":"68adb40d37425f6f8668ec7e5a054500d045e43e","expected_any_profile":["react-fastapi","dashboard"],"focus":["react","fastapi","api"]},
-    {"id":"vercel-commerce","repo":"vercel/commerce","commit":"3761e52e60df9c6a316e067dbfd7032e494d3634","expected_any_profile":["ecommerce-next","marketing-site"],"focus":["nextjs","ecommerce"]},
-    {"id":"owasp-nodegoat","repo":"OWASP/NodeGoat","commit":"c5cb68a7084e4ae7dcc60e6a98768720a81841e8","expected_any_profile":[],"focus":["security","legacy-node","intentionally-vulnerable"]}
+    {"id":"next-postgres-auth","repo":"vercel/nextjs-postgres-auth-starter","commit":"fde8ecf1da9337223081f70cf88b420060039d6e","expected_any_profile":["next-postgres"],"focus":["nextjs","postgres","auth"]},
+    {"id":"fastapi-full-stack","repo":"fastapi/full-stack-fastapi-template","commit":"68adb40d37425f6f8668ec7e5a054500d045e43e","expected_any_profile":["react-fastapi"],"focus":["react","fastapi","api"]},
+    {"id":"vercel-commerce","repo":"vercel/commerce","commit":"3761e52e60df9c6a316e067dbfd7032e494d3634","expected_any_profile":["ecommerce-next"],"focus":["nextjs","ecommerce"]},
+    {"id":"owasp-nodegoat","repo":"OWASP/NodeGoat","commit":"c5cb68a7084e4ae7dcc60e6a98768720a81841e8","expected_any_profile":["node-api"],"focus":["security","legacy-node","intentionally-vulnerable"]}
   ],
   "fixture_classes":["saas-next-supabase","migration-heavy","broken-ci","legacy-react","large-monorepo"],
   "rules":{"pin_commit":true,"never_execute_untrusted_repo_code":true,"profile_only_by_default":true}
