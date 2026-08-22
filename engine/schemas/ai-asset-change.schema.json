@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Asset Change Review",
+  "type": "object",
+  "required": ["primarySkill", "risk", "evidence", "qualityGates"],
+  "properties": {
+    "primarySkill": {"enum": ["ai-engineering", "asset-production"]},
+    "risk": {"enum": ["R0", "R1", "R2", "R3", "R4"]},
+    "subdomains": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["model-provider", "structured-output", "tools-agents", "rag-retrieval", "mcp", "evals-guardrails", "streaming-cost", "image-editing", "svg-icons", "3d-video-motion", "responsive-delivery", "provenance", "asset-performance"]},
+      "uniqueItems": true
+    },
+    "evidence": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "qualityGates": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "specialistEscalations": {"type": "array", "items": {"type": "string"}},
+    "unresolvedRisks": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": false
+}
