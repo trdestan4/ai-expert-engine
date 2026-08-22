@@ -136,9 +136,11 @@ def validate() -> list[str]:
             errors.append(f"release-readiness missing marker: {marker}")
 
     multi_text = (ROOT / ".codex/skills/multi-review/SKILL.md").read_text(encoding="utf-8").lower()
-    for marker in ("reviewer independence", "severity and confidence", "majority vote", "accepted risk"):
+    for marker in ("severity and confidence", "majority vote", "accepted risk"):
         if marker not in multi_text:
             errors.append(f"multi-review missing marker: {marker}")
+    if not any(marker in multi_text for marker in ("separate reviewer context", "separate context", "isolated reviewer", "runtime isolation")):
+        errors.append("multi-review missing isolated reviewer independence semantics")
 
     audit_text = (ROOT / ".codex/skills/audit-review/SKILL.md").read_text(encoding="utf-8").lower()
     for marker in ("risk map", "sample evidence", "critical journeys", "systemic", "coverage limitations"):
@@ -154,8 +156,8 @@ def validate() -> list[str]:
     phase_ids = [str(p.get("id")) for p in phases]
     if phase_ids != [f"{i:02d}" for i in range(10)]:
         errors.append(f"manifest phase sequence invalid: {phase_ids}")
-    if manifest.get("status") != "complete":
-        errors.append("manifest status must be complete")
+    if manifest.get("status") not in {"complete", "hardened"}:
+        errors.append("manifest status must be complete or hardened")
     if set(manifest.get("reviewers", [])) != {r.removesuffix(".md") for r in REVIEWERS}:
         errors.append("manifest reviewer list mismatch")
 
