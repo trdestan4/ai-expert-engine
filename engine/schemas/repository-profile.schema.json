@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ai-expert-engine.local/schemas/repository-profile.schema.json",
+  "title": "Repository Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["stack", "architecture", "changeSurface", "unknowns"],
+  "properties": {
+    "stack": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["area", "value", "confidence", "evidence"],
+        "properties": {
+          "area": {"type": "string"},
+          "value": {"type": "string"},
+          "confidence": {"enum": ["verified", "strong-inference", "unknown"]},
+          "evidence": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "architecture": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "conventions": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "changeSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["direct", "dependent", "riskBoundaries", "unrelated"],
+      "properties": {
+        "direct": {"type": "array", "items": {"type": "string"}},
+        "dependent": {"type": "array", "items": {"type": "string"}},
+        "riskBoundaries": {"type": "array", "items": {"type": "string"}},
+        "unrelated": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
