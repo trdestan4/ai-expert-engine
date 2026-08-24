@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Deterministic Master Benchmark browser fixture">
+  <title>Master Benchmark Fixture</title>
+  <style>
+    :root{font-family:system-ui,sans-serif;color-scheme:light dark}
+    *{box-sizing:border-box}body{margin:0;line-height:1.5}
+    header,main,footer{width:min(72rem,calc(100% - 2rem));margin:auto}
+    header{display:flex;align-items:center;justify-content:space-between;padding:1rem 0}
+    nav ul{display:flex;gap:1rem;list-style:none;padding:0;margin:0}
+    main{min-height:70vh;padding:4rem 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .card{border:1px solid currentColor;border-radius:1rem;padding:1rem;min-width:0}
+    button{font:inherit;padding:.65rem 1rem}:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+    @media(max-width:700px){header{align-items:flex-start;gap:1rem;flex-direction:column}.grid{grid-template-columns:1fr}main{padding:2rem 0}}
+    @media(prefers-reduced-motion:no-preference){.card{transition:transform .2s ease}.card:hover{transform:translateY(-2px)}}
+  </style>
+</head>
+<body>
+  <header><strong>AI Expert Engine</strong><nav aria-label="Primary"><ul><li><a href="#quality">Quality</a></li><li><a href="#evidence">Evidence</a></li></ul></nav></header>
+  <main>
+    <h1>Master Benchmark Fixture</h1>
+    <p>This page exists only to prove that the cross-browser measurement harness can navigate, inspect accessibility, capture screenshots and exercise responsive states.</p>
+    <section id="quality" aria-labelledby="quality-title">
+      <h2 id="quality-title">Quality domains</h2>
+      <div class="grid">
+        <article class="card"><h3>Deterministic</h3><p>Hard gates remain authoritative.</p></article>
+        <article class="card"><h3>Cross-browser</h3><p>Chromium, Firefox and WebKit are probed.</p></article>
+        <article class="card"><h3>Accessible</h3><p>Semantic landmarks and keyboard-visible focus are present.</p></article>
+      </div>
+    </section>
+    <section id="evidence" aria-labelledby="evidence-title"><h2 id="evidence-title">Evidence</h2><button type="button" id="probe">Run interaction check</button><p id="status" aria-live="polite">Ready.</p></section>
+  </main>
+  <footer><small>Deterministic smoke fixture.</small></footer>
+  <script>document.getElementById('probe').addEventListener('click',()=>{document.getElementById('status').textContent='Interaction passed.'})</script>
+</body>
+</html>
