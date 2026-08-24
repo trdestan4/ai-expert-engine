@@ -34,6 +34,17 @@ This repository defines a token-efficient, production-grade master expert system
 - `threejs-webgl` owns runtime resources; `three-d-asset-pipeline` owns source/export/compression; `realtime-shaders` owns custom GPU effect code. Do not blur these boundaries.
 - A creative experience plan can prove completeness of these contracts; it does not prove taste, accessibility, performance or runtime correctness by itself.
 
+## Master benchmark discipline
+- The Master Benchmark Lab is test infrastructure, not a 51st skill and not a new routing phase.
+- Public scenarios live under `benchmarks/master/`; hidden/holdout packs must remain outside the candidate workspace.
+- Candidate-authored scores or pass claims are advisory only and never count as deterministic evidence.
+- Full/Release certification requires the evidence types declared in benchmark config; Release repeats the full public suite five times and applies a variance penalty.
+- Subjective expert judgment may score taste, architecture and interpretation but can never override functional, security, accessibility, testing-integrity, release-integrity or hidden-leakage hard gates.
+- Browser evidence must identify engine, viewport and environment. Cross-browser release evidence covers Chromium, Firefox and WebKit.
+- Never update a visual or score baseline merely to make a regression disappear. Baseline promotion is an intentional reviewed act.
+- Never fabricate measured performance, accessibility, visual, browser or test results. Unknown evidence remains unknown and may block certification.
+- Benchmark evidence tied to a different candidate, environment fingerprint or tampered hash is invalid.
+
 ## Runtime evidence discipline
 For C2+ work and especially R3/R4, use local runtime contracts/tools when available rather than leaving important routing/review/release state only in prose.
 
@@ -53,4 +64,4 @@ Independent reviewer isolation is necessary but not sufficient. A reviewer must 
 Version-sensitive claims must follow repository versions first. `engine/knowledge/sources.json` records freshness windows and assertions for external standards/providers. When a critical source is stale or current behavior materially affects the decision, verify the official source before relying on memory.
 
 ## Completion standard
-A task is complete only when the requested outcome is implemented or answered, material risks are addressed, relevant checks pass, mandatory independent review is complete, runtime/creative evidence is current where required, and unresolved limitations are stated plainly. Production work requiring a final gate must report both the release decision and whether it is technically enforced or advisory.
+A task is complete only when the requested outcome is implemented or answered, material risks are addressed, relevant checks pass, mandatory independent review is complete, runtime/creative evidence is current where required, and unresolved limitations are stated plainly. Production work requiring a final gate must report both the release decision and whether it is technically enforced or advisory. Benchmark certification must likewise report whether evidence is deterministic, subjective, missing, stale, tampered or environment-mismatched rather than collapsing all evidence into a single unqualified score.
