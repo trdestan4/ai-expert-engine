@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "name": "AI Expert Engine Master Benchmark",
+  "scenario_count": 40,
+  "domain_count": 20,
+  "score_scale": 100,
+  "certification": {
+    "minimum_score": 90,
+    "master_score": 95,
+    "maximum_variance_penalty": 8
+  },
+  "modes": {
+    "quick": {
+      "repetitions": 1,
+      "scenario_limit": 8,
+      "browsers": ["chromium"],
+      "required_evidence": ["functional", "probe"]
+    },
+    "full": {
+      "repetitions": 3,
+      "scenario_limit": 40,
+      "browsers": ["chromium", "firefox", "webkit"],
+      "required_evidence": ["functional", "probe", "static", "tests", "expert_judge"]
+    },
+    "release": {
+      "repetitions": 5,
+      "scenario_limit": 40,
+      "browsers": ["chromium", "firefox", "webkit"],
+      "required_evidence": ["functional", "probe", "static", "tests", "expert_judge", "release"]
+    }
+  },
+  "hard_gates": [
+    "candidate-command-exit",
+    "functional-critical",
+    "security-blocker",
+    "accessibility-blocker",
+    "testing-integrity",
+    "release-evidence-integrity",
+    "hidden-case-leakage"
+  ],
+  "scoring": {
+    "deterministic_weight": 0.7,
+    "expert_weight": 0.3,
+    "variance_penalty": {
+      "stdev_divisor": 4.0,
+      "max_points": 8.0
+    },
+    "missing_required_domain": "fail"
+  },
+  "domains": [
+    {"id":"functional-correctness","weight":10,"hard_gate":true,"description":"Core user flows, state transitions, error handling and task completion."},
+    {"id":"visual-fidelity","weight":8,"hard_gate":false,"description":"Layout, hierarchy, spacing, typography and reference fidelity."},
+    {"id":"responsive-art-direction","weight":5,"hard_gate":false,"description":"Intentional desktop/tablet/mobile composition rather than simple shrinkage."},
+    {"id":"interaction-quality","weight":5,"hard_gate":false,"description":"Input, focus, hover, touch and interaction-state correctness."},
+    {"id":"motion-quality","weight":4,"hard_gate":false,"description":"Purposeful timing, easing, choreography, reduced-motion behavior and cleanup."},
+    {"id":"graphics-3d","weight":3,"hard_gate":false,"description":"WebGL/3D lifecycle, fallback, resource discipline and visual stability when applicable."},
+    {"id":"accessibility","weight":7,"hard_gate":true,"description":"WCAG-oriented semantics, keyboard use, focus, contrast and assistive-technology support."},
+    {"id":"performance","weight":7,"hard_gate":true,"description":"Load/runtime budgets, rendering stability, network weight and interaction latency."},
+    {"id":"semantic-html","weight":4,"hard_gate":false,"description":"Document landmarks, headings, controls, forms and native semantics."},
+    {"id":"seo-discoverability","weight":4,"hard_gate":false,"description":"Metadata, crawl/index fundamentals, structured information and content discoverability."},
+    {"id":"security","weight":7,"hard_gate":true,"description":"Trust boundaries, injection/secret risks, dependency/supply-chain and unsafe browser/server behavior."},
+    {"id":"privacy-compliance","weight":3,"hard_gate":false,"description":"Data minimization, consent/retention awareness and privacy-safe defaults."},
+    {"id":"resilience-fallbacks","weight":5,"hard_gate":true,"description":"Graceful degradation, error states, no-JS/no-WebGL fallbacks and recovery."},
+    {"id":"browser-compatibility","weight":4,"hard_gate":false,"description":"Chromium/Firefox/WebKit compatibility and capability-aware enhancement."},
+    {"id":"code-quality","weight":4,"hard_gate":false,"description":"Maintainability, typing, errors, dependency hygiene and implementation clarity."},
+    {"id":"architecture","weight":4,"hard_gate":false,"description":"Boundaries, composition, ownership, extensibility and avoidance of accidental complexity."},
+    {"id":"data-api-integrity","weight":4,"hard_gate":false,"description":"Contracts, validation, idempotency, persistence and data consistency when applicable."},
+    {"id":"testing-evidence","weight":4,"hard_gate":true,"description":"Deterministic tests, meaningful assertions, regression evidence and reproducibility."},
+    {"id":"release-discipline","weight":3,"hard_gate":true,"description":"Candidate-bound evidence, environment correctness, rollback readiness and gate integrity."},
+    {"id":"product-originality","weight":5,"hard_gate":false,"description":"Fit to problem, non-generic solution quality, coherent creative thesis and useful differentiation."}
+  ],
+  "evidence_trust": {
+    "candidate_self_report": "advisory_only",
+    "deterministic_probe": "trusted_when_environment_fingerprint_matches",
+    "expert_judge": "subjective_only_never_overrides_hard_gate",
+    "hidden_pack": "must_reside_outside_candidate_workspace",
+    "hash_algorithm": "sha256"
+  },
+  "browser_defaults": {
+    "viewports": [
+      {"name":"mobile","width":390,"height":844},
+      {"name":"tablet","width":1024,"height":768},
+      {"name":"desktop","width":1440,"height":900}
+    ],
+    "navigation_timeout_ms": 30000,
+    "settle_ms": 350,
+    "screenshot_diff_threshold": 0.001
+  }
+}
