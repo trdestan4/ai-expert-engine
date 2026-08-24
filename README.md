@@ -1,71 +1,52 @@
-# AI Expert Engine v1.3
+# AI Expert Engine v1.4 — Master Hardened + Creative Engineering Expansion
 
-A token-efficient master expert-engine architecture for production web design, software engineering, AI systems, asset production and release control in Cursor and Codex.
+AI Expert Engine is a token-efficient, production-grade expert system for Cursor/Codex-style coding agents. It routes work to narrow domain owners, separates diagnosis/implementation/review/release authority, preserves evidence for high-risk work, and now includes a dedicated creative-engineering layer for high-fidelity motion, 3D, shader, reference-reconstruction and visual-QA work.
 
-**Engine status: v1.3 master-hardened — 43 discoverable skills + 6 isolated Cursor reviewer subagents. No new discoverable skill was added in v1.3.**
+## System shape
+- **50 discoverable skills** under `.codex/skills/`
+- **6 isolated Cursor reviewers** under `.cursor/agents/`
+- deterministic repository profiling, routing, runtime contracts, checkpoints, review evidence and release gates
+- official-source freshness registry and offline behavioral/reviewer/repository eval corpora
+- installer/update/migration flow with drift protection and production release guard
 
-## v1.3 master hardening
-- release decisions are bound to exact candidate, target environment, evidence hash and expiry;
-- expired accepted risks become effective blockers again instead of silently remaining accepted forever;
-- Cursor production-shell enforcement covers a wider set of deploy/destructive CLIs and passes the target environment into the gate;
-- runtime schema validation supports local refs, conditional schemas, const, composition keywords and date-time formats used by engine contracts;
-- semantic validation now scans routing, SKILL bodies, policies, reviewer contracts and AGENTS for stale ownership language;
-- repository profiling exposes truncation instead of silently treating partial large-monorepo scans as complete;
-- stack resolution composes solution, application, data, infrastructure and experience profiles instead of forcing unrelated axes into one winner;
-- knowledge freshness tracks 30+ official standards/framework/provider sources with owner coverage and multi-marker online assertions;
-- reviewer agents load their owning expert skill and deep references before independent review;
-- creative/product, quality, business and production references are deepened into master playbooks while the discoverable skill count remains bounded;
-- reviewer calibration, behavioral evals and real repository benchmarks are expanded with ambiguous/adversarial cases.
+## Phases
+- **Phase 00 — Core / AI Brain:** orchestration, repository intelligence, planning, debugging.
+- **Phase 01 — Creative / Product Intelligence:** product strategy, creative direction, brand, anti-generic design, color, typography, visual art direction, motion direction, UX/UI.
+- **Phase 02 — Web Engineering / Frontend:** browser platform, frontend engineering, React/Next.js, software architecture.
+- **Phase 03 — Backend / API Engineering:** backend, APIs, identity/access, integrations, realtime/async.
+- **Phase 04 — Data / Platform:** database/data, storage/media, SaaS platform.
+- **Phase 05 — Quality Engineering:** testing/QA, security, performance, accessibility, privacy/compliance, code quality.
+- **Phase 06 — Business / Growth:** ecommerce, SEO, content/conversion.
+- **Phase 07 — Production Engineering:** DevOps/deployment, observability/SRE, Git delivery, documentation.
+- **Phase 08 — AI / Asset Production:** AI engineering and production visual assets.
+- **Phase 09 — Final Control:** multi-review, audit-review, release-readiness.
+- **Phase 10 — Creative Engineering Expansion:** design reconstruction/Design DNA, advanced creative frontend, GSAP/ScrollTrigger and web-motion engineering, Three.js/WebGL runtime, realtime shaders, web 3D asset pipeline, and evidence-based visual/motion QA.
 
-Normal Cursor use requires no Cursor API key. API access is optional only for automated live model benchmarks.
+## Phase 10 ownership
+`motion-direction` remains the motion designer; `animation-engineering` owns implementation. `frontend-engineering` remains ordinary semantic/component frontend owner; `creative-frontend` owns advanced visual composition. `threejs-webgl` owns the browser 3D runtime, `three-d-asset-pipeline` owns DCC→glTF delivery, and `realtime-shaders` owns custom GPU effect code. `design-reconstruction` turns references into evidence-tagged design grammar; `visual-qa` proves the implementation against that authority.
 
-## Architecture principle
-The engine keeps a bounded discoverable skill set and loads deep references, composable stack profiles, reviewer agents and deterministic tools only when needed. Complexity C0–C4 and risk R0–R4 remain separate; high-risk work escalates evidence and independent review without loading every skill.
+Material creative experiences can use `engine/schemas/creative-experience-plan.schema.json` and `scripts/creative_experience_checks.py` to ensure responsive modes, reduced motion, 3D fallback/disposal, budgets and QA evidence are not forgotten. Passing this completeness check is not a substitute for real performance, accessibility, functional or visual evidence.
 
-## Build status
-- Phase 00 — Core / AI Brain: complete
-- Phase 01 — Creative / Product Intelligence: complete
-- Phase 02 — Web Engineering / Frontend: complete
-- Phase 03 — Backend / API Engineering: complete
-- Phase 04 — Data / Platform: complete
-- Phase 05 — Quality Engineering: complete
-- Phase 06 — Business / Growth: complete
-- Phase 07 — Production Engineering: complete
-- Phase 08 — AI / Asset Production: complete
-- Phase 09 — Final Control: complete
+## Install / update
+```bash
+python scripts/enginectl.py install /path/to/target-project
+python scripts/enginectl.py doctor /path/to/target-project
+python scripts/enginectl.py update /path/to/target-project
+```
 
-## Phase 00 — Core / AI Brain
-Orchestration, repository intelligence, planning, debugging, token policy, schemas and routing.
-## Phase 01 — Creative / Product Intelligence
-Product strategy, creative direction, brand, anti-generic design, color, typography, visual art, motion and UX/UI.
-## Phase 02 — Web Engineering / Frontend
-Web-platform, frontend, React/Next.js and software architecture with i18n/RTL and non-React framework adapters.
-## Phase 03 — Backend / API Engineering
-Backend/API engineering with Node, Python, Go, JVM/Spring, .NET and Rails runtime adapters.
-## Phase 04 — Data / Platform
-Identity/access, PostgreSQL/Supabase plus multi-database adapters, realtime/async, integrations and storage/media.
-## Phase 05 — Quality Engineering
-Security, privacy/compliance, performance, testing/QA, accessibility and code quality.
-## Phase 06 — Business / Growth
-SEO, content/conversion, ecommerce and SaaS platform logic.
-## Phase 07 — Production Engineering
-Deployment, observability/SRE, Git delivery and docs, including cloud/IaC/Kubernetes guidance.
-## Phase 08 — AI / Asset Production
-Production AI systems and disciplined visual-asset production.
-## Phase 09 — Final Control
-Independent multi-review, systemic audit and candidate/environment-bound release-readiness decisions.
+Repository profiling:
+```bash
+python scripts/profile_repository.py /path/to/target-project
+python scripts/resolve_stack_profile.py /path/to/target-project --all
+```
 
-## Runtime evidence
-`engine/runtime/contracts.json` maps machine-readable runtime contracts. `session_checkpoint.py` protects long-running task state; `engine_telemetry.py` records routing/reviewer/token evidence when available; `review_store.py` persists findings and reactivates expired accepted blockers; `build_release_decision.py` binds a release decision to evidence hashes and expiry; `release_gate.py` enforces candidate + environment + freshness when deployment calls it.
+Creative experience plan completeness:
+```bash
+python scripts/creative_experience_checks.py path/to/creative-experience-plan.json
+```
 
-## Stack intelligence
-`profile_repository.py` records whether repository discovery was truncated. `resolve_stack_profile.py` returns backward-compatible `selected` plus `selected_profiles`, `selected_by_dimension` and merged owners/defaults so SaaS/ecommerce, framework, database, infrastructure and experience context can coexist.
+## Validation
+CI runs every `scripts/validate_*.py` validator plus offline corpus/freshness/release-enforcement checks. Phase 10 has its own validator and behavioral cases covering reference reconstruction, GSAP lifecycle, Three.js disposal/fallback, shader boundaries, glTF optimization, creative CSS, reduced-motion 3D and visual regression.
 
-## Benchmarks and freshness
-Structural CI validates all offline corpora. Optional live Cursor benchmarks exercise routing, context drift and reviewer calibration. Repository benchmarks clone only pinned public commits and do not execute their code. Knowledge freshness is tracked in `engine/knowledge/sources.json` and checked against official sources.
-
-## Distribution
-Use `python scripts/enginectl.py install <project>`, `update`, and `doctor`. Updates detect local drift, back up before forced replacement/migration and record migration history. v1.2→v1.3 invalidates old release-decision artifacts because they lack the new environment/expiry contract. See `docs/INSTALL.md`.
-
-## Governance
-GitHub branch-protection desired state remains in `engine/governance/github.json`. Live `main` protection is intentionally left for the final governance step and is never inferred from repository files.
+## Core rule
+Load the smallest expert set that changes the next decision or proves required evidence. “Premium”, “cinematic”, “Awwwards”, or “3D” never means load every creative specialist by default. Production quality, accessibility, native scroll control, lifecycle cleanup, responsive art direction, graceful fallbacks and measured budgets remain mandatory.

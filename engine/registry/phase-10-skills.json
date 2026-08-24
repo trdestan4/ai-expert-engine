@@ -1,0 +1,12 @@
+{
+  "phase": "10-creative-engineering-expansion",
+  "skills": [
+    {"name":"design-reconstruction","path":".codex/skills/design-reconstruction/SKILL.md","references":["references/reference-analysis.md","references/design-dna-contract.md"]},
+    {"name":"creative-frontend","path":".codex/skills/creative-frontend/SKILL.md","references":["references/advanced-css-responsive-art-direction.md","references/scroll-experience-and-media.md"]},
+    {"name":"animation-engineering","path":".codex/skills/animation-engineering/SKILL.md","references":["references/gsap-scrolltrigger-production.md","references/web-motion-runtimes.md"]},
+    {"name":"threejs-webgl","path":".codex/skills/threejs-webgl/SKILL.md","references":["references/scene-runtime-lifecycle.md","references/loading-postprocessing-interaction.md"]},
+    {"name":"realtime-shaders","path":".codex/skills/realtime-shaders/SKILL.md","references":["references/shader-authoring.md","references/gpu-effects-performance.md"]},
+    {"name":"three-d-asset-pipeline","path":".codex/skills/three-d-asset-pipeline/SKILL.md","references":["references/gltf-production-pipeline.md","references/compression-textures-lod.md"]},
+    {"name":"visual-qa","path":".codex/skills/visual-qa/SKILL.md","references":["references/visual-regression-method.md","references/motion-cross-device-qa.md"]}
+  ]
+}

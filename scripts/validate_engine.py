@@ -17,15 +17,15 @@ def fm(t):
             k,v=line.split(':',1);d[k.strip()]=v.strip().strip("\"'")
     return d
 def validate():
-    e=[];required=[MANIFEST,SKILLS,README,ROOT/'.github/workflows/validate-skills.yml',ROOT/'evals/master-regression.md',ROOT/'evals/behavioral/cases.jsonl',ROOT/'evals/context-drift/cases.json',ROOT/'evals/reviewer-calibration/cases.jsonl',ROOT/'engine/reviewers/reviewer-contract.md',ROOT/'engine/profiles/profiles.json',ROOT/'engine/runtime/contracts.json',ROOT/'engine/knowledge/sources.json',ROOT/'benchmarks/corpus.json',ROOT/'engine/migrations/manifest.json',ROOT/'docs/INSTALL.md',ROOT/'scripts/validate_master_depth.py',ROOT/'scripts/design_quality_checks.py',ROOT/'scripts/routing_report.py']
+    e=[];required=[MANIFEST,SKILLS,README,ROOT/'.github/workflows/validate-skills.yml',ROOT/'evals/master-regression.md',ROOT/'evals/behavioral/cases.jsonl',ROOT/'evals/context-drift/cases.json',ROOT/'evals/reviewer-calibration/cases.jsonl',ROOT/'engine/reviewers/reviewer-contract.md',ROOT/'engine/profiles/profiles.json',ROOT/'engine/runtime/contracts.json',ROOT/'engine/knowledge/sources.json',ROOT/'benchmarks/corpus.json',ROOT/'engine/migrations/manifest.json',ROOT/'docs/INSTALL.md',ROOT/'scripts/validate_master_depth.py',ROOT/'scripts/design_quality_checks.py',ROOT/'scripts/creative_experience_checks.py',ROOT/'engine/schemas/creative-experience-plan.schema.json',ROOT/'engine/policies/creative-engineering.md',ROOT/'evals/phase-10-creative-engineering.md',ROOT/'scripts/routing_report.py']
     for p in required:
         if not p.exists():e.append('missing engine artifact: '+str(p.relative_to(ROOT)))
     if e:return e
     try:m=json.loads(MANIFEST.read_text())
     except Exception as ex:return ['invalid engine manifest: '+str(ex)]
-    if m.get('version')!='1.3.0' or m.get('status')!='master-hardened':e.append('manifest must declare v1.3.0 master-hardened')
+    if m.get('version')!='1.4.0' or m.get('status')!='master-hardened':e.append('manifest must declare v1.4.0 master-hardened')
     ids=[str(p.get('id')) for p in m.get('phases',[])]
-    if ids!=[f'{i:02d}' for i in range(10)]:e.append('manifest phases must be 00..09 in order')
+    if ids!=[f'{i:02d}' for i in range(11)]:e.append('manifest phases must be 00..10 in order')
     registered={};total_refs=0
     for phase in m.get('phases',[]):
         rp=ROOT/phase.get('registry','')
@@ -51,28 +51,28 @@ def validate():
                 elif not 80<=len(q.read_text().split())<=1800:e.append(f'{name}: reference size invalid {ref}')
     physical={p.name for p in SKILLS.iterdir() if p.is_dir() and (p/'SKILL.md').exists()}
     if physical!=set(registered):e.append('skill registry/physical mismatch')
-    if len(registered)!=43 or m.get('expected_skill_count')!=43:e.append('discoverable skill count must remain 43')
-    if total_refs<70:e.append(f'reference depth unexpectedly low: {total_refs}')
+    if len(registered)!=50 or m.get('expected_skill_count')!=50:e.append('discoverable skill count must remain 50')
+    if total_refs<84:e.append(f'reference depth unexpectedly low: {total_refs}')
     jsons=list((ROOT/'engine/registry').glob('*.json'))+list((ROOT/'engine/schemas').glob('*.json'))+[MANIFEST,ROOT/'engine/profiles/profiles.json',ROOT/'engine/governance/github.json',ROOT/'engine/runtime/contracts.json',ROOT/'engine/knowledge/sources.json',ROOT/'benchmarks/corpus.json',ROOT/'engine/migrations/manifest.json']
     for p in jsons:
         try:json.loads(p.read_text())
         except Exception as ex:e.append(f'invalid JSON {p.relative_to(ROOT)}: {ex}')
     readme=README.read_text()
-    for i in range(10):
+    for i in range(11):
         if f'Phase {i:02d}' not in readme:e.append(f'README missing Phase {i:02d}')
-    if 'AI Expert Engine v1.3' not in readme:e.append('README missing v1.3 marker')
-    required_validators={'validate_core.py','validate_engine.py','validate_hardening.py','validate_semantics.py','validate_runtime_hardening.py','validate_master_depth.py'}|{f'validate_phase{i:02d}.py' for i in range(1,10)};actual={p.name for p in (ROOT/'scripts').glob('validate_*.py')}
+    if 'AI Expert Engine v1.4' not in readme:e.append('README missing v1.4 marker')
+    required_validators={'validate_core.py','validate_engine.py','validate_hardening.py','validate_semantics.py','validate_runtime_hardening.py','validate_master_depth.py'}|{f'validate_phase{i:02d}.py' for i in range(1,11)};actual={p.name for p in (ROOT/'scripts').glob('validate_*.py')}
     if not required_validators<=actual:e.append('validator set missing '+str(sorted(required_validators-actual)))
     for wf in sorted((ROOT/'.github/workflows').glob('*.yml'))+sorted((ROOT/'.github/workflows').glob('*.yaml')):
         for action,version in USES.findall(wf.read_text()):
             if not action.startswith('./') and not SHA.fullmatch(version):e.append(f'{wf.relative_to(ROOT)} action not SHA-pinned: {action}@{version}')
     profiles=json.loads((ROOT/'engine/profiles/profiles.json').read_text()).get('profiles',[])
-    if len(profiles)<20:e.append('need >=20 stack profiles')
+    if len(profiles)<24:e.append('need >=24 stack profiles')
     if len({x.get('dimension') for x in profiles})<5:e.append('stack profiles must cover five composable dimensions')
     sources=json.loads((ROOT/'engine/knowledge/sources.json').read_text()).get('sources',[])
-    if len(sources)<25:e.append('knowledge source registry must contain >=25 official sources')
+    if len(sources)<40:e.append('knowledge source registry must contain >=40 official sources')
     behavioral=[x for x in (ROOT/'evals/behavioral/cases.jsonl').read_text().splitlines() if x.strip()]
-    if len(behavioral)<30:e.append('behavioral corpus must contain >=30 cases')
+    if len(behavioral)<40:e.append('behavioral corpus must contain >=40 cases')
     benchmark=json.loads((ROOT/'benchmarks/corpus.json').read_text()).get('external',[])
     if len(benchmark)<10:e.append('repository benchmark corpus must contain >=10 pinned repos')
     expected=set(m.get('reviewers',[]));actual_reviewers={p.stem for p in (ROOT/'.cursor/agents').glob('*.md')}

@@ -79,7 +79,9 @@ def validate()->list[str]:
     for decision in ('GO','GO WITH CONDITIONS','HOLD','NO-GO'):
         if decision not in decisions:errors.append(f'schema missing release decision: {decision}')
     phase_ids=[str(p.get('id')) for p in manifest.get('phases',[])]
-    if phase_ids!=[f'{i:02d}' for i in range(10)]:errors.append(f'manifest phase sequence invalid: {phase_ids}')
+    required_prefix=[f'{i:02d}' for i in range(10)]
+    if phase_ids[:10]!=required_prefix or len(phase_ids)<10:errors.append(f'manifest must preserve Phase 00..09 prefix: {phase_ids}')
+    if len(phase_ids)!=len(set(phase_ids)):errors.append(f'manifest contains duplicate phase ids: {phase_ids}')
     if manifest.get('status') not in {'complete','hardened','master-hardened'}:errors.append('manifest status must be complete, hardened or master-hardened')
     if set(manifest.get('reviewers',[]))!={r.removesuffix('.md') for r in REVIEWERS}:errors.append('manifest reviewer list mismatch')
     eval_text=EVALS.read_text().lower()
