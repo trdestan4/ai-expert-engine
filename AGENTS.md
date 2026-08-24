@@ -7,7 +7,7 @@ This repository defines a token-efficient, production-grade master expert system
 2. `repository-intelligence` establishes verified repository facts and stack-profile confidence.
 3. `task-planning` decomposes non-trivial work.
 4. `debugging` owns evidence-driven diagnosis.
-5. Domain skills own implementation expertise.
+5. Domain skills own implementation expertise, including Phase 10 creative-engineering specialists when their boundary is actually crossed.
 6. `multi-review` owns independent multi-lens review; `audit-review` owns systemic audits.
 7. `release-readiness` owns the final GO / GO WITH CONDITIONS / HOLD / NO-GO decision.
 
@@ -25,6 +25,15 @@ This repository defines a token-efficient, production-grade master expert system
 - Never weaken tests/security/validation or downgrade findings to make a gate pass.
 - Prefer deterministic scripts for mechanical checks; use model reasoning for judgment.
 
+## Creative-engineering discipline
+- `creative-director`/`motion-direction` own experience and motion intent; Phase 10 specialists own implementation/evidence boundaries.
+- Reference reconstruction must label observed/derived/hypothesis/unknown; never claim pixel-perfect fidelity from incomplete evidence.
+- `frontend-engineering` remains the ordinary frontend owner; activate `creative-frontend`, `animation-engineering`, `threejs-webgl`, `realtime-shaders`, `three-d-asset-pipeline`, or `visual-qa` only when their specialist boundary is material.
+- Material scroll/3D/shader work requires explicit responsive and reduced-motion behavior, capability failure fallback, lifecycle cleanup/disposal, performance budgets and visual QA evidence.
+- Native scroll and semantic content remain authoritative. Signature effects may degrade; core content/actions may not disappear when effects fail.
+- `threejs-webgl` owns runtime resources; `three-d-asset-pipeline` owns source/export/compression; `realtime-shaders` owns custom GPU effect code. Do not blur these boundaries.
+- A creative experience plan can prove completeness of these contracts; it does not prove taste, accessibility, performance or runtime correctness by itself.
+
 ## Runtime evidence discipline
 For C2+ work and especially R3/R4, use local runtime contracts/tools when available rather than leaving important routing/review/release state only in prose.
 
@@ -38,10 +47,10 @@ For C2+ work and especially R3/R4, use local runtime contracts/tools when availa
 - Persisted JSON does not count as evidence merely because it exists; it must be schema-valid, candidate-specific, environment-correct and current.
 
 ## Reviewer depth
-Independent reviewer isolation is necessary but not sufficient. A reviewer must read its reviewer contract plus the owning expert `SKILL.md` and only the deep references relevant to the changed boundary. A one-screen reviewer lens alone does not count as master-domain review for R3/R4.
+Independent reviewer isolation is necessary but not sufficient. A reviewer must read its reviewer contract plus the owning expert `SKILL.md` and only the deep references relevant to the changed boundary. A one-screen reviewer lens alone does not count as master-domain review for R3/R4. Material creative surfaces should include Phase 10 evidence when fidelity/motion/3D is part of acceptance.
 
 ## Knowledge freshness
 Version-sensitive claims must follow repository versions first. `engine/knowledge/sources.json` records freshness windows and assertions for external standards/providers. When a critical source is stale or current behavior materially affects the decision, verify the official source before relying on memory.
 
 ## Completion standard
-A task is complete only when the requested outcome is implemented or answered, material risks are addressed, relevant checks pass, mandatory independent review is complete, runtime evidence is current where required, and unresolved limitations are stated plainly. Production work requiring a final gate must report both the release decision and whether it is technically enforced or advisory.
+A task is complete only when the requested outcome is implemented or answered, material risks are addressed, relevant checks pass, mandatory independent review is complete, runtime/creative evidence is current where required, and unresolved limitations are stated plainly. Production work requiring a final gate must report both the release decision and whether it is technically enforced or advisory.
