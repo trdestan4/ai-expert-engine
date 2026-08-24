@@ -40,16 +40,19 @@ def main():
         except Exception:pd={}
         if not pd.get('truncated'):e.append('repository profiler failed to expose truncation')
     src=json.loads((ROOT/'engine/knowledge/sources.json').read_text());bench=json.loads((ROOT/'benchmarks/corpus.json').read_text());mig=json.loads((ROOT/'engine/migrations/manifest.json').read_text());profiles=json.loads((ROOT/'engine/profiles/profiles.json').read_text()).get('profiles',[])
-    if len(src.get('sources',[]))<25:e.append('knowledge source registry too small')
+    if len(src.get('sources',[]))<40:e.append('knowledge source registry too small')
     if len(bench.get('external',[]))<10 or any(len(x.get('commit',''))!=40 for x in bench.get('external',[])):e.append('benchmark corpus pins invalid or too small')
-    if not any(x.get('from')=='1.2.0' and x.get('to')=='1.3.0' for x in mig.get('migrations',[])):e.append('migration chain missing 1.2.0 -> 1.3.0')
-    if len(profiles)<20 or len({x.get('dimension') for x in profiles})<5:e.append('stack profile breadth/composition too small')
+    for a,b in (('1.2.0','1.3.0'),('1.3.0','1.4.0')):
+        if not any(x.get('from')==a and x.get('to')==b for x in mig.get('migrations',[])):e.append(f'migration chain missing {a} -> {b}')
+    if len(profiles)<24 or len({x.get('dimension') for x in profiles})<5:e.append('stack profile breadth/composition too small')
     if run(ROOT/'scripts/check_knowledge_freshness.py').returncode:e.append('offline knowledge freshness check failed')
     if run(ROOT/'scripts/check_release_enforcement.py','--root',ROOT).returncode:e.append('repository production workflow release enforcement check failed')
     sem=run(ROOT/'scripts/validate_semantics.py')
     if sem.returncode:e.append('semantic validation failed: '+((sem.stdout or '')+(sem.stderr or '')).strip().replace('\n',' | '))
     md=run(ROOT/'scripts/validate_master_depth.py')
     if md.returncode:e.append('master depth validation failed: '+((md.stdout or '')+(md.stderr or '')).strip().replace('\n',' | '))
+    phase10=run(ROOT/'scripts/validate_phase10.py')
+    if phase10.returncode:e.append('phase10 validation failed: '+((phase10.stdout or '')+(phase10.stderr or '')).strip().replace('\n',' | '))
     if e:print('runtime hardening validation FAILED');[print(' -',x) for x in e];return 1
     print('runtime hardening validation PASSED');return 0
 if __name__=='__main__':raise SystemExit(main())

@@ -1,6 +1,6 @@
 {
-  "version":2,
-  "policy":{"verified_on":"2026-08-22","critical_overdue_multiplier":2,"require_owner_coverage":true},
+  "version":3,
+  "policy":{"verified_on":"2026-08-24","critical_overdue_multiplier":2,"require_owner_coverage":true},
   "sources":[
     {"id":"cursor-skills","url":"https://prod.cursor.com/docs/skills","owners":["master-agent","multi-review"],"last_verified":"2026-08-22","max_age_days":30,"critical":true,"assertions":["Agent Skills"]},
     {"id":"cursor-python-sdk","url":"https://prod.cursor.com/docs/sdk/python","owners":["ai-engineering","multi-review"],"last_verified":"2026-08-22","max_age_days":30,"critical":true,"assertions":["Subagents"]},
@@ -32,6 +32,16 @@
     {"id":"stripe-docs","url":"https://docs.stripe.com/","owners":["integrations","ecommerce","saas-platform"],"last_verified":"2026-08-22","max_age_days":45,"critical":true,"assertions":["Stripe"]},
     {"id":"kubernetes-docs","url":"https://kubernetes.io/docs/home/","owners":["devops-deployment","observability-sre"],"last_verified":"2026-08-22","max_age_days":60,"critical":true,"assertions":["Kubernetes"]},
     {"id":"terraform-docs","url":"https://developer.hashicorp.com/terraform/docs","owners":["devops-deployment"],"last_verified":"2026-08-22","max_age_days":60,"critical":false,"assertions":["Terraform"]},
-    {"id":"github-actions","url":"https://docs.github.com/actions","owners":["git-delivery","devops-deployment"],"last_verified":"2026-08-22","max_age_days":60,"critical":false,"assertions":["GitHub Actions"]}
+    {"id":"github-actions","url":"https://docs.github.com/actions","owners":["git-delivery","devops-deployment"],"last_verified":"2026-08-22","max_age_days":60,"critical":false,"assertions":["GitHub Actions"]},
+    {"id":"design-tokens-format","url":"https://www.designtokens.org/tr/drafts/format/","owners":["design-reconstruction","ux-ui-design"],"last_verified":"2026-08-24","max_age_days":60,"critical":false,"assertions":["Design Tokens Format Module"]},
+    {"id":"mdn-scroll-driven","url":"https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll-driven_animations","owners":["creative-frontend","animation-engineering"],"last_verified":"2026-08-24","max_age_days":60,"critical":false,"assertions":["scroll-driven animations"]},
+    {"id":"mdn-view-transitions","url":"https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API","owners":["animation-engineering","creative-frontend"],"last_verified":"2026-08-24","max_age_days":60,"critical":false,"assertions":["View Transition API"]},
+    {"id":"gsap-scrolltrigger","url":"https://gsap.com/docs/v3/Plugins/ScrollTrigger/","owners":["animation-engineering"],"last_verified":"2026-08-24","max_age_days":30,"critical":true,"assertions":["ScrollTrigger","scrub","pin"]},
+    {"id":"threejs-disposal","url":"https://threejs.org/manual/en/how-to-dispose-of-objects.html","owners":["threejs-webgl","performance"],"last_verified":"2026-08-24","max_age_days":45,"critical":true,"assertions":["dispose"]},
+    {"id":"threejs-ktx2loader","url":"https://threejs.org/docs/pages/KTX2Loader.html","owners":["threejs-webgl","three-d-asset-pipeline"],"last_verified":"2026-08-24","max_age_days":45,"critical":true,"assertions":["KTX2Loader","detectSupport"]},
+    {"id":"khronos-gltf2","url":"https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html","owners":["three-d-asset-pipeline","threejs-webgl"],"last_verified":"2026-08-24","max_age_days":180,"critical":true,"version":"2.0","assertions":["glTF"]},
+    {"id":"khronos-ktx2","url":"https://registry.khronos.org/KTX/specs/2.0/ktxspec.v2.html","owners":["three-d-asset-pipeline","threejs-webgl"],"last_verified":"2026-08-24","max_age_days":180,"critical":true,"version":"2.0","assertions":["KTX"]},
+    {"id":"webgl2-spec","url":"https://registry.khronos.org/webgl/specs/latest/2.0/","owners":["realtime-shaders","threejs-webgl"],"last_verified":"2026-08-24","max_age_days":180,"critical":false,"assertions":["WebGL"]},
+    {"id":"playwright-visual-comparisons","url":"https://playwright.dev/docs/test-snapshots","owners":["visual-qa","testing-qa"],"last_verified":"2026-08-24","max_age_days":60,"critical":false,"assertions":["Visual comparisons"]}
   ]
 }
