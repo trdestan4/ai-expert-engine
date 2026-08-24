@@ -1,0 +1,71 @@
+name: Master Benchmark
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * 1'
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Validate benchmark contract
+        run: |
+          set -euo pipefail
+          python scripts/validate_master_benchmark.py
+          python scripts/expert_benchmark.py validate
+          python scripts/expert_benchmark.py self-test
+
+  browser-lab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Set up exact browser dependencies
+        run: |
+          set -euo pipefail
+          if [ ! -f package.json ]; then npm init -y >/dev/null; fi
+          npm install --no-save --save-exact playwright@1.55.0 @axe-core/playwright@4.10.2 pixelmatch@7.1.0 pngjs@7.0.0
+          npx playwright install --with-deps chromium firefox webkit
+      - name: Run cross-browser fixture probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 4173 --bind 127.0.0.1 --directory benchmarks/master/fixtures >/tmp/master-benchmark-http.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for i in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/reference.html >/dev/null; then break; fi
+            sleep 0.2
+          done
+          curl --fail --silent http://127.0.0.1:4173/reference.html >/dev/null
+          node scripts/master_browser_probe.mjs \
+            --url http://127.0.0.1:4173/reference.html \
+            --browser all \
+            --screenshots-dir /tmp/master-benchmark-screens \
+            --output /tmp/master-browser-probe.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data=json.loads(Path('/tmp/master-browser-probe.json').read_text())
+          assert data['passed'] is True, data.get('blockers')
+          assert len(data['results']) == 9, len(data['results'])
+          assert {x['browser'] for x in data['results']} == {'chromium','firefox','webkit'}
+          assert all(x['reducedMotionMedia'] is True for x in data['results'])
+          print('browser lab verified:', len(data['results']), 'states')
+          PY
